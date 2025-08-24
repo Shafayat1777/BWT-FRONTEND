@@ -1,8 +1,12 @@
 import { z } from 'zod';
 
 import {
+	BOOLEAN_DEFAULT_VALUE,
 	BOOLEAN_REQUIRED,
+	NUMBER,
 	NUMBER_DOUBLE_REQUIRED,
+	NUMBER_OPTIONAL,
+	NUMBER_REQUIRED,
 	PHONE_NUMBER_REQUIRED,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
@@ -38,13 +42,11 @@ export type IGroup = z.infer<typeof GROUP_SCHEMA>;
 //* Category Schema
 export const CATEGORY_SCHEMA = z.object({
 	name: STRING_REQUIRED,
-	group_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
 export const CATEGORY_NULL: Partial<ICategory> = {
 	name: '',
-	group_uuid: '',
 	remarks: null,
 };
 
@@ -77,6 +79,19 @@ export const MODEL_NULL: Partial<IModel> = {
 };
 
 export type IModel = z.infer<typeof MODEL_SCHEMA>;
+
+//* Attributes Schema
+export const ATTRIBUTE_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const ATTRIBUTE_NULL: Partial<IAttribute> = {
+	name: '',
+	remarks: null,
+};
+
+export type IAttribute = z.infer<typeof ATTRIBUTE_SCHEMA>;
 
 //* Size Schema
 export const SIZE_SCHEMA = z.object({
@@ -343,6 +358,93 @@ export const BOX_NULL: Partial<IBox> = {
 };
 
 export type IBox = z.infer<typeof BOX_SCHEMA>;
+
+//* Product Entry Schema
+export const PRODUCT_ENTRY_SCHEMA = z.object({
+	uuid: STRING_OPTIONAL,
+	title: STRING_REQUIRED,
+	category_uuid: STRING_REQUIRED,
+	specifications_description: STRING_OPTIONAL,
+	care_maintenance_description: STRING_OPTIONAL,
+	model_uuid: STRING_REQUIRED,
+	warranty_days: NUMBER(),
+	service_warranty_days: NUMBER(),
+
+	product_variant: z.array(
+		z.object({
+			index: NUMBER_OPTIONAL,
+			uuid: STRING_OPTIONAL,
+			product_uuid: STRING_OPTIONAL,
+			selling_price: NUMBER_DOUBLE_REQUIRED.min(1, 'Price must be greater than 0'),
+			discount: NUMBER_OPTIONAL,
+			warehouse_1: NUMBER_OPTIONAL,
+			warehouse_2: NUMBER_OPTIONAL,
+			warehouse_3: NUMBER_OPTIONAL,
+			selling_warehouse: NUMBER_REQUIRED,
+			product_variant_values_entry: z.array(
+				z.object({
+					uuid: STRING_OPTIONAL,
+					product_variant_uuid: STRING_OPTIONAL,
+					attribute_uuid: STRING_REQUIRED,
+					value: STRING_REQUIRED,
+				})
+			),
+		})
+	),
+
+	product_specification: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			product_uuid: STRING_OPTIONAL,
+			label: STRING_REQUIRED,
+			value: STRING_REQUIRED,
+			index: NUMBER_REQUIRED,
+		})
+	),
+
+	product_image: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			// variant_uuid: STRING_OPTIONAL,
+			product_uuid: STRING_OPTIONAL,
+			image: z.instanceof(File).or(STRING_REQUIRED),
+			// z
+			// 	.instanceof(File)
+			// 	.refine((file) => file?.size !== 0, 'Please upload an file')
+			// 	.or(STRING_REQUIRED),
+			is_main: BOOLEAN_DEFAULT_VALUE(false),
+		})
+	),
+});
+
+export const PRODUCT_ENTRY_NULL: Partial<IProductEntry> = {
+	uuid: '',
+	title: '',
+	category_uuid: '',
+	specifications_description: '',
+	care_maintenance_description: '',
+	model_uuid: '',
+	warranty_days: 0,
+	service_warranty_days: 0,
+	product_variant: [
+		{
+			index: 0,
+			uuid: '',
+			product_uuid: '',
+			selling_price: 0,
+			discount: 0,
+			warehouse_1: 0,
+			warehouse_2: 0,
+			warehouse_3: 0,
+			selling_warehouse: 0,
+			product_variant_values_entry: [],
+		}
+	],
+	product_specification: [],
+	product_image: [],
+};
+
+export type IProductEntry = z.infer<typeof PRODUCT_ENTRY_SCHEMA>;
 
 //* Purchase Schema
 export const PURCHASE_SCHEMA = z.object({

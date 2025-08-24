@@ -288,4 +288,11 @@ export const useOtherPurchaseEntry = <T>(query?: string) =>
 		url: query ? `/other/store/purchase-entry/value/label?${query}` : `/other/store/purchase-entry/value/label`,
 	});
 
-//
+//* GET OTHER ATTRIBUTES
+export const useOtherAttributes = <T>(query?: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.attributes(query),
+		url: query
+			? `/other/store/product-attributes/value/label?${query}`
+			: `/other/store/product-attributes/value/label`,
+	});

@@ -60,6 +60,21 @@ export const useStoreModelsByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
+//* Attributes
+
+export const useStoreAttributes = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.attribute(),
+		url: '/store/product-attributes',
+	});
+
+export const useStoreAttributesByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.attributeByUUID(uuid),
+		url: `/store/product-attributes/${uuid}`,
+		enabled: !!uuid,
+	});
+
 //* Size
 
 export const useStoreSizes = <T>() =>
@@ -201,6 +216,50 @@ export const useStoreBoxesByUUID = <T>(uuid: string) =>
 		url: `/store/box/${uuid}`,
 		enabled: !!uuid,
 	});
+
+//? NEW PRODUCT ENTRY ?//
+//* Product Entry
+export const useStoreProductEntry = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.productEntry(),
+		url: '/store/product-entry',
+	});
+
+export const useStoreProductEntryByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.productEntryByUUID(uuid),
+		url: `/store/product-entry/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Product Specification
+export const useStoreProductSpecification = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.productSpecification(),
+		url: '/store/product-specification',
+	});
+
+//* Product Image
+export const useStoreProductImage = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.productImage(),
+		url: '/store/product-image',
+	});
+
+//* Product Variant
+export const useStoreProductVariant = <T>() =>				
+	useTQuery<T>({
+		queryKey: storeQK.productVariant(),
+		url: '/store/product-variant',
+})
+
+//* Product Variant Entry
+export const useStoreProductVariantEntry = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.productVariantEntry(),
+		url: '/store/product-variant-values-entry',				
+})
+//? NEW PRODUCT ENTRY ?//
 
 //* Purchase
 export const useStorePurchases = <T>() =>

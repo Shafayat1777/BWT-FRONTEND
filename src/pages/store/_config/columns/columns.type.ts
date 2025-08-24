@@ -34,6 +34,14 @@ export type IModelTableData = {
 	updated_at: string;
 	remarks: string;
 };
+//* Attributes
+export type IAttributesTableData = {
+	uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+}
 //* Size
 export type ISizeTableData = {
 	uuid: string;
@@ -98,6 +106,26 @@ export type IProductTableData = {
 	updated_at: string;
 	remarks: string;
 };
+// * Product Entry
+export type IProductEntryTableData = {
+	uuid: string;
+	title: string;
+	category_uuid: string;
+	specification_description: string;
+	care_maintenance_description: string;
+	model_uuid: string;
+	warranty_days: number;
+	service_warranty_days: number;
+
+	product_images: string[];
+	product_variants: string[];
+	product_specifications: string[];
+	reviews: string[];
+
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+}
 //* Purchase
 export type IPurchaseTableData = {
 	uuid: string;

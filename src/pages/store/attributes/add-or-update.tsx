@@ -1,25 +1,20 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
-import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
-import { useOtherCategory, useOtherGroup } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { ICategoryTableData } from '../_config/columns/columns.type';
-import { useStoreCategoriesByUUID } from '../_config/query';
-import { CATEGORY_NULL, CATEGORY_SCHEMA } from '../_config/schema';
-import { ICategoryAddOrUpdateProps } from '../_config/types';
+import { IAttributesTableData } from '../_config/columns/columns.type';
+import { useStoreAttributesByUUID } from '../_config/query';
+import { ATTRIBUTE_NULL, ATTRIBUTE_SCHEMA } from '../_config/schema';
+import { IAttributesAddOrUpdateProps } from '../_config/types';
 
-const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IAttributesAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -31,16 +26,14 @@ const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreCategoriesByUUID<ICategoryTableData>(updatedData?.uuid as string);
-	const { invalidateQuery: invalidateCategory } = useOtherCategory<IFormSelectOption[]>();
+	const { data } = useStoreAttributesByUUID<IAttributesTableData>(updatedData?.uuid as string);
 
-	const form = useRHF(CATEGORY_SCHEMA, CATEGORY_NULL);
+	const form = useRHF(ATTRIBUTE_SCHEMA, ATTRIBUTE_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(CATEGORY_NULL);
+		form.reset(ATTRIBUTE_NULL);
 		setOpen((prev) => !prev);
-		invalidateCategory();
 	};
 
 	// Reset form values when data is updated
@@ -52,7 +45,7 @@ const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: ICategoryTableData) {
+	async function onSubmit(values: IAttributesTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -82,7 +75,7 @@ const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Category` : 'Add New Category'}
+			title={isUpdate ? `Update ${updatedData?.name} Attribute` : 'Add New Attribute'}
 			form={form}
 			onSubmit={onSubmit}
 		>

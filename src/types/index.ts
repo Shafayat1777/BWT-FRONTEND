@@ -5,6 +5,8 @@ import { RouteObject } from 'react-router-dom';
 
 
 import { IFormSelectOption } from '@/components/core/form/types';
+import { UseFormReturn } from 'react-hook-form';
+import { IProductEntry } from '@/pages/store/_config/schema';
 
 
 
@@ -130,6 +132,47 @@ export interface IDefaultAddOrUpdateProps {
 		any
 	>;
 }
+
+export interface IDefaultAttributeAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	deleteData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		void
+	>;
+	form: UseFormReturn<IProductEntry>;
+}
+
 export interface IDefaultAddProps {
 	url: string;
 	open: boolean;

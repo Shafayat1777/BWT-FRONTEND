@@ -9,6 +9,7 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
+	IAttributesTableData,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
@@ -17,6 +18,7 @@ import {
 	IGroupTableData,
 	IInternalTransferTableData,
 	IModelTableData,
+	IProductEntryTableData,
 	IProductTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
@@ -50,11 +52,6 @@ export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 		header: 'Name',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'group_name',
-		header: 'Group',
-		enableColumnFilter: false,
-	},
 ];
 
 //* Brand Columns
@@ -70,6 +67,7 @@ export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+
 //* Model Columns
 export const modelColumns = (): ColumnDef<IModelTableData>[] => [
 	{
@@ -80,6 +78,15 @@ export const modelColumns = (): ColumnDef<IModelTableData>[] => [
 	{
 		accessorKey: 'brand_name',
 		header: 'Brand',
+		enableColumnFilter: false,
+	},
+];
+
+//* Attributes Columns
+export const attributeColumns = (): ColumnDef<IAttributesTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
 		enableColumnFilter: false,
 	},
 ];
@@ -274,7 +281,34 @@ export const productColumns = ({
 
 	return columns;
 };
-
+//* Product Entry
+export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
+	{
+		accessorKey: 'title',
+		header: 'Title',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'category_name',
+		header: 'Category',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'model_name',
+		header: 'Model',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warranty_days',
+		header: 'Warranty',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'service_warranty_days',
+		header: 'Service Warranty',
+		enableColumnFilter: false,
+	},
+];
 //* Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	{
