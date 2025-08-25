@@ -26,6 +26,7 @@ const ProductInternalTransfer = lazy(() => import('@/pages/store/product/trx'));
 const Attributes = lazy(() => import('@/pages/store/attributes'));
 const ProductEntry = lazy(() => import('@/pages/store/product-entry'));
 const ProductEntryAddOrUpdate = lazy(() => import('@/pages/store/product-entry/add-or-update'));
+const ProductEntryDetails = lazy(() => import('@/pages/store/product-entry/details'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -53,6 +54,14 @@ const StoreRoutes: IRoute[] = [
 				hidden: true,
 				page_name: 'store__product_entry_update',
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Entry Details',
+				path: '/store/product-entry/:uuid/details',
+				element: <ProductEntryDetails />,
+				hidden: true,
+				page_name: 'store__product_entry_details',
+				actions: ['read'],
 			},
 			{
 				name: 'Product',

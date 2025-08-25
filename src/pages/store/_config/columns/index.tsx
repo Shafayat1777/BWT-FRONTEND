@@ -19,7 +19,10 @@ import {
 	IInternalTransferTableData,
 	IModelTableData,
 	IProductEntryTableData,
+	IProductSpecificationTableData,
 	IProductTableData,
+	IProductVariantTableData,
+	IProductVariantValuesEntryTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
 	IPurchaseReturnTableData,
@@ -281,12 +284,20 @@ export const productColumns = ({
 
 	return columns;
 };
+//? NEW PRODUCT ENTRY ?//
 //* Product Entry
 export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
 	{
 		accessorKey: 'title',
 		header: 'Title',
 		enableColumnFilter: false,
+		cell: (info) => (
+			<CustomLink
+				url={`/store/product-entry/${info.row.original.uuid}/details`}
+				label={info.getValue() as string}
+				openInNewTab={true}
+			/>
+		),
 	},
 	{
 		accessorKey: 'category_name',
@@ -309,6 +320,83 @@ export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+
+//* Product Variant Details
+export const productVariantDetailsColumns = (
+	handleAttribute?: (index: number) => void
+): ColumnDef<IProductVariantTableData>[] => [
+	{
+		accessorKey: 'selling_price',
+		header: 'Selling Price',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'discount',
+		header: 'Discount',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_1',
+		header: 'Warehouse 1',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_2',
+		header: 'Warehouse 2',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_3',
+		header: 'Warehouse 3',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'selling_warehouse',
+		header: 'Selling Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'product_variant_values_entry',
+		header: 'Attributes',
+		enableColumnFilter: false,
+		cell: (info) =>
+			info.getValue() ? (
+				<Transfer onClick={() => handleAttribute?.(info.row.index)} />
+			) : (
+				<StatusButton value={info.getValue() as boolean} />
+			),
+	},
+];
+
+//* Product Specification Details
+export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecificationTableData>[] => [
+	{
+		accessorKey: 'label',
+		header: 'Label',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'value',
+		header: 'Value',
+		enableColumnFilter: false,
+	},
+];
+
+//* Product Variant Values Entry Details
+export const productVariantValuesEntryDetailsColumns = (): ColumnDef<IProductVariantValuesEntryTableData>[] => [
+	{
+		accessorKey: 'attribute_name',
+		header: 'Attribute',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'value',
+		header: 'Value',
+		enableColumnFilter: false,
+	},
+];
+
+//? NEW PRODUCT ENTRY ?//
 //* Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	{
