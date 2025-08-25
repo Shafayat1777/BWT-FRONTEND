@@ -34,6 +34,14 @@ export type IModelTableData = {
 	updated_at: string;
 	remarks: string;
 };
+//* Attributes
+export type IAttributesTableData = {
+	uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
 //* Size
 export type ISizeTableData = {
 	uuid: string;
@@ -95,6 +103,66 @@ export type IProductTableData = {
 	service_warranty_days: number;
 	is_maintaining_stock: boolean;
 	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+// * Product Entry
+
+export type IProductVariantValuesEntryTableData = {
+	uuid: string;
+	product_variant_uuid: string;
+	attribute_uuid: string;
+	attribute_name: string;
+	value: string;
+};
+
+export type IProductVariantTableData = {
+	uuid: string;
+	product_uuid: string;
+	selling_price: number;
+	discount: number;
+	warehouse_1: number;
+	warehouse_2: number;
+	warehouse_3: number;
+	selling_warehouse: number;
+	product_variant_values_entry: IProductVariantValuesEntryTableData[];
+};
+
+export type IProductSpecificationTableData = {
+	uuid: string;
+	product_uuid: string;
+	label: string;
+	value: string;
+	index: number;
+};
+
+export type IProductEntryTableData = {
+	uuid: string;
+	title: string;
+	category_uuid: string;
+	category_name: string;
+	specifications_description: string;
+	care_maintenance_description: string;
+	model_uuid: string;
+	model_name: string;
+	warranty_days: number;
+	service_warranty_days: number;
+
+	product_image: {
+		uuid: string;
+		image: string;
+		product_uuid: string;
+		is_main: boolean;
+	}[];
+
+	product_variant: IProductVariantTableData[];
+
+	product_specification: IProductSpecificationTableData[];
+
+	reviews: string[];
+
+	created_at: string;
+	created_by_name: string;
 	updated_at: string;
 	remarks: string;
 };

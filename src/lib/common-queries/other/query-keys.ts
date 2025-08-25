@@ -119,6 +119,9 @@ const otherQK = {
 
 	//*Purchase Entry
 	purchaseEntry: (query?: string) => [...otherQK.all(), 'purchase-entry', query],
+
+	//* Attributes
+	attributes: (query?: string) => [...otherQK.all(), 'attributes', query],
 };
 
 export default otherQK;

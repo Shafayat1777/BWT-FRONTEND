@@ -17,6 +17,10 @@ export const storeQK = {
 	model: () => [...storeQK.all(), 'model'],
 	modelByUUID: (uuid: string) => [...storeQK.model(), uuid],
 
+	//* attribute
+	attribute: () => [...storeQK.all(), 'attribute'],
+	attributeByUUID: (uuid: string) => [...storeQK.attribute(), uuid],
+
 	//* size
 	size: () => [...storeQK.all(), 'size'],
 	sizeByUUID: (uuid: string) => [...storeQK.size(), uuid],
@@ -56,6 +60,25 @@ export const storeQK = {
 	//* Box
 	box: () => [...storeQK.all(), 'box'],
 	boxByUUID: (uuid: string) => [...storeQK.box(), uuid],
+
+	//? NEW PRODUCT ENTRY ?//
+	//*  Product Entry
+	productEntry: () => [...storeQK.all(), 'productEntry'],
+	productEntryByUUID: (uuid: string) => [...storeQK.productEntry(), uuid],
+
+	//* Product Specification
+	productSpecification: () => [...storeQK.all(), 'productSpecification'],
+
+	//* Product Image
+	productImage: () => [...storeQK.all(), 'productImage'],
+
+	//* Product Variant
+	productVariant: () => [...storeQK.all(), 'productVariant'],
+
+	//* Product Variant Entry
+	productVariantEntry: () => [...storeQK.all(), 'productVariantEntry'],
+
+	//? NEW PRODUCT ENTRY ?//
 
 	//* Purchase
 	purchase: () => [...storeQK.all(), 'purchase'],

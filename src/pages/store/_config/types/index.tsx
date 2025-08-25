@@ -1,8 +1,9 @@
-import { IDefaultAddOrUpdateProps,IToast } from '@/types';
+import { IDefaultAddOrUpdateProps, IDefaultAttributeAddOrUpdateProps, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import {
+	IAttributesTableData,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
@@ -21,6 +22,7 @@ import {
 	IVendorTableData,
 	IWarehouseTableData,
 } from '../columns/columns.type';
+import { IProductEntry } from '../schema';
 
 //* Group
 export interface IGroupAddOrUpdateProps extends IDefaultAddOrUpdateProps {
@@ -148,4 +150,12 @@ export interface IPurchaseReturnLogAddOrUpdateProps {
 		},
 		any
 	>;
+}
+
+export interface IAttributeAddOrUpdateProps extends IDefaultAttributeAddOrUpdateProps {
+	updatedData: IProductEntry['product_variant'][number] | null;
+}
+
+export interface IAttributesAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData: IAttributesTableData | null;
 }

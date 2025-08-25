@@ -9,6 +9,7 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
+	IAttributesTableData,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
@@ -17,7 +18,11 @@ import {
 	IGroupTableData,
 	IInternalTransferTableData,
 	IModelTableData,
+	IProductEntryTableData,
+	IProductSpecificationTableData,
 	IProductTableData,
+	IProductVariantTableData,
+	IProductVariantValuesEntryTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
 	IPurchaseReturnTableData,
@@ -50,11 +55,6 @@ export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 		header: 'Name',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'group_name',
-		header: 'Group',
-		enableColumnFilter: false,
-	},
 ];
 
 //* Brand Columns
@@ -70,6 +70,7 @@ export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+
 //* Model Columns
 export const modelColumns = (): ColumnDef<IModelTableData>[] => [
 	{
@@ -80,6 +81,15 @@ export const modelColumns = (): ColumnDef<IModelTableData>[] => [
 	{
 		accessorKey: 'brand_name',
 		header: 'Brand',
+		enableColumnFilter: false,
+	},
+];
+
+//* Attributes Columns
+export const attributeColumns = (): ColumnDef<IAttributesTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
 		enableColumnFilter: false,
 	},
 ];
@@ -274,7 +284,119 @@ export const productColumns = ({
 
 	return columns;
 };
+//? NEW PRODUCT ENTRY ?//
+//* Product Entry
+export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
+	{
+		accessorKey: 'title',
+		header: 'Title',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<CustomLink
+				url={`/store/product-entry/${info.row.original.uuid}/details`}
+				label={info.getValue() as string}
+				openInNewTab={true}
+			/>
+		),
+	},
+	{
+		accessorKey: 'category_name',
+		header: 'Category',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'model_name',
+		header: 'Model',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warranty_days',
+		header: 'Warranty',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'service_warranty_days',
+		header: 'Service Warranty',
+		enableColumnFilter: false,
+	},
+];
 
+//* Product Variant Details
+export const productVariantDetailsColumns = (
+	handleAttribute?: (index: number) => void
+): ColumnDef<IProductVariantTableData>[] => [
+	{
+		accessorKey: 'selling_price',
+		header: 'Selling Price',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'discount',
+		header: 'Discount',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_1',
+		header: 'Warehouse 1',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_2',
+		header: 'Warehouse 2',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_3',
+		header: 'Warehouse 3',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'selling_warehouse',
+		header: 'Selling Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'product_variant_values_entry',
+		header: 'Attributes',
+		enableColumnFilter: false,
+		cell: (info) =>
+			info.getValue() ? (
+				<Transfer onClick={() => handleAttribute?.(info.row.index)} />
+			) : (
+				<StatusButton value={info.getValue() as boolean} />
+			),
+	},
+];
+
+//* Product Specification Details
+export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecificationTableData>[] => [
+	{
+		accessorKey: 'label',
+		header: 'Label',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'value',
+		header: 'Value',
+		enableColumnFilter: false,
+	},
+];
+
+//* Product Variant Values Entry Details
+export const productVariantValuesEntryDetailsColumns = (): ColumnDef<IProductVariantValuesEntryTableData>[] => [
+	{
+		accessorKey: 'attribute_name',
+		header: 'Attribute',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'value',
+		header: 'Value',
+		enableColumnFilter: false,
+	},
+];
+
+//? NEW PRODUCT ENTRY ?//
 //* Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	{
