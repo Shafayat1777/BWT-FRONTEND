@@ -40,6 +40,7 @@ const useGenerateAttribute = ({ remove, form, updatedData }: IGenerateFieldDefsP
 						name={`product_variant.${updatedData?.index}.product_variant_values_entry.${index}.attribute_uuid`}
 						render={(props) => (
 							<CoreForm.Select
+								isDisabled
 								disableLabel
 								placeholder='Select Attribute'
 								options={AttributeOptions!}

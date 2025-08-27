@@ -369,6 +369,7 @@ export const PRODUCT_ENTRY_SCHEMA = z.object({
 	model_uuid: STRING_REQUIRED,
 	warranty_days: NUMBER(),
 	service_warranty_days: NUMBER(),
+	attribute_list: z.array(STRING_REQUIRED).refine((list) => list.length > 0, 'Please select at least one attribute'),
 
 	product_variant: z.array(
 		z.object({
@@ -426,6 +427,7 @@ export const PRODUCT_ENTRY_NULL: Partial<IProductEntry> = {
 	model_uuid: '',
 	warranty_days: 0,
 	service_warranty_days: 0,
+	attribute_list: [],
 	product_variant: [
 		{
 			index: 0,
@@ -438,7 +440,7 @@ export const PRODUCT_ENTRY_NULL: Partial<IProductEntry> = {
 			warehouse_3: 0,
 			selling_warehouse: 0,
 			product_variant_values_entry: [],
-		}
+		},
 	],
 	product_specification: [],
 	product_image: [],

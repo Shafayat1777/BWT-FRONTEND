@@ -4,6 +4,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
+import ColumnImage from '@/components/core/data-table/_views/column-image';
 import { IFormSelectOption } from '@/components/core/form/types';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
@@ -318,6 +319,12 @@ export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
 		accessorKey: 'service_warranty_days',
 		header: 'Service Warranty',
 		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'image',
+		header: 'Image',
+		enableColumnFilter: false,
+		cell: (info) => <ColumnImage src={info.getValue() as string} alt={`image`} />,
 	},
 ];
 
