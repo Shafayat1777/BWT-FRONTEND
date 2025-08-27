@@ -78,6 +78,8 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 		}
 	}, [form.watch('attribute_list'), replace, form, variant_index, isUpdate]);
 
+	
+
 	const handleAdd = () => {
 		append({
 			product_variant_uuid: '',
@@ -92,10 +94,11 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 	} | null>(null);
 
 	const handleRemove = (index: number) => {
-		if (fields[index].uuid) {
+		const item = form.watch(`product_variant.${variant_index}.product_variant_values_entry`)[index];
+		if (item.uuid) {
 			setDeleteItem({
-				id: fields[index].uuid,
-				name: fields[index].uuid,
+				id: item.uuid,
+				name: item.uuid,
 			});
 		} else {
 			remove(index);
