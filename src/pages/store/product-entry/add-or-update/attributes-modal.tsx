@@ -68,17 +68,28 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 				.filter((item: string | undefined): item is string => typeof item === 'string')
 				.map((item) => ({
 					attribute_uuid: item,
-					value:
-						form
-							.watch(`product_variant.${variant_index}.product_variant_values_entry`)
-							?.find((field) => field.attribute_uuid === item)?.value || '',
+					value: '',
 				}));
 
 			append(newEntry);
 		}
-	}, [form.watch('attribute_list'), replace, form, variant_index, isUpdate]);
 
-	
+		if (isUpdate && form.watch(`product_variant.${variant_index}.product_variant_values_entry`)?.length !== 0) {
+			form.watch('attribute_list')
+				.filter((item: string | undefined): item is string => typeof item === 'string')
+				.map((item) => {
+					const itemExists = form
+						.watch(`product_variant.${variant_index}.product_variant_values_entry`)
+						?.find((field) => field.attribute_uuid === item);
+					if (!itemExists) {
+						append({
+							attribute_uuid: item,
+							value: '',
+						});
+					}
+				});
+		}
+	}, [form.watch('attribute_list'), replace, form, variant_index, isUpdate]);
 
 	const handleAdd = () => {
 		append({
