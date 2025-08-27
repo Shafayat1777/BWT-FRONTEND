@@ -1,5 +1,7 @@
+import { watch } from 'fs';
 import { Suspense, useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import CoreForm from '@core/form';
 import { AddModal, DeleteModal, DetailsModal } from '@core/modal';
@@ -18,59 +20,76 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 	deleteData,
 	form,
 }) => {
-	const isUpdate = !!updatedData?.uuid;
+	const { uuid } = useParams();
+	const isUpdate: boolean = !!uuid;
+	const variant_index = updatedData?.index ?? 0;
 
 	const { fields, replace, remove, append } = useFieldArray({
 		control: form.control,
-		name: `product_variant.${updatedData?.index || 0}.product_variant_values_entry`,
+		name: `product_variant.${variant_index}.product_variant_values_entry`,
 	});
 
 	const onClose = () => {
 		setUpdatedData?.(null);
 		setOpen((prev) => !prev);
 
-		form.watch(`product_variant.${updatedData?.index || 0}.product_variant_values_entry`).forEach((field, index) => {
+		// Get the current array length to iterate backward
+		const watchedEntries = form.watch(`product_variant.${variant_index}.product_variant_values_entry`);
+
+		for (let i = watchedEntries.length - 1; i >= 0; i--) {
+			const field = watchedEntries[i];
+
+			// Check if both fields are "empty"
 			if (!field.attribute_uuid && !field.value) {
-				remove(index);
+				remove(i);
 			}
-		});
+		}
 	};
 
-	// // set form values if it's an update
-	// useEffect(() => {
-	// 	if (isUpdate) {
-	// 		const existingSerials = form.getValues(
-	// 			`product_variant.${updatedData.index || 0}.product_variant_values_entry`
-	// 		);
-	// 		const newSerials = Array.from({ length: updatedData.quantity }, (_, i) => ({
-	// 			...existingSerials[i],
-	// 			index: i + 1,
-	// 		}));
-	// 		replace(newSerials);
-	// 	}
-	// }, [isUpdate, updatedData, replace, form]);
+	useEffect(() => {
+		if (!isUpdate) {
+			const newEntry = form
+				.watch('attribute_list')
+				.filter((item: string | undefined): item is string => typeof item === 'string')
+				.map((item) => ({
+					attribute_uuid: item,
+					value:
+						form
+							.watch(`product_variant.${variant_index}.product_variant_values_entry`)
+							?.find((field) => field.attribute_uuid === item)?.value || '',
+				}));
 
-	// useEffect(() => {
-	// 	if (updatedData && !isUpdate) {
-	// 		// If it's a new entry, we need to create an array of serials based on the quantity
-	// 		if (form.getValues(`product_variant.${updatedData.index || 0}.product_variant_values_entry`).length === 0) {
-	// 			const newSerials = Array.from({ length: updatedData.quantity }, (_, i) => ({
-	// 				index: i + 1,
-	// 				serial: '',
-	// 			}));
-	// 			replace(newSerials); // replaces the product_variant_values_entry array entirely
-	// 		} else {
-	// 			const existingSerials = form.getValues(
-	// 				`product_variant.${updatedData.index || 0}.product_variant_values_entry`
-	// 			);
-	// 			const newSerials = Array.from({ length: updatedData.quantity }, (_, i) => ({
-	// 				...existingSerials[i],
-	// 				index: i + 1,
-	// 			}));
-	// 			replace(newSerials);
-	// 		}
-	// 	}
-	// }, [updatedData, isUpdate, replace, form]);
+			replace(newEntry);
+		}
+
+		if (isUpdate && form.watch(`product_variant.${variant_index}.product_variant_values_entry`)?.length === 0) {
+			const newEntry = form
+				.watch('attribute_list')
+				.filter((item: string | undefined): item is string => typeof item === 'string')
+				.map((item) => ({
+					attribute_uuid: item,
+					value: '',
+				}));
+
+			append(newEntry);
+		}
+
+		if (isUpdate && form.watch(`product_variant.${variant_index}.product_variant_values_entry`)?.length !== 0) {
+			form.watch('attribute_list')
+				.filter((item: string | undefined): item is string => typeof item === 'string')
+				.map((item) => {
+					const itemExists = form
+						.watch(`product_variant.${variant_index}.product_variant_values_entry`)
+						?.find((field) => field.attribute_uuid === item);
+					if (!itemExists) {
+						append({
+							attribute_uuid: item,
+							value: '',
+						});
+					}
+				});
+		}
+	}, [form.watch('attribute_list'), replace, form, variant_index, isUpdate]);
 
 	const handleAdd = () => {
 		append({
@@ -86,10 +105,11 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 	} | null>(null);
 
 	const handleRemove = (index: number) => {
-		if (fields[index].uuid) {
+		const item = form.watch(`product_variant.${variant_index}.product_variant_values_entry`)[index];
+		if (item.uuid) {
 			setDeleteItem({
-				id: fields[index].uuid,
-				name: fields[index].uuid,
+				id: item.uuid,
+				name: item.uuid,
 			});
 		} else {
 			remove(index);
@@ -105,9 +125,13 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 				// title={isUpdate ? 'Update Attribute' : 'Add Attribute'}
 				content={
 					<CoreForm.DynamicFields
-						title={isUpdate ? 'Update Attribute' : 'Add Attribute'}
+						title={
+							isUpdate
+								? `Update Variant ${variant_index + 1} Attribute`
+								: `Add Variant ${variant_index + 1} Attribute`
+						}
 						form={form}
-						fieldName={`product_variant.${updatedData?.index}.product_variant_values_entry`}
+						fieldName={`product_variant.${variant_index}.product_variant_values_entry`}
 						fieldDefs={useGenerateAttribute({
 							form: form,
 							remove: handleRemove,
@@ -115,7 +139,7 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 							updatedData,
 						})}
 						fields={fields}
-						handleAdd={handleAdd}
+						// handleAdd={handleAdd}
 					/>
 				}
 			/>
@@ -128,11 +152,9 @@ const AddOrUpdate: React.FC<IAttributeAddOrUpdateProps> = ({
 						deleteData,
 						onClose: () => {
 							form.setValue(
-								`product_variant.${updatedData?.index || 0}.product_variant_values_entry`,
+								`product_variant.${variant_index}.product_variant_values_entry`,
 								form
-									.getValues(
-										`product_variant.${updatedData?.index || 0}.product_variant_values_entry`
-									)
+									.getValues(`product_variant.${variant_index}.product_variant_values_entry`)
 									.filter((item) => item.uuid !== deleteItem?.id)
 							);
 						},

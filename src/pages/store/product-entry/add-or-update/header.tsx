@@ -6,7 +6,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { IFormSelectOption } from '@core/form/types';
 
-import { useOtherCategory, useOtherModel } from '@/lib/common-queries/other';
+import { useOtherAttributes, useOtherCategory, useOtherModel } from '@/lib/common-queries/other';
 
 import { IProductEntry } from '../../_config/schema';
 import useGenerateImage from './useGenerateImage';
@@ -30,6 +30,7 @@ const Header = ({
 
 	const { data: categoryOptions } = useOtherCategory<IFormSelectOption[]>();
 	const { data: modelOptions } = useOtherModel<IFormSelectOption[]>();
+	const { data: AttributeOptions } = useOtherAttributes<IFormSelectOption[]>();
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -97,7 +98,6 @@ const Header = ({
 						/>
 					)}
 				/>
-
 				<FormField
 					control={form.control}
 					name='warranty_days'
@@ -106,7 +106,21 @@ const Header = ({
 				<FormField
 					control={form.control}
 					name='service_warranty_days'
-					render={(props) => <CoreForm.Input type='number' {...props} />}
+					render={(props) => <CoreForm.Input label='Service Warranty' type='number' {...props} />}
+				/>{' '}
+				<FormField
+					control={form.control}
+					name='attribute_list'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							isDisabled={isUpdate}
+							placeholder='Select Model'
+							menuPortalTarget={document.body}
+							options={AttributeOptions!}
+							isMulti
+							{...props}
+						/>
+					)}
 				/>
 			</div>
 			<div className='grid grid-cols-2 gap-4'>

@@ -299,7 +299,7 @@ const Index = () => {
 		}
 
 		//? Variant POST
-		const product_variant_promise = product_variant.map((variant, index) => {
+		const product_variant_promise = product_variant.map(async (variant, index) => {
 			const variant_data = {
 				...variant,
 				product_uuid: new_product_uuid,
@@ -309,7 +309,7 @@ const Index = () => {
 				index: index + 1,
 			};
 
-			const new_product_variant_promise = postData.mutateAsync({
+			const new_product_variant_promise = await postData.mutateAsync({
 				url: '/store/product-variant',
 				newData: variant_data,
 			});
@@ -425,11 +425,13 @@ const Index = () => {
 
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 	const [updatedData, setUpdatedData] = useState<IProductEntry['product_variant'][number] | null>(null);
+
 	const handleAttributes = (index: number) => {
 		const field = form.watch('product_variant')[index];
 		setUpdatedData({ ...field, index });
 		setIsOpenAddModal(true);
 	};
+
 	return (
 		<CoreForm.AddEditWrapper
 			title={isUpdate ? 'Edit Product Entry' : ' Add Product Entry'}
