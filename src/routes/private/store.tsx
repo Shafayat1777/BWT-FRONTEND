@@ -27,6 +27,9 @@ const Attributes = lazy(() => import('@/pages/store/attributes'));
 const ProductEntry = lazy(() => import('@/pages/store/product-entry'));
 const ProductEntryAddOrUpdate = lazy(() => import('@/pages/store/product-entry/add-or-update'));
 const ProductEntryDetails = lazy(() => import('@/pages/store/product-entry/details'));
+const Bill = lazy(() => import('@/pages/store/bill-info'));
+const BillEntry = lazy(() => import('@/pages/store/bill-info/add-or-update'));
+const BillDetails = lazy(() => import('@/pages/store/bill-info/details'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -145,6 +148,37 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/purchase-return/:uuid/details',
 				element: <PurchaseReturnDetails />,
 				page_name: 'store__purchase_return_details',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Order',
+				path: '/store/product-order',
+				element: <Bill />,
+				page_name: 'store__product_order',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			// {
+			// 	name: 'Bill Entry',
+			// 	path: '/store/product-order/add',
+			// 	element: <BillEntry/>,
+			// 	page_name: 'store__purchase_add',
+			// 	hidden: true,
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
+			{
+				name: 'Product Order Update',
+				path: '/store/product-order/:uuid/update',
+				element: <BillEntry />,
+				page_name: 'store__product_order_update',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Order Details',
+				path: '/store/product-order/:uuid/details',
+				element: <BillDetails />,
+				page_name: 'store__purchase_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},

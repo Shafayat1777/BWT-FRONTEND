@@ -99,4 +99,9 @@ export const storeQK = {
 	//* Order Transfer
 	orderTransfer: (query?: string) => [...storeQK.all(), 'orderTransfer',query],
 	orderTransferByUUID: (uuid: string) => [...storeQK.orderTransfer(), uuid],
+
+	//*BIll Info
+	billInfo: () => [...storeQK.all(), 'billInfo'],
+	billInfoByUUID: (uuid: string) => [...storeQK.billInfo(), uuid],
+
 };

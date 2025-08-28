@@ -247,18 +247,18 @@ export const useStoreProductImage = <T>() =>
 	});
 
 //* Product Variant
-export const useStoreProductVariant = <T>() =>				
+export const useStoreProductVariant = <T>() =>
 	useTQuery<T>({
 		queryKey: storeQK.productVariant(),
 		url: '/store/product-variant',
-})
+	});
 
 //* Product Variant Entry
 export const useStoreProductVariantEntry = <T>() =>
 	useTQuery<T>({
 		queryKey: storeQK.productVariantEntry(),
-		url: '/store/product-variant-values-entry',				
-})
+		url: '/store/product-variant-values-entry',
+	});
 //? NEW PRODUCT ENTRY ?//
 
 //* Purchase
@@ -336,5 +336,18 @@ export const useStoreOrderTransfersByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.orderTransferByUUID(uuid),
 		url: `/store/product-transfer/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Store Bill Info
+export const useStoreBillInfo = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.billInfo(),
+		url: '/store/bill-info',
+	});
+export const useStoreBillInfoByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.billInfoByUUID(uuid),
+		url: `/store/bill-info-with-order-details?bill_info_uuid=${uuid}`,
 		enabled: !!uuid,
 	});

@@ -1,4 +1,4 @@
-import { Location, StoreProduct } from '@/pages/work/_config/utils/component';
+import { Location, StoreProduct, UserNamePhone } from '@/pages/work/_config/utils/component';
 import { LocationName } from '@/pages/work/_config/utils/function';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
@@ -8,9 +8,13 @@ import ColumnImage from '@/components/core/data-table/_views/column-image';
 import { IFormSelectOption } from '@/components/core/form/types';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
+import ReactSelect from '@/components/ui/react-select';
+import { Switch } from '@/components/ui/switch';
 
+import { order_status } from '../../bill-info/utills';
 import {
 	IAttributesTableData,
+	IBillInfo,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
@@ -19,6 +23,7 @@ import {
 	IGroupTableData,
 	IInternalTransferTableData,
 	IModelTableData,
+	IOrdered,
 	IProductEntryTableData,
 	IProductSpecificationTableData,
 	IProductTableData,
@@ -805,3 +810,165 @@ export const boxColumns = (): ColumnDef<IBoxTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+
+//* Bill
+export const billColumns = (
+	handleStatus: (row: Row<any>, value: number) => void,
+	handlePaid: (row: Row<any>) => void
+): ColumnDef<IBillInfo>[] => [
+	{
+		accessorKey: 'bill_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return (
+				<CustomLink
+					url={`/store/product-order/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: 'bill_status',
+		header: 'Status',
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<ReactSelect
+					value={order_status?.find((item) => item.value === info.getValue())}
+					options={order_status}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
+					isClearable={false}
+					onChange={(value: any) => handleStatus(info.row, value.value as number)}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: 'is_ship_different',
+		header: 'Ship Different',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_paid',
+		header: 'Paid',
+		enableColumnFilter: false,
+		cell: (info) => <Switch checked={info.getValue() as boolean} onCheckedChange={() => handlePaid(info.row)} />,
+	},
+	{
+		accessorFn: (row) => row.name + ' - ' + row.phone,
+		header: 'Customer',
+		size: 200,
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { name, phone } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<UserNamePhone user_name={name} phone={phone} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'email',
+		header: 'Email',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'address',
+		header: 'Address',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'city',
+		header: 'City',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'district',
+		header: 'District',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'note',
+		header: 'Note',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'payment_method',
+		header: 'Payment Method',
+		enableColumnFilter: false,
+	},
+];
+interface IOrderDetailsColumnsProps {
+	dynamicColumns?: string[];
+}
+
+export const OrderDetailsColumns = ({ dynamicColumns = [] }: IOrderDetailsColumnsProps = {}): ColumnDef<IOrdered>[] => {
+	const baseColumns: ColumnDef<IOrdered>[] = [
+		{
+			accessorKey: 'product_title',
+			header: 'Product',
+			enableColumnFilter: false,
+			size: 200,
+		},
+	];
+
+	// Generate dynamic columns for variant attributes
+	const variantColumns: ColumnDef<IOrdered>[] = dynamicColumns.map((columnName) => ({
+		accessorKey: columnName as keyof IOrdered,
+		header: columnName.charAt(0) + columnName.slice(1),
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.getValue();
+
+			return <span>{value as string}</span>;
+		},
+	}));
+
+	const endColumns: ColumnDef<IOrdered>[] = [
+		{
+			accessorKey: 'quantity',
+			header: 'Quantity',
+			enableColumnFilter: false,
+			cell: (info) => {
+				const value = info.getValue() as number;
+				return <span className='font-medium'>{value}</span>;
+			},
+		},
+		{
+			accessorKey: 'selling_price',
+			header: 'Selling Price',
+			enableColumnFilter: false,
+			cell: (info) => {
+				const value = info.getValue() as number;
+				return <span>{value.toLocaleString()}</span>;
+			},
+		},
+		{
+			accessorFn: (row) => row.quantity * row.selling_price,
+			header: 'Total',
+			enableColumnFilter: false,
+			cell: (info) => {
+				const value = info.getValue() as number;
+				return <span>{value.toLocaleString()}</span>;
+			},
+		},
+
+		{
+			accessorKey: 'product_serial',
+			header: 'Serial',
+			enableColumnFilter: false,
+		},
+	];
+
+	return [...baseColumns, ...variantColumns, ...endColumns];
+};
