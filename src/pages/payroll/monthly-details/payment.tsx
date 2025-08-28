@@ -69,7 +69,7 @@ const AddOrUpdate: React.FC<IAddOrProps<any>> = ({ url, open, setOpen, updatedDa
 				render={(props) => <CoreForm.JoinInputUnit unit='BDT' type='number' label='amount' {...props} />}
 			/>
 
-			{form.watch('type') === 'partial' && (
+			{/* {form.watch('type') === 'partial' && (
 				<>
 					<FormField
 						control={form.control}
@@ -86,7 +86,7 @@ const AddOrUpdate: React.FC<IAddOrProps<any>> = ({ url, open, setOpen, updatedDa
 						)}
 					/>
 				</>
-			)}
+			)} */}
 		</AddModal>
 	);
 };

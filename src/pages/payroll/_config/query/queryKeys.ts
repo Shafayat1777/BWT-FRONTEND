@@ -24,4 +24,6 @@ export const payrollQK = {
 		year,
 		month,
 	],
+	loan: (query?: string) => [...payrollQK.all(), 'loan', query],
+	loanByUUID: (uuid: string) => [...payrollQK.loan(), uuid],
 };

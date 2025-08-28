@@ -11,6 +11,7 @@ const FormDynamicFields = (props: DynamicFieldsProps) => {
 			extraHeader={props.extraHeader}
 			handleAdd={props.handleAdd}
 			containerClassName={props.containerClassName}
+			extraButton={props.extraButton}
 		>
 			{props.viewAs === 'spreadsheet' ? (
 				<SpreadsheetDynamicFields {...props} />

@@ -2,14 +2,9 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import { format, getYear } from 'date-fns';
 import { ArrowRightCircle } from 'lucide-react';
 
-
-
 import DateTime from '@/components/ui/date-time';
 
-
-
-import { IMonthlyDetailsTableData, ISalaryIncrementTableData, ISalaryTableData } from './columns.type';
-
+import { ILoanTableData, IMonthlyDetailsTableData, ISalaryIncrementTableData, ISalaryTableData } from './columns.type';
 
 //* Salary Columns
 export const salaryColumns = (): ColumnDef<ISalaryTableData>[] => [
@@ -149,10 +144,14 @@ export const monthlyDetailsColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'net_payable',
+		accessorFn: (row) => Math.ceil(row.net_payable),
 		header: 'Net Payable',
 		enableColumnFilter: false,
-		cell: (info) => (info.getValue() as number).toFixed(2),
+	},
+	{
+		accessorFn: (row) => row.total_loan_amount - row.total_paid_loan_amount,
+		header: 'Loan Amount',
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'payment',
@@ -169,5 +168,30 @@ export const monthlyDetailsColumns = ({
 				<ArrowRightCircle size={24} absoluteStrokeWidth={true} className='text-primary' />
 			</button>
 		),
+	},
+];
+
+//* Loan
+export const loanColumns = (): ColumnDef<ILoanTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'type',
+		header: 'Type',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'amount',
+		header: 'Amount',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'date',
+		header: 'Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 ];

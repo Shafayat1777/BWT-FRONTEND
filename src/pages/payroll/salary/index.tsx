@@ -2,6 +2,9 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { FileSpreadsheet } from 'lucide-react';
+import { CSVLink } from 'react-csv';
+import { useNavigate } from 'react-router-dom';
 
 import MonthPickerPopover from '@/components/others/month-picker-pop-up';
 
@@ -20,6 +23,7 @@ const ManualEntry = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = usePayrollSalary<ISalaryTableData[]>(
 		`date=${format(date, 'yyyy-MM-dd')}`
 	);
+	const navigation = useNavigate();
 
 	const pageInfo = useMemo(() => new PageInfo('Payroll/Salary', url, 'payroll__salary'), [url]);
 
@@ -76,7 +80,20 @@ const ManualEntry = () => {
 					'refresh',
 					'view',
 				]}
-				otherToolBarComponents={<MonthPickerPopover date={date} setDate={setDate} />}
+				otherToolBarComponents={
+					<>
+						<MonthPickerPopover date={date} setDate={setDate} />
+						<button
+							className='flex items-center gap-2 rounded-sm bg-green-600 p-1 px-2'
+							onClick={() => {
+								navigation('/payroll/salary-upload');
+							}}
+						>
+							<FileSpreadsheet className='size-4 text-slate-100' />
+							<span className='text-xs text-slate-100'>Upload</span>.
+						</button>
+					</>
+				}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

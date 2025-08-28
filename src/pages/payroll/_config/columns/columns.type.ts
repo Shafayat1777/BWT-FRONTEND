@@ -49,10 +49,26 @@ export interface IMonthlyDetailsTableData {
 	gross_salary: number;
 	total_days: number;
 	joining_date: string;
+	net_payable: number;
+	total_loan_amount: number;
+	total_paid_loan_amount: number;
 
 	created_by: string;
 	created_by_name: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string | null;
+}
+export interface ILoanTableData {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	amount: number;
+	date: string;
+
+	created_by: string;
+	created_by_name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 }

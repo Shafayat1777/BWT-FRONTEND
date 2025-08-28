@@ -46,3 +46,16 @@ export const usePayrollMonthlyDetailsByUUID = <T>(uuid: string, year: number, mo
 		url: `/hr/employee-salary-details/${uuid}/${year}/${month}`,
 		enabled: !!uuid && !!year && !!month,
 	});
+//* Loan
+export const usePayrollLoan = <T>(query?: string) =>
+	useTQuery<T>({
+		queryKey: payrollQK.loan(query),
+		url: query ? `/hr/loan?${query}` : '/hr/loan',
+	});
+
+export const usePayrollLoanByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: payrollQK.loanByUUID(uuid),
+		url: `/hr/loan-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});

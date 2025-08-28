@@ -41,7 +41,8 @@ export interface DateRangePickerProps {
 	maxDate?: Date;
 }
 
-const formatDate = (date: Date, locale: string = 'en-US'): string => format(date, 'yyyy/MM/dd');
+const formatDate = (date: Date, locale: string = 'en-US'): string =>
+	date?.toLocaleDateString(locale) || format(date, 'yyyy/MM/dd');
 
 const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
 	if (typeof dateInput === 'string') {
