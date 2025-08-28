@@ -382,3 +382,59 @@ export type IWarehouseKey =
 	| 'warehouse_10'
 	| 'warehouse_11'
 	| 'warehouse_12';
+
+//* Shipping Address
+export type IShippingAddress = {
+	uuid: string;
+	bill_info_uuid: string;
+	name: string;
+	company_name: string;
+	phone: string;
+	address: string;
+	city: string;
+	district: string;
+	zip: string;
+	note: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+
+//* Ordered
+export type IOrdered = {
+	uuid: string;
+	order_id: string;
+	product_variants: string;
+	quantity: number;
+	selling_price: number;
+	is_paid: boolean;
+	product_serial: string;
+	[key: string]: string | number | boolean;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+
+//* Bill Info
+export type IBillInfo = {
+	uuid: string;
+	user_uuid: string;
+	name: string;
+	phone: string;
+	email: string;
+	address: string;
+	bill_id: string;
+	city: string;
+	district: string;
+	note: string;
+	is_ship_different: boolean;
+	is_paid: boolean;
+	bill_status: 'pending' | 'completed' | 'canceled';
+
+	payment_method: 'bkash' | 'cod';
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+	ship_address: IShippingAddress | null;
+	order_details: IOrdered[];
+};

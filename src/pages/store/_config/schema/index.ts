@@ -627,3 +627,64 @@ export const TRANSFER_LOG_NULL: Partial<ITransferLog> = {
 };
 
 export type ITransferLog = z.infer<typeof TRANSFER_LOG_SCHEMA>;
+
+export const BILL_INFO_SCHEMA = z.object({
+	user_uuid: STRING_OPTIONAL.nullable(),
+	name: STRING_REQUIRED,
+	phone: PHONE_NUMBER_REQUIRED,
+	email: STRING_REQUIRED,
+	address: STRING_REQUIRED,
+	city: STRING_REQUIRED,
+	district: STRING_REQUIRED,
+	note: STRING_OPTIONAL.nullable(),
+	is_ship_different: BOOLEAN_REQUIRED,
+	is_paid: BOOLEAN_REQUIRED,
+	bill_status: z.enum(['pending', 'completed', 'cancel']),
+	payment_method: z.enum(['cod', 'bkash']),
+	remarks: STRING_NULLABLE.optional(),
+	ship_address: z
+		.object({
+			uuid: STRING_OPTIONAL.nullable(),
+			name: STRING_REQUIRED,
+			company_name: STRING_NULLABLE.optional(),
+			phone: PHONE_NUMBER_REQUIRED,
+			address: STRING_REQUIRED,
+			city: STRING_REQUIRED,
+			district: STRING_REQUIRED,
+			zip: STRING_OPTIONAL.nullable(),
+			note: STRING_OPTIONAL.nullable(),
+		})
+		.optional()
+		.nullable(),
+	order_details: z.array(
+		z
+			.object({
+				uuid: STRING_OPTIONAL,
+				product_variants_name: STRING_OPTIONAL,
+				product_uuid: STRING_REQUIRED,
+				quantity: NUMBER_DOUBLE_REQUIRED,
+				selling_price: NUMBER_DOUBLE_REQUIRED,
+
+				product_serial: STRING_NULLABLE.optional(),
+			})
+			.catchall(z.union([z.string(), z.number()]).nullable().optional())
+	),
+});
+
+export const BILL_INFO_NULL: Partial<IBillInfo> = {
+	user_uuid: '',
+	name: '',
+	phone: '',
+	email: '',
+	address: '',
+	city: '',
+	district: '',
+	note: null,
+	is_ship_different: false,
+	is_paid: false,
+	payment_method: 'cod',
+	ship_address: null,
+	order_details: [],
+};
+
+export type IBillInfo = z.infer<typeof BILL_INFO_SCHEMA>;
