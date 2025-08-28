@@ -1,10 +1,6 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
-
-
-
-
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));

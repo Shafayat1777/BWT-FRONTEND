@@ -9,9 +9,17 @@ import { DynamicFieldsProps } from '../types';
 
 interface IProps extends Pick<DynamicFieldsProps, 'handleAdd' | 'extraHeader' | 'title' | 'containerClassName'> {
 	children: React.ReactNode;
+	extraButton?: React.ReactNode;
 }
 
-const DynamicFieldContainer: React.FC<IProps> = ({ title, extraHeader, handleAdd, children, containerClassName }) => {
+const DynamicFieldContainer: React.FC<IProps> = ({
+	title,
+	extraHeader,
+	handleAdd,
+	children,
+	containerClassName,
+	extraButton,
+}) => {
 	return (
 		<div className='overflow-hidden rounded-t-md shadow-sm'>
 			<div className='flex items-center justify-between bg-primary py-2 pl-4 pr-2'>
@@ -31,6 +39,7 @@ const DynamicFieldContainer: React.FC<IProps> = ({ title, extraHeader, handleAdd
 							New
 						</Button>
 					)}
+					{extraButton}
 				</div>
 			</div>
 

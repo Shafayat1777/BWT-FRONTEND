@@ -111,7 +111,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 				render={(props) => <CoreForm.JoinInputUnit unit='BDT' type='number' label='amount' {...props} />}
 			/>
 
-			{form.watch('type') === 'partial' && (
+			{/* {form.watch('type') === 'partial' && (
 				<>
 					<FormField
 						control={form.control}
@@ -128,7 +128,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 						)}
 					/>
 				</>
-			)}
+			)} */}
 			<FormField
 				control={form.control}
 				name='year_month'
