@@ -379,6 +379,58 @@ export const productVariantDetailsColumns = (
 			),
 	},
 ];
+export const productVariantDetailsColumnsV2 = (
+    handleAttribute?: (index: number) => void,
+    dynamicColumns: string[] = [] // Add dynamic columns parameter
+): ColumnDef<IProductVariantTableData>[] => {
+    
+    // Base static columns
+    const staticColumns: ColumnDef<IProductVariantTableData>[] = [
+        {
+            accessorKey: 'selling_price',
+            header: 'Selling Price',
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'discount',
+            header: 'Discount',
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'warehouse_1',
+            header: 'Warehouse 1',
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'warehouse_2',
+            header: 'Warehouse 2',
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'warehouse_3',
+            header: 'Warehouse 3',
+            enableColumnFilter: false,
+        },
+        {
+            accessorKey: 'selling_warehouse',
+            header: 'Selling Warehouse',
+            enableColumnFilter: false,
+        },
+    ];
+
+    // Generate dynamic columns
+    const dynamicColumnDefs: ColumnDef<IProductVariantTableData>[] = dynamicColumns.map((columnName) => ({
+        accessorKey: columnName as keyof IProductVariantTableData,
+        header: columnName.charAt(0).toUpperCase() + columnName.slice(1).replace(/_/g, ' '), // Format header
+        enableColumnFilter: false,
+        // You can add custom cell rendering if needed
+        // cell: ({ getValue }) => getValue(),
+    }));
+
+    // Combine static and dynamic columns
+    return [...staticColumns, ...dynamicColumnDefs];
+};
+
 
 //* Product Specification Details
 export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecificationTableData>[] => [

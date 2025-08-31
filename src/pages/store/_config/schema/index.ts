@@ -1,3 +1,4 @@
+import { update } from 'lodash';
 import { z } from 'zod';
 
 import {
@@ -360,6 +361,98 @@ export const BOX_NULL: Partial<IBox> = {
 export type IBox = z.infer<typeof BOX_SCHEMA>;
 
 //* Product Entry Schema
+export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
+	uuid: STRING_OPTIONAL,
+	title: STRING_REQUIRED,
+	category_uuid: STRING_REQUIRED,
+	specifications_description: STRING_OPTIONAL,
+	care_maintenance_description: STRING_OPTIONAL,
+	model_uuid: STRING_REQUIRED,
+	warranty_days: NUMBER(),
+	service_warranty_days: NUMBER(),
+	attribute_list: z.array(STRING_REQUIRED).refine((list) => list.length > 0, 'Please select at least one attribute'),
+
+	product_variant: z.array(
+		z
+			.object({
+				index: NUMBER_OPTIONAL,
+				uuid: STRING_OPTIONAL,
+				product_uuid: STRING_OPTIONAL,
+				selling_price: NUMBER_DOUBLE_REQUIRED.min(1, 'Price must be greater than 0'),
+				discount: NUMBER_OPTIONAL,
+				warehouse_1: NUMBER_OPTIONAL,
+				warehouse_2: NUMBER_OPTIONAL,
+				warehouse_3: NUMBER_OPTIONAL,
+				warehouse_4: NUMBER_OPTIONAL,
+				warehouse_5: NUMBER_OPTIONAL,
+				warehouse_6: NUMBER_OPTIONAL,
+				warehouse_7: NUMBER_OPTIONAL,
+				warehouse_8: NUMBER_OPTIONAL,
+				warehouse_9: NUMBER_OPTIONAL,
+				warehouse_10: NUMBER_OPTIONAL,
+				warehouse_11: NUMBER_OPTIONAL,
+				warehouse_12: NUMBER_OPTIONAL,
+				selling_warehouse: NUMBER_REQUIRED,
+				product_variant_values_entry: z
+					.array(
+						z
+							.object({
+								uuid: STRING_OPTIONAL.nullable(),
+								product_variant_uuid: STRING_OPTIONAL.nullable(),
+								attribute_uuid: STRING_OPTIONAL.nullable(),
+								value: STRING_OPTIONAL.nullable(),
+							})
+							.optional()
+					)
+					.optional(),
+				remarks: STRING_NULLABLE.optional(),
+				updated_at: STRING_OPTIONAL.nullable(),
+				updated_by: STRING_OPTIONAL.nullable(),
+			})
+			.catchall(z.string())
+	),
+
+	product_specification: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			product_uuid: STRING_OPTIONAL,
+			label: STRING_REQUIRED,
+			value: STRING_REQUIRED,
+			index: NUMBER_REQUIRED,
+		})
+	),
+
+	product_image: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			// variant_uuid: STRING_OPTIONAL,
+			product_uuid: STRING_OPTIONAL,
+			image: z.instanceof(File).or(STRING_REQUIRED),
+			// z
+			// 	.instanceof(File)
+			// 	.refine((file) => file?.size !== 0, 'Please upload an file')
+			// 	.or(STRING_REQUIRED),
+			is_main: BOOLEAN_DEFAULT_VALUE(false),
+		})
+	),
+});
+
+export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
+	uuid: '',
+	title: '',
+	category_uuid: '',
+	specifications_description: '',
+	care_maintenance_description: '',
+	model_uuid: '',
+	warranty_days: 0,
+	service_warranty_days: 0,
+	attribute_list: [],
+	product_variant: [],
+	product_specification: [],
+	product_image: [],
+};
+
+export type IProductEntryV2 = z.infer<typeof PRODUCT_ENTRY_SCHEMA_V2>;
 export const PRODUCT_ENTRY_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	title: STRING_REQUIRED,
@@ -417,7 +510,6 @@ export const PRODUCT_ENTRY_SCHEMA = z.object({
 		})
 	),
 });
-
 export const PRODUCT_ENTRY_NULL: Partial<IProductEntry> = {
 	uuid: '',
 	title: '',
@@ -462,7 +554,6 @@ export const PURCHASE_SCHEMA = z.object({
 			product_uuid: STRING_REQUIRED,
 			product_name: STRING_OPTIONAL,
 			serial_no: STRING_REQUIRED,
-
 			price_per_unit: NUMBER_DOUBLE_REQUIRED,
 			discount: NUMBER_DOUBLE_REQUIRED.default(0),
 			remarks: STRING_NULLABLE,

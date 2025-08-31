@@ -27,6 +27,9 @@ const Attributes = lazy(() => import('@/pages/store/attributes'));
 const ProductEntry = lazy(() => import('@/pages/store/product-entry'));
 const ProductEntryAddOrUpdate = lazy(() => import('@/pages/store/product-entry/add-or-update'));
 const ProductEntryDetails = lazy(() => import('@/pages/store/product-entry/details'));
+const ProductEntryV2 = lazy(() => import('@/pages/store/product-entry-v2'));
+const ProductEntryAddOrUpdateV2 = lazy(() => import('@/pages/store/product-entry-v2/add-or-update'));
+const ProductEntryDetailsV2 = lazy(() => import('@/pages/store/product-entry-v2/details'));
 const Bill = lazy(() => import('@/pages/store/bill-info'));
 const BillEntry = lazy(() => import('@/pages/store/bill-info/add-or-update'));
 const BillDetails = lazy(() => import('@/pages/store/bill-info/details'));
@@ -64,6 +67,37 @@ const StoreRoutes: IRoute[] = [
 				element: <ProductEntryDetails />,
 				hidden: true,
 				page_name: 'store__product_entry_details',
+				actions: ['read'],
+			},
+			{
+				name: 'Product Entry V2',
+				path: '/store/product-entry/v2',
+				element: <ProductEntryV2 />,
+				page_name: 'store__product_entry_V2',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Entry Add V2',
+				path: '/store/product-entry/add/v2',
+				element: <ProductEntryAddOrUpdateV2 />,
+				hidden: true,
+				page_name: 'store__product_entry_add_v2',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Entry Update V2',
+				path: '/store/product-entry/:uuid/update/v2',
+				element: <ProductEntryAddOrUpdateV2 />,
+				hidden: true,
+				page_name: 'store__product_entry_update_v2',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Entry Details V2',
+				path: '/store/product-entry/:uuid/details/v2',
+				element: <ProductEntryDetailsV2 />,
+				hidden: true,
+				page_name: 'store__product_entry_details_v2',
 				actions: ['read'],
 			},
 			{
