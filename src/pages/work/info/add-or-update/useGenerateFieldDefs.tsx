@@ -9,7 +9,13 @@ import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import { useOtherAccessories, useOtherBrand, useOtherProblem } from '@/lib/common-queries/other';
+import {
+	useOtherAccessories,
+	useOtherBrand,
+	useOtherProblem,
+	useOtherUser,
+	useOtherUserByQuery,
+} from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
 import ActionHeader from './action-header';
@@ -37,7 +43,7 @@ const useGenerateFieldDefs = ({
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
-
+	const { data: userOptions } = useOtherUserByQuery<IFormSelectOption[]>(`?type=employee&department=engineer`);
 	return [
 		{
 			header: 'Actions',
@@ -151,6 +157,14 @@ const useGenerateFieldDefs = ({
 			},
 		},
 		{
+			header: 'Engineer',
+			accessorKey: 'engineer_uuid',
+			type: 'select',
+			options: userOptions || [],
+			placeholder: 'Select Engineer',
+			disabled: !isProductReceived,
+		},
+		{
 			header: 'Brand',
 			accessorKey: 'brand_uuid',
 			type: 'custom',
@@ -192,6 +206,11 @@ const useGenerateFieldDefs = ({
 		{
 			header: 'Quantity',
 			accessorKey: 'quantity',
+			type: 'number',
+		},
+		{
+			header: 'Advance Pay',
+			accessorKey: 'advance_pay',
 			type: 'number',
 		},
 		{

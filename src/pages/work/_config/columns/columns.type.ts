@@ -77,6 +77,9 @@ export type IStockActionTrx = {
 //* Order Columns
 export type IOrderTableData = {
 	is_reclaimed: boolean;
+	advance_pay: number;
+	engineer_uuid: string;
+	engineer_name: string;
 	reclaimed_order_uuid: any;
 	reclaimed_order_id: string;
 	new_order_id: string;
@@ -151,11 +154,13 @@ export type IOrderTableData = {
 	proposed_cost: number;
 	challan_no: string;
 	challan_type: string;
-	
 };
 //* Info Columns
 export type IInfoTableData = {
 	uuid: string;
+	received_by_name: string;
+	received_by_uuid: string;
+	order_type: '';
 	is_new_customer?: boolean;
 	branch_uuid: string;
 	branch_name: string;

@@ -18,6 +18,7 @@ export const orderFields = [
 	'size_uuid',
 	'size_name',
 	'serial_no',
+	'engineer_uuid',
 	'product',
 	'accessoriesString',
 	'problems_uuid',

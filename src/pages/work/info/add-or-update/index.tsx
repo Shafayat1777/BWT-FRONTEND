@@ -1,3 +1,4 @@
+import { receiveMessageOnPort } from 'worker_threads';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,10 +34,8 @@ const AddOrUpdate = () => {
 	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const { invalidateQuery: invalidateWorkInfo } = useWorkInfo<IInfoTableData[]>(`status=pending`);
-	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(
-		uuid as string,
-		isUpdate
-	);
+	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfo>(uuid as string, isUpdate);
+	const { invalidateQuery: invalidateInfoDetails } = useWorkInfoByUUID<IInfo>(uuid as string);
 
 	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 	const isProductReceived = form.watch('is_product_received');
@@ -79,6 +78,12 @@ const AddOrUpdate = () => {
 				...values,
 				...(isNewCustomer && { user_uuid: nanoid() }),
 				...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
+				received_by:
+					data?.is_product_received == values?.is_product_received
+						? data?.received_by
+						: values?.is_product_received
+							? user?.uuid
+							: null,
 				updated_at: getDateTime(),
 			};
 			if ('order_entry' in infoData) {
@@ -137,11 +142,12 @@ const AddOrUpdate = () => {
 			try {
 				await Promise.all([info_promise, ...order_entry_promise])
 					.then(() => form.reset(INFO_NULL))
-					.then(() => {
-						invalidateCustomer();
-						invalidateTestDetails();
-						invalidateTestDetails();
-						invalidateWorkInfo();
+					.then(async () => {
+						await invalidateCustomer();
+						await invalidateTestDetails();
+						await invalidateTestDetails();
+						await invalidateWorkInfo();
+						await invalidateInfoDetails();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -161,6 +167,7 @@ const AddOrUpdate = () => {
 			...values,
 			...(isNewCustomer && { user_uuid: nanoid() }),
 			...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
+			received_by: values?.is_product_received ? user?.uuid : null,
 			uuid: info_uuid,
 			submitted_by: 'employee',
 			created_at,
@@ -298,7 +305,6 @@ const AddOrUpdate = () => {
 			});
 		} else {
 			const removeIdx = fields.findIndex((item) => item.reclaimed_order_uuid === field.uuid);
-			console.log(removeIdx);
 			handleRemove(removeIdx);
 		}
 	};

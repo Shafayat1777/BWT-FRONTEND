@@ -32,6 +32,10 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 				label: 'Branch',
 				value: data?.branch_name,
 			},
+			{
+				label: 'Order Type',
+				value: data?.order_type,
+			},
 			{ label: 'Location', value: data.location + ' (' + data.zone_name + ')' },
 			{ label: 'Reference User', value: data.reference_user_name },
 			{
@@ -49,7 +53,11 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 				value: <StatusButton value={data.is_product_received as boolean} />,
 			},
 			{
-				label: 'Receiving Date',
+				label: 'Received By',
+				value: data?.received_by_name,
+			},
+			{
+				label: 'Receiving At',
 				value: formatDateTable(data.received_date),
 			},
 			{
