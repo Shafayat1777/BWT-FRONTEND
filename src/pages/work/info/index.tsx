@@ -71,7 +71,7 @@ const Info = () => {
 		const baseURl = slice[0];
 		const fullUrl = ``;
 		// let message = `BWT Order: ${baseURl}order/${row?.original?.uuid}.\n For new user, url: ${baseURl}login email: ${val.user_email} pass: ${val.user_phone}.\n For any query: 01956666777`;
-		let message = `Successfully placed your order: ${val?.info_id}. You can view the details here: ${baseURl}work/info/${row?.original?.uuid}.`;
+		let message = `Successfully placed your order: ${val?.info_id}. You can view the details here: ${baseURl}order/${row?.original?.uuid}`;
 
 		const formattedNumber = val.user_phone.replace(/[^\d]/g, '');
 		const url = `https://web.whatsapp.com/send?phone=88${formattedNumber}&text=${message}&app_absent=0`;

@@ -17,7 +17,7 @@ import {
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { IInfo } from '../../_config/schema';
 import { status } from '../utils';
-import { businessTypeOptions, platformTypeOptions } from './utils';
+import { businessTypeOptions, orderType, platformTypeOptions } from './utils';
 
 interface ICustomUserType extends IFormSelectOption {
 	location: string;
@@ -195,6 +195,19 @@ const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfoTableData }
 						/>
 					)}
 				/>
+				{/* <FormField
+					control={form.control}
+					name='order_type'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
+							label='Branch'
+							options={orderType || []}
+							placeholder='Select Order Type'
+							{...props}
+						/>
+					)}
+				/> */}
 				<FormField
 					control={form.control}
 					name='location'

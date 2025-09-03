@@ -78,6 +78,7 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form, isUpdate 
 				);
 			},
 		},
+		
 		// {
 		// 	header: 'Model',
 		// 	accessorKey: 'model_uuid',

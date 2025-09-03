@@ -158,7 +158,7 @@ const workRoutes: IRoute[] = [
 			},
 			{
 				name: 'Ready For Delivery',
-				path: '/work/is_ready_for_delivery',
+				path: '/work/ready-for-delivery',
 				element: <IsReadyForDelivery />,
 				page_name: 'work__is_ready_for_delivery',
 				actions: ['read', 'update'],

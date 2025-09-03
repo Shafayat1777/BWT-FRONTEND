@@ -10,6 +10,7 @@ import { IFormSelectOption } from '@core/form/types';
 import { useOtherBrand, useOtherModelByQuery } from '@/lib/common-queries/other';
 
 import { IInfo } from './_config/schema';
+import ModelFilter from './model-filter';
 
 interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
@@ -59,9 +60,12 @@ const useGenerateFieldDefs = ({ copy, remove, form, isUpdate }: IGenerateFieldDe
 		{
 			header: 'Model',
 			accessorKey: 'model_uuid',
-			type: 'select-create',
-			placeholder: 'Select Model',
-			options: modelOption || [],
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<ModelFilter brand_uuid={form.watch(`order_entry.${index}.brand_uuid`)} form={form} index={index} />
+				);
+			},
 		},
 		{
 			header: 'Problem Statement',

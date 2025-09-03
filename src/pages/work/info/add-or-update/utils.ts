@@ -39,3 +39,17 @@ export const platformTypeOptions = [
 		value: 'none',
 	},
 ];
+export const orderType = [
+	{
+		label: 'Normal',
+		value: 'normal',
+	},
+	{
+		label: 'Priority',
+		value: 'priority',
+	},
+	{
+		label: 'Due',
+		value: 'due',
+	},
+];
