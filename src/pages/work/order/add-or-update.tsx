@@ -15,6 +15,7 @@ import {
 	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
+	useOtherUserByQuery,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
@@ -23,6 +24,7 @@ import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
+import { ICustomUserType } from '../info/add-or-update/header';
 
 const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	url,
@@ -48,6 +50,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		`is_brand=false&brand_uuid=${form.watch('brand_uuid')}`
 	);
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
+	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
 	// Reset form values when data is updated
 	useEffect(() => {
 		if (data && isUpdate) {
@@ -140,7 +143,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				)}
 			</div>
 			<div className='flex space-x-4'>
-				<div className='flex-1'>
+				<div className='flex-1 flex flex-col gap-2'>
 					<div className='flex-1'>
 						<FormField
 							control={form.control}
@@ -169,11 +172,24 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					/>
 				</div>
 
-				<div className='flex-1'>
+				<div className=' flex-1 flex flex-col gap-2'>
 					<FormField
 						control={form.control}
 						name='serial_no'
 						render={(props) => <CoreForm.Input label='Serial Number' {...props} />}
+					/>
+					<FormField
+						control={form.control}
+						name='engineer_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Engineer'
+								menuPortalTarget={document.body}
+								options={userOption!}
+								placeholder='Select Engineer'
+								{...props}
+							/>
+						)}
 					/>
 				</div>
 				<div className='flex-1'>

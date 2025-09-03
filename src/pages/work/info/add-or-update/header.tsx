@@ -19,12 +19,12 @@ import { IInfo } from '../../_config/schema';
 import { status } from '../utils';
 import { businessTypeOptions, orderType, platformTypeOptions } from './utils';
 
-interface ICustomUserType extends IFormSelectOption {
+export interface ICustomUserType extends IFormSelectOption {
 	location: string;
 	zone_uuid: string;
 }
 
-const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfoTableData }) => {
+const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfo }) => {
 	const form = useFormContext<IInfo>();
 
 	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
@@ -195,19 +195,6 @@ const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfoTableData }
 						/>
 					)}
 				/>
-				{/* <FormField
-					control={form.control}
-					name='order_type'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							menuPortalTarget={document.body}
-							label='Branch'
-							options={orderType || []}
-							placeholder='Select Order Type'
-							{...props}
-						/>
-					)}
-				/> */}
 				<FormField
 					control={form.control}
 					name='location'
@@ -230,6 +217,19 @@ const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfoTableData }
 			</div>
 
 			<div className='flex flex-col gap-4'>
+				<FormField
+					control={form.control}
+					name='order_type'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
+							label='Order Type'
+							options={orderType || []}
+							placeholder='Select Order Type'
+							{...props}
+						/>
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name='reference_user_uuid'

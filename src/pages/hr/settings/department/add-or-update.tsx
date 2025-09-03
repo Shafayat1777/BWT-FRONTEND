@@ -2,17 +2,24 @@ import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+
+
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IDepartmentTableData } from '../../_config/columns/columns.type';
+
+
 import { useHrDepartmentsByUUID, useHrDesignations, useHrUsers } from '../_config/query';
 import { DEPARTMENT_NULL, DEPARTMENT_SCHEMA, IDepartment } from '../_config/schema';
 import { IDepartmentAddOrUpdateProps } from '../_config/types';
+import { IDepartmentTableData } from '../../_config/columns/columns.type';
+
 
 const AddOrUpdate: React.FC<IDepartmentAddOrUpdateProps> = ({
 	url,
@@ -56,6 +63,7 @@ const AddOrUpdate: React.FC<IDepartmentAddOrUpdateProps> = ({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
+					department: values.name,
 					updated_at: getDateTime(),
 				},
 				onClose,
@@ -66,6 +74,7 @@ const AddOrUpdate: React.FC<IDepartmentAddOrUpdateProps> = ({
 				url,
 				newData: {
 					...values,
+					department: values.name,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),

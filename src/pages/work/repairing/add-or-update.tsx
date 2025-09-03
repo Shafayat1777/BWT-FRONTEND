@@ -1,46 +1,36 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-
-
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-
-
-
-
-
 import '@/lib/common-queries/other';
 
-
-
-import { useStoreProducts } from '@/pages/store/_config/query';
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
-
 import { IFormSelectOption } from '@/components/core/form/types';
 
-
-
-import { useOtherProblem, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
+import {
+	useOtherProblem,
+	useOtherPurchaseEntry,
+	useOtherUserByQuery,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
 
-
-
-import ChatInterface from '../../../components/others/message';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkChat, useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
 import { IRepair, MESSAGE_NULL, MESSAGE_SCHEMA, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
+import ChatInterface from '../../../components/others/message';
+import { ICustomUserType } from '../info/add-or-update/header';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
 import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
-
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -49,16 +39,14 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 	const navigate = useNavigate();
-	//* Data and Invalidation Queries
+	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
 	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
 		ICustomProductsSelectOption[]
 	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
 
-	const { data, postData, updateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
-		uuid as string
-	);
+	const { data, postData, updateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
 	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
 		uuid as string
 	);
@@ -278,7 +266,7 @@ const AddOrUpdate = () => {
 					>
 						<CoreForm.Section
 							title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-							className='flex'
+							className='grid grid-cols-2 gap-4'
 							extraHeader={
 								<div className='flex gap-2 text-warning-foreground'>
 									<FormField
@@ -308,6 +296,19 @@ const AddOrUpdate = () => {
 						>
 							<FormField
 								control={form.control}
+								name='engineer_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										label='Engineer'
+										menuPortalTarget={document.body}
+										options={userOption!}
+										placeholder='Select Engineer'
+										{...props}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
 								name='repairing_problems_uuid'
 								render={(props) => (
 									<CoreForm.ReactSelect
@@ -320,6 +321,7 @@ const AddOrUpdate = () => {
 									/>
 								)}
 							/>
+
 							<FormField
 								control={form.control}
 								name='repairing_problem_statement'

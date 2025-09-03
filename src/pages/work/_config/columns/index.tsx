@@ -1,6 +1,8 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { over } from 'lodash';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
@@ -8,28 +10,12 @@ import { WhatsApp } from '@/components/others/what-app-button';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import {
-	Address,
-	Location,
-	OderID,
-	OrderImages,
-	Problem,
-	Product,
-	TableForColumn,
-	UserNamePhone,
-} from '../utils/component';
+
+
+import { Address, Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, OrderID, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -98,6 +84,11 @@ export const infoColumns = (
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'order_type',
+		header: 'Order Type',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'is_product_received',
 		size: 32,
 		header: 'Product \nReceived',
@@ -107,6 +98,7 @@ export const infoColumns = (
 				<div>
 					<StatusButton value={info.getValue() as boolean} />
 					<DateTime date={info.row.original.received_date} isTime={false} />
+					<span className='text-xs font-semibold'>{info.row.original.received_by_name}</span>
 				</div>
 			);
 		},
@@ -328,11 +320,17 @@ export const orderColumnsForDetails = ({
 		},
 	},
 	{
+		accessorKey: 'engineer_name',
+		header: 'Engineer',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'quantity',
 		header: 'QTY',
 		size: 40,
 		enableColumnFilter: false,
 	},
+
 	{
 		accessorFn: (row) => {
 			return row.order_problems_name
@@ -1056,6 +1054,18 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'bill_amount',
 		header: 'Bill Amount',
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'advance_pay',
+		header: 'Advance Pay',
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) =>row.bill_amount - row.advance_pay,
+		header: 'Remaining',
 		size: 40,
 		enableColumnFilter: false,
 	},

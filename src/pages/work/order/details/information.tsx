@@ -1,23 +1,16 @@
 import React from 'react';
 import useAccess from '@/hooks/useAccess';
 
-
-
 import StatusButton from '@/components/buttons/status';
 import SwitchStatus from '@/components/buttons/switch-or-satus';
 import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
-
-
 import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
-
-
 import { IOrderTableData } from '../../_config/columns/columns.type';
-
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const pageAccess = useAccess('work__order_details') as string[];
@@ -54,6 +47,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 			{ label: 'User Name', value: data.user_name },
 			{ label: 'User ID', value: data.user_id },
+			{ label: 'Engineer', value: data.engineer_name },
 			{
 				label: 'Phone No',
 				value: data?.user_phone,
