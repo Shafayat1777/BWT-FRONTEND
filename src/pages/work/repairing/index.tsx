@@ -4,17 +4,12 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
-
-
 import { getDateTime, PageInfo } from '@/utils';
 import Formdata from '@/utils/formdata';
-
-
 
 import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkRepairing } from '../_config/query';
-
 
 const Order = () => {
 	const { data, isLoading, url, updateData, refetch } = useWorkRepairing<IOrderTableData[]>();

@@ -103,7 +103,7 @@ const AddOrUpdate = () => {
 					const formData = Formdata({ ...newData, proposed_cost: 0 });
 					orderFields.forEach((field) => {
 						if (newData[field as keyof typeof values] == null) {
-							formData.insert(field, '');
+							formData?.set(field, '');
 						}
 					});
 
