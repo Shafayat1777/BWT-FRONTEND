@@ -156,7 +156,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 									return {
 										stack: [
 											{
-												text: [{ text: item.order_problems_name || '' }],
+												text: [{ text: item.order_problems_name.join(', ') || '' }],
 												fontSize: DEFAULT_FONT_SIZE - 2,
 												margin: [0, 0, 0, 2],
 											},
