@@ -22,7 +22,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					<Problem
 						problems_name={
 							data?.order_problems_name
-								?.map((item) => item)
+								?.map((item:string) => item)
 								.join(', ')
 								.replace(/_/g, ' ') as string
 						}
