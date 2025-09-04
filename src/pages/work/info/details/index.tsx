@@ -4,7 +4,6 @@ import useAuth from '@/hooks/useAuth';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfoByUUID } from '../../_config/query';
-import ChallanPdf from '../../../../components/pdf/order-sticker';
 import ChallanPdfV2 from '../../../../components/pdf/product-received-v2';
 import Information from './information';
 import OrderTable from './order-table';
@@ -20,14 +19,11 @@ const DetailsPage = () => {
 	useEffect(() => {
 		document.title = 'Order Info Details';
 	}, []);
-	const [data2, setData] = useState('');
+
 	const [data3, setData3] = useState('');
 	useEffect(() => {
 		const generatePdf = async () => {
 			if (data && user) {
-				(await ChallanPdf(data, user, baseURl))?.getDataUrl((dataUrl) => {
-					setData(dataUrl);
-				});
 				(await ChallanPdfV2(data, user, baseURl))?.getDataUrl((dataUrl) => {
 					setData3(dataUrl);
 				});
@@ -35,20 +31,24 @@ const DetailsPage = () => {
 		};
 		generatePdf();
 	}, [data, user, baseURl]);
+	data?.order_entry.forEach((item) => {
+		item.problems_name = item.order_problems_name.map((item: { text: string }) => item.text)?.join(', ');
+	});
+
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
 		<div className='space-y-8'>
-			<div className='grid grid-cols-2 gap-4'>
-				<div className=''>
-					<iframe src={data3} className='h-[40rem] w-full rounded-md border-none' />
-				</div>
-				<div className=''>
-					<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
-				</div>
+			<div className='grid grid-cols-5 gap-4'>
 				<div className='col-span-2'>
 					<Information data={(data || []) as IInfoTableData} />
 				</div>
+				<div className='col-span-3'>
+					<iframe src={data3} className='h-[40rem] w-full rounded-md border-none' />
+				</div>
+				{/* <div className=''>
+					<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
+				</div> */}
 			</div>
 			<OrderTable data={(data || []) as IInfoTableData} />
 		</div>

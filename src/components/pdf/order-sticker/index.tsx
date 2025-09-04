@@ -78,7 +78,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 						text: [
 							{ text: 'Problems: ', bold: true },
 							{
-								text: `${item.order_problems_name?.join(', ')} ${
+								text: `${item?.problems_name} ${
 									item.problem_statement ? `(${item.problem_statement})` : ''
 								}`,
 							},
@@ -132,6 +132,6 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 		content: entryBlocks,
 	};
 
-	const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+	const pdfDocGenerator = pdfMake.createPdf(docDefinition).print();
 	return pdfDocGenerator;
 }
