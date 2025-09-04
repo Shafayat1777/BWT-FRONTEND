@@ -143,8 +143,8 @@ export const getPageHeader = (data: IInfoTableData, user: any, GenerateQRCode: s
 												},
 												{
 													text:
-														data?.received_date &&
-														formatDate(data?.received_date, 'dd-MMM-yyyy'),
+														data?.received_date?
+														formatDate(data?.received_date, 'dd-MMM-yyyy'):'',
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],

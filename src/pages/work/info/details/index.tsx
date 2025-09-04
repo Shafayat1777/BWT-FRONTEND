@@ -4,7 +4,7 @@ import useAuth from '@/hooks/useAuth';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfoByUUID } from '../../_config/query';
-import ChallanPdf from '../../../../components/pdf/product-received';
+import ChallanPdf from '../../../../components/pdf/order-sticker';
 import ChallanPdfV2 from '../../../../components/pdf/product-received-v2';
 import Information from './information';
 import OrderTable from './order-table';
@@ -40,11 +40,11 @@ const DetailsPage = () => {
 	return (
 		<div className='space-y-8'>
 			<div className='grid grid-cols-2 gap-4'>
-				{/* <div className=''>
-					<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
-				</div> */}
 				<div className=''>
 					<iframe src={data3} className='h-[40rem] w-full rounded-md border-none' />
+				</div>
+				<div className=''>
+					<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
 				</div>
 				<div className='col-span-2'>
 					<Information data={(data || []) as IInfoTableData} />
