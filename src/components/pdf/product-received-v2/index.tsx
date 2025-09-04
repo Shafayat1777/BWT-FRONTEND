@@ -123,8 +123,9 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
 											{
-												text: format(data?.received_date, 'dd MMM, yyyy'),
-												fontSize: DEFAULT_FONT_SIZE - 2,
+												text: data?.received_date
+													? format(data?.received_date, 'dd-MMM-yyyy')
+													: '',
 											},
 										],
 									],
@@ -199,7 +200,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 					'STEL management reserves the right to modify or discontinue any Service (or any part or content thereof) at any time without prior notice.',
 				],
 				fontSize: DEFAULT_FONT_SIZE - 2,
-				alignment:'justify',
+				alignment: 'justify',
 			},
 			{
 				table: {

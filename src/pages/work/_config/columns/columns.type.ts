@@ -76,6 +76,7 @@ export type IStockActionTrx = {
 };
 //* Order Columns
 export type IOrderTableData = {
+	index?: number;
 	is_reclaimed: boolean;
 	advance_pay: number;
 	engineer_uuid: string;
@@ -157,9 +158,11 @@ export type IOrderTableData = {
 };
 //* Info Columns
 export type IInfoTableData = {
+	
 	uuid: string;
 	received_by_name: string;
 	received_by_uuid: string;
+
 	order_type: '';
 	is_new_customer?: boolean;
 	branch_uuid: string;

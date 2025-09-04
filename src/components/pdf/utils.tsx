@@ -1,9 +1,6 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
-
-
 import { DEFAULT_FONT_SIZE, defaultStyle, PRIMARY_COLOR, styles } from './ui';
-
 
 interface PageProps {
 	xMargin: number;
@@ -84,20 +81,20 @@ export const CUSTOM_PAGE = ({
 };
 
 export const CUSTOM_PAGE_STICKER = ({
-	pageOrientation = 'landscape',
+	pageOrientation = 'portrait',
 	xMargin,
 	headerHeight,
 	footerHeight,
 }: CustomPageStickerProps) => {
-	const width = 283;
-	const height = 425;
+	const width = 212.625;
+	const height = 283.5;
 
 	return {
 		pageSize: { width, height },
 		pageOrientation,
-		pageMargins: [xMargin, headerHeight, xMargin, footerHeight],
-		defaultStyle,
-		styles,
+		defaultStyle: {
+			fontSize: 10,
+		},
 	};
 };
 
@@ -136,7 +133,6 @@ export const CUSTOM_PAGE_CONE_STICKER = ({
 		styles,
 	};
 };
-
 
 // Table Helpers
 //
