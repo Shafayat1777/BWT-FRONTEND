@@ -20,8 +20,8 @@ export const getPageHeader = (data: IInfoTableData, user: any, GenerateQRCode: s
 						[
 							{
 								image: BWT_LOGO,
-								width: 60,
-								height: 50,
+								width: 75,
+								height: 60,
 								alignment: 'center',
 								border: [false, false, false, true],
 							},
@@ -53,8 +53,8 @@ export const getPageHeader = (data: IInfoTableData, user: any, GenerateQRCode: s
 							},
 							{
 								svg: GenerateQRCode,
-								width: 40,
-								height: 50,
+								width: 80,
+								height: 60,
 								alignment: 'center',
 								border: [false, false, false, true],
 							},

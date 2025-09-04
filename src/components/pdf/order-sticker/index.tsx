@@ -15,7 +15,8 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 
 	const entries = data.order_entry ?? [];
 	entries.forEach((item, index) => {
-		item.product = `${item.brand_name}, ${item.model_name}${item.serial_no ? ` - SN:${item.serial_no}` : ''}`;
+		// item.product = `${item.brand_name}: ${item.model_name}${item.serial_no ? ` (SN: ${item.serial_no})` : ''}`;
+		item.product = `${item.brand_name.toUpperCase()}: ${item.model_name.toUpperCase()}`;
 		item.accessoriesString = item.accessories_name?.join(', ');
 		item.unit = 'Pcs';
 		item.index = index + 1;
@@ -57,20 +58,22 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 						margin: [0, 0, 0, 4] as [number, number, number, number],
 					},
 					{
+						text: { text: item.product, bold: true },
+						alignment: 'center' as const,
+						fontSize: FONT_SIZE + 6,
+						margin: [0, 0, 0, 4] as [number, number, number, number],
+					},
+					{
 						text: [{ text: 'Name: ', bold: true }, { text: data.user_name }],
-						fontSize: FONT_SIZE - 4,
+						fontSize: FONT_SIZE - 2,
 						margin: [0, 0, 0, 4] as [number, number, number, number],
 					},
 					{
 						text: [{ text: 'Phone: ', bold: true }, { text: data.user_phone }],
-						fontSize: FONT_SIZE - 4,
+						fontSize: FONT_SIZE - 2,
 						margin: [0, 0, 0, 4] as [number, number, number, number],
 					},
-					{
-						text: [{ text: 'Product: ', bold: true }, { text: item.product }],
-						fontSize: FONT_SIZE - 4,
-						margin: [0, 0, 0, 4] as [number, number, number, number],
-					},
+
 					{
 						text: [
 							{ text: 'Problems: ', bold: true },
@@ -80,17 +83,17 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 								}`,
 							},
 						],
-						fontSize: FONT_SIZE - 4,
+						fontSize: FONT_SIZE - 2,
 						margin: [0, 0, 0, 4] as [number, number, number, number],
 					},
 					{
-						text: [{ text: 'Assign Engineer: ', bold: true }, { text: item.engineer_name ?? '' }],
-						fontSize: FONT_SIZE - 4,
+						text: [{ text: 'Assign Engr.: ', bold: true }, { text: item.engineer_name ?? '' }],
+						fontSize: FONT_SIZE - 2,
 						margin: [0, 0, 0, 4] as [number, number, number, number],
 					},
 					{
 						text: [{ text: 'Remarks: ', bold: true }, { text: item.remarks ?? '' }],
-						fontSize: FONT_SIZE - 4,
+						fontSize: FONT_SIZE - 2,
 						margin: [0, 0, 0, 0] as [number, number, number, number],
 					},
 				],

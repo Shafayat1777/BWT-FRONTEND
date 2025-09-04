@@ -12,14 +12,14 @@ import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default async function Index(data: IInfoTableData, user: any, baseUrl: string) {
-	const headerHeight = 60;
+	const headerHeight = 75;
 	const footerHeight = 20;
 
 	const GenerateQRCode = await QRCode.toString(`${baseUrl}order/${data?.uuid}`);
 
 	// Process data
 	data?.order_entry?.forEach((item) => {
-		item.product = `${item.brand_name},${item.model_name} ${item.serial_no == null ? '' : '-SN:' + item.serial_no}`;
+		item.product = `${item.brand_name.toUpperCase()}: ${item.model_name.toUpperCase()} ${item.serial_no == null ? '' : '(SN: ' + item.serial_no})`;
 		item.accessoriesString = item.accessories_name?.join(', ');
 		item.unit = 'Pcs';
 	});
@@ -124,8 +124,9 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 											},
 											{
 												text: data?.received_date
-													? format(data?.received_date, 'dd-MMM-yyyy')
+													? format(data?.received_date, 'dd MMM, yyyy')
 													: '',
+												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
 										],
 									],
