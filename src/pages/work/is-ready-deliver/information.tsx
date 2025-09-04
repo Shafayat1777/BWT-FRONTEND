@@ -1,15 +1,6 @@
 import React from 'react';
-import useAccess from '@/hooks/useAccess';
-
-import StatusButton from '@/components/buttons/status';
-import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
-import { Switch } from '@/components/ui/switch';
-
-import { getDateTime } from '@/utils';
-import { formatDateTable } from '@/utils/formatDate';
-
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { Problem } from '../_config/utils/component';
 
@@ -22,7 +13,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					<Problem
 						problems_name={
 							data?.order_problems_name
-								?.map((item:string) => item)
+								?.map((item: string) => item)
 								.join(', ')
 								.replace(/_/g, ' ') as string
 						}
@@ -36,7 +27,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					<Problem
 						problems_name={
 							data?.diagnosis_problems_name
-								?.map((item) => item)
+								?.map((item: string) => item)
 								.join(', ')
 								.replace(/_/g, ' ') as string
 						}

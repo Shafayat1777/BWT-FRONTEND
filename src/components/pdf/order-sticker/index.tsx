@@ -78,9 +78,19 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 						text: [
 							{ text: 'Problems: ', bold: true },
 							{
-								text: `${item?.problems_name} ${
+								text: `${item?.order_problems_name.join(', ')} ${
 									item.problem_statement ? `(${item.problem_statement})` : ''
 								}`,
+							},
+						],
+						fontSize: FONT_SIZE - 2,
+						margin: [0, 0, 0, 4] as [number, number, number, number],
+					},
+					{
+						text: [
+							{ text: 'Acc: ', bold: true },
+							{
+								text: `${item?.accessoriesString}`,
 							},
 						],
 						fontSize: FONT_SIZE - 2,
