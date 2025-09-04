@@ -1,4 +1,4 @@
-// utils.tsx
+
 import { BWT_LOGO } from '@/assets/images/base64';
 import { IInfoTableData } from '@/pages/work/_config/columns/columns.type';
 import { format, formatDate } from 'date-fns';

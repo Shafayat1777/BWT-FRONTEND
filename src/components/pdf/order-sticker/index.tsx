@@ -5,7 +5,7 @@ import { DEFAULT_FONT_SIZE } from '@/components/pdf/ui';
 import { CUSTOM_PAGE_STICKER } from '@/components/pdf/utils';
 
 import pdfMake from '..';
-import { generateBarcodeAsBase64 } from './Barcode';
+import { generateBarcodeAsBase64 } from './pdf-generate-barcode';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default async function Index(data: IInfoTableData, user: any, baseUrl: string) {
