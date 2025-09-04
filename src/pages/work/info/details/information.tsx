@@ -1,4 +1,6 @@
 import React from 'react';
+import { Printer } from 'lucide-react';
+import useAuth from '@/hooks/useAuth';
 
 import StatusButton from '@/components/buttons/status';
 import { CustomLink } from '@/components/others/link';
@@ -8,11 +10,20 @@ import TableList, { ITableListItems } from '@/components/others/table-list';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
+import ChallanPdf from '../../../../components/pdf/order-sticker';
+import OrderSticker from '../../../../components/pdf/order-sticker';
+import { Button, ButtonProps } from '../../../../components/ui/button';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	const fullURL = window.location.href;
 	const slice = fullURL.split('w');
 	const baseURl = slice[0];
+	const { user } = useAuth();
+	const handlePrint = async () => {
+		if (data) {
+			await ChallanPdf(data, user, baseURl);
+		}
+	};
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -77,6 +88,20 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 						name='Open'
 						openInNewTab={true}
 					/>
+				),
+			},
+			{
+				label: 'Sticker',
+
+				value: (
+					<Button
+						className='size-8 rounded-full'
+						size={'icon'}
+						variant={'accent'}
+						onClick={() => handlePrint()}
+					>
+						<Printer className='text-white' size={16} />
+					</Button>
 				),
 			},
 		];

@@ -17,13 +17,12 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 
 	const GenerateQRCode = await QRCode.toString(`${baseUrl}order/${data?.uuid}`);
 
-	// Process data
 	data?.order_entry?.forEach((item) => {
-		item.product = `${item.brand_name.toUpperCase()}: ${item.model_name.toUpperCase()} ${item.serial_no == null ? '' : '(SN: ' + item.serial_no})`;
+		// item.product = `${item.brand_name.toUpperCase()}: ${item.model_name.toUpperCase()} ${item.serial_no == null ? '' : '(SN: ' + item.serial_no})`;
+		item.product = `${item.brand_name.toUpperCase()}: ${item.model_name.toUpperCase()} `;
 		item.accessoriesString = item.accessories_name?.join(', ');
 		item.unit = 'Pcs';
 	});
-	const problem_statement = data?.order_entry.map((item) => item.problem_statement);
 	const node = [
 		getTable('index', '#', 'center'),
 		getTable('order_id', 'O/N'),
@@ -163,6 +162,21 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 											},
 											{
 												text: [{ text: item.problem_statement || '', italics: true }],
+												fontSize: DEFAULT_FONT_SIZE - 3,
+											},
+										],
+										alignment: nodeItem.alignment,
+									};
+								} else if (nodeItem.field === 'product') {
+									return {
+										stack: [
+											{
+												text: [{ text: item.product || '' }],
+												fontSize: DEFAULT_FONT_SIZE - 2,
+												margin: [0, 0, 0, 2],
+											},
+											{
+												text: [{ text: 'SN: ' + item.serial_no || '', italics: true }],
 												fontSize: DEFAULT_FONT_SIZE - 3,
 											},
 										],

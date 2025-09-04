@@ -77,6 +77,7 @@ export type IStockActionTrx = {
 //* Order Columns
 export type IOrderTableData = {
 	index?: number;
+	problems_name?: string;
 	is_reclaimed: boolean;
 	advance_pay: number;
 	engineer_uuid: string;
@@ -109,7 +110,7 @@ export type IOrderTableData = {
 	product: string;
 	accessoriesString: string;
 	problems_uuid: string[];
-	order_problems_name: string[];
+	order_problems_name: string[] | any;
 	diagnosis_problems_name: string[];
 	repairing_problems_name: string[];
 	qc_problems_name: string[];
@@ -158,7 +159,6 @@ export type IOrderTableData = {
 };
 //* Info Columns
 export type IInfoTableData = {
-	
 	uuid: string;
 	received_by_name: string;
 	received_by_uuid: string;
