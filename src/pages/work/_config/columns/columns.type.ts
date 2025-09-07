@@ -157,11 +157,19 @@ export type IOrderTableData = {
 	challan_no: string;
 	challan_type: string;
 };
+export type IOrderProducts = {
+	model_uuid: string;
+	model_name: string;
+	brand_uuid: string;
+	brand_name: string;
+	serial_no: string;
+};
 //* Info Columns
 export type IInfoTableData = {
 	uuid: string;
 	received_by_name: string;
 	received_by_uuid: string;
+	products: IOrderProducts[];
 
 	order_type: '';
 	is_new_customer?: boolean;

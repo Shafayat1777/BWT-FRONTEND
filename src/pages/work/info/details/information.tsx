@@ -10,8 +10,7 @@ import TableList, { ITableListItems } from '@/components/others/table-list';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
-import ChallanPdf from '../../../../components/pdf/order-sticker';
-import OrderSticker from '../../../../components/pdf/order-sticker';
+import { default as ChallanPdf, default as OrderSticker } from '../../../../components/pdf/order-sticker';
 import { Button, ButtonProps } from '../../../../components/ui/button';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
@@ -34,6 +33,10 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 			{
 				label: 'Phone',
 				value: data?.user_phone,
+			},
+			{
+				label: 'Product',
+				value: data.products?.map((item: any) => item.brand_name + ': ' + item.model_name).join(', '),
 			},
 			{
 				label: 'Submitted By',

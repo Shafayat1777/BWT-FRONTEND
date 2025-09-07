@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { processColumns } from '../../../_config/columns';
-import { IOrderTableData, IProcessTableData } from '../../../_config/columns/columns.type';
-import { useWorkProcesses } from '../../../_config/query';
+import { processColumns } from '../../_config/columns';
+import { IOrderTableData, IProcessTableData } from '../../_config/columns/columns.type';
+import { useWorkProcesses } from '../../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -19,12 +19,13 @@ const EntryTable: React.FC<{ data?: IOrderTableData; isLoading?: any }> = ({ dat
 
 	const pageInfo = useMemo(() => new PageInfo('Process', url, 'work__process'), [url]);
 
-
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
 	const handleCreate = () => {
-		navigate(`/work/transfer-section/${data?.info_uuid}/${data?.diagnosis?.diagnosis_id}/${data?.uuid}/order-details`);
+		navigate(
+			`/work/transfer-section/${data?.info_uuid}/${data?.diagnosis?.diagnosis_id}/${data?.uuid}/scanner`
+		);
 	};
 
 	const [updatedData, setUpdatedData] = useState<IProcessTableData | null>(null);

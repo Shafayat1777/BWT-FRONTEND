@@ -51,7 +51,7 @@ const Order = () => {
 		});
 	};
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
-		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
+		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}/repair`);
 	};
 	const columns = RepairingColumns({
 		handelDeliveryStatusChange,

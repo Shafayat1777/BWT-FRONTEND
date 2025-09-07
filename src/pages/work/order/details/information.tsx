@@ -47,11 +47,14 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 			{ label: 'User Name', value: data.user_name },
 			{ label: 'User ID', value: data.user_id },
-			{ label: 'Engineer', value: data.engineer_name },
 			{
 				label: 'Phone No',
 				value: data?.user_phone,
 			},
+			{ label: 'Engineer', value: data.engineer_name },
+			{ label: 'Bill Amount', value: data.bill_amount },
+			{ label: 'Advance Pay', value: data.advance_pay },
+			
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),

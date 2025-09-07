@@ -31,6 +31,7 @@ const DetailsPage = () => {
 		};
 		generatePdf();
 	}, [data, user, baseURl]);
+	
 	data?.order_entry.forEach((item) => {
 		item.problems_name = item.order_problems_name.map((item: { text: string }) => item.text)?.join(', ');
 	});

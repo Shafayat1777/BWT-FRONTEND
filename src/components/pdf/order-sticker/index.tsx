@@ -35,7 +35,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 
 	const entryBlocks = await Promise.all(
 		expandedEntries.map((item, idx) => {
-			const barcodeImg = generateBarcodeAsBase64(item.brand_name, data.uuid);
+			const barcodeImg = generateBarcodeAsBase64(item.order_id, item.uuid);
 
 			const stackContent: ContentStack = {
 				stack: [
@@ -43,7 +43,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 						image: barcodeImg,
 						width: 200,
 						alignment: 'center' as const,
-						margin: [0, 0, 0, 4] as [number, number, number, number],
+						margin: [0, 0, 0, 2] as [number, number, number, number],
 					},
 					{
 						columns: [
@@ -55,23 +55,23 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 								width: '*',
 							},
 						],
-						margin: [0, 0, 0, 4] as [number, number, number, number],
+						margin: [0, 0, 0, 2] as [number, number, number, number],
 					},
 					{
 						text: { text: item.product, bold: true },
 						alignment: 'center' as const,
 						fontSize: FONT_SIZE + 6,
-						margin: [0, 0, 0, 4] as [number, number, number, number],
+						margin: [0, 0, 0, 2] as [number, number, number, number],
 					},
 					{
 						text: [{ text: 'Name: ', bold: true }, { text: data.user_name }],
 						fontSize: FONT_SIZE - 2,
-						margin: [0, 0, 0, 4] as [number, number, number, number],
+						margin: [0, 0, 0, 2] as [number, number, number, number],
 					},
 					{
 						text: [{ text: 'Phone: ', bold: true }, { text: data.user_phone }],
 						fontSize: FONT_SIZE - 2,
-						margin: [0, 0, 0, 4] as [number, number, number, number],
+						margin: [0, 0, 0, 2] as [number, number, number, number],
 					},
 
 					{

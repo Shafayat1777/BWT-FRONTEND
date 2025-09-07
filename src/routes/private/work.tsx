@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Column } from '@/pages/test';
+import { Column } from '@/pages/work/section-trasfer';
 import Accessories from '@/pages/work/accessories';
 import Zone from '@/pages/work/delivery-zone';
 import Diagnosis from '@/pages/work/diagonsis';
@@ -8,6 +8,7 @@ import InfoEntry from '@/pages/work/info/add-or-update';
 import InfoDetails from '@/pages/work/info/details';
 import IsReadyForDelivery from '@/pages/work/is-ready-deliver';
 import Order from '@/pages/work/order';
+import OrderScanner from '@/pages/work/order-scanner';
 import OrderDetails from '@/pages/work/order/details/';
 import Process from '@/pages/work/order/details/process';
 import Problem from '@/pages/work/problem';
@@ -16,8 +17,6 @@ import Repairing from '@/pages/work/repairing';
 import RepairingEntry from '@/pages/work/repairing/add-or-update';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
-
-import Chat from '@/components/others/message';
 
 const User = lazy(() => import('@/pages/hr/user'));
 
@@ -47,13 +46,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/info',
 				element: <Info />,
 				page_name: 'work__info',
-				actions: [
-					'create',
-					'read',
-					'update',
-					'delete',
-					'click_contact_with_customer_override',
-				],
+				actions: ['create', 'read', 'update', 'delete', 'click_contact_with_customer_override'],
 			},
 
 			{
@@ -165,11 +158,27 @@ const workRoutes: IRoute[] = [
 			},
 			{
 				name: 'Transfer Process Section',
-				path: '/work/transfer-section/:info_uuid/:diagnosis_uuid/:order_uuid',
+				path: '/work/transfer-section/:info_uuid/:diagnosis_uuid/:order_uuid/:page',
 				element: <Column />,
 				hidden: true,
 				page_name: 'work_transfer',
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Order Scanner',
+				path: '/work/scanner',
+				element: <OrderScanner />,
+				page_name: 'work__order_scanner',
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_transfer_qc',
+					'click_transfer_delivery',
+					'click_proceed_to_repair',
+					'click_diagnosis_need',
+				],
 			},
 			// {
 			// 	name: 'Test',

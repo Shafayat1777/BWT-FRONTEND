@@ -45,6 +45,7 @@
 		"@types/pdfmake": "^0.2.11",
 		"@types/qrcode": "^1.5.5",
 		"@uidotdev/usehooks": "^2.4.1",
+		"@use-symbology-scanner/react": "^1.1.0",
 		"axios": "^1.7.7",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
