@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import useAccess from '@/hooks/useAccess';
 
 import StatusButton from '@/components/buttons/status';
@@ -18,6 +18,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
 	const haveProceedToRepairAccess = pageAccess?.includes('click_proceed_to_repair');
 	const haveDiagnosedNeedAccess = pageAccess?.includes('click_diagnosis_need');
+
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -54,7 +55,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{ label: 'Engineer', value: data.engineer_name },
 			{ label: 'Bill Amount', value: data.bill_amount },
 			{ label: 'Advance Pay', value: data.advance_pay },
-			
+
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),
@@ -66,6 +67,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{ label: 'Remarks', value: data.remarks },
 		];
 	};
+
 	const renderProductItems = (): ITableListItems => {
 		return [
 			{ label: 'Brand', value: data.brand_name },
@@ -89,6 +91,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const renderProblemItems = (): ITableListItems => {
 		return [
 			{
@@ -149,7 +152,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_diagnosis_need}
-						onCheckedChange={() => handelDiagnosisStatusChange()}
+						onCheckedChange={() => {
+							handelDiagnosisStatusChange();
+						}}
 						disabled={!haveDiagnosedNeedAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -159,7 +164,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_proceed_to_repair}
-						onCheckedChange={() => handelProceedToRepair()}
+						onCheckedChange={() => {
+							handelProceedToRepair();
+						}}
 						disabled={!haveProceedToRepairAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -170,7 +177,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_transferred_for_qc}
-						onCheckedChange={() => handelQCStatusChange()}
+						onCheckedChange={() => {
+							handelQCStatusChange();
+						}}
 						disabled={!haveQCAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -181,7 +190,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					<div>
 						<SwitchStatus
 							checked={data?.is_ready_for_delivery}
-							onCheckedChange={() => handelDeliveryStatusChange()}
+							onCheckedChange={() => {
+								handelDeliveryStatusChange();
+							}}
 							disabled={!haveDeliveryAccess || data?.is_delivery_complete}
 						/>
 						<span className='text-xs font-bold'>
@@ -217,6 +228,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const renderDiagnosisItemsLeft = (): ITableListItems => {
 		return [
 			{
@@ -245,6 +257,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const renderDiagnosisItemsRight = (): ITableListItems => {
 		return [
 			{
@@ -265,6 +278,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const handelDiagnosisStatusChange = async () => {
 		const form = {
 			is_diagnosis_need: !data?.is_diagnosis_need,
@@ -275,6 +289,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const handelProceedToRepair = async () => {
 		const form = {
 			is_proceed_to_repair: !data?.is_proceed_to_repair,
@@ -285,6 +300,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const handelQCStatusChange = async () => {
 		const form = {
 			is_transferred_for_qc: !data?.is_transferred_for_qc,
@@ -307,6 +323,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
