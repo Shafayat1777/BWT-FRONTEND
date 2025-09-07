@@ -14,7 +14,7 @@ import { Switch } from '@/components/ui/switch';
 
 import { Address, Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, OrderID, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderProducts, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
 
 
 //* Problems Columns
@@ -82,6 +82,21 @@ export const infoColumns = (
 		accessorKey: 'branch_name',
 		header: 'Branch',
 		enableColumnFilter: false,
+	},
+	{
+		accessorFn(row) {
+			return row.products
+				.map((product: IOrderProducts) => product.brand_name + ': ' + product.model_name)
+				.join(', ');
+		},
+		header: 'Products',
+		enableColumnFilter: false,
+		size: 220,
+		cell: (info) => {
+			return info.row.original.products
+				.map((product: IOrderProducts) => product.brand_name + ': ' + product.model_name)
+				.join(', ');
+		},
 	},
 	{
 		accessorKey: 'order_type',
@@ -334,7 +349,7 @@ export const orderColumnsForDetails = ({
 	{
 		accessorFn: (row) => {
 			return row.order_problems_name
-				.map((item:string) => item)
+				.map((item: string) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -579,7 +594,7 @@ export const orderColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.order_problems_name
-				.map((item:string) => item)
+				.map((item: string) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -614,18 +629,18 @@ export const orderColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => info.getValue() as string,
 	},
-	{
-		id: 'action_trx',
-		header: 'Section \nTransfer',
-		cell: (info) => (
-			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
-		),
-		size: 40,
-		meta: {
-			hidden: !actionTrxAccess,
-			disableFullFilter: true,
-		},
-	},
+	// {
+	// 	id: 'action_trx',
+	// 	header: 'Section \nTransfer',
+	// 	cell: (info) => (
+	// 		<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+	// 	),
+	// 	size: 40,
+	// 	meta: {
+	// 		hidden: !actionTrxAccess,
+	// 		disableFullFilter: true,
+	// 	},
+	// },
 	{
 		accessorFn: (row) => LocationName(row),
 		id: 'location',
@@ -721,7 +736,7 @@ export const QCColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.order_problems_name
-				.map((item:string) => item)
+				.map((item: string) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -954,7 +969,7 @@ export const RepairingColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.order_problems_name
-				.map((item:string) => item)
+				.map((item: string) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -1064,7 +1079,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorFn: (row) =>row.bill_amount - row.advance_pay,
+		accessorFn: (row) => row.bill_amount - row.advance_pay,
 		header: 'Remaining',
 		size: 40,
 		enableColumnFilter: false,
