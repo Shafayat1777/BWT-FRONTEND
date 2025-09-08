@@ -141,7 +141,7 @@ export const Location = ({ branch_name, warehouse_name, rack_name, floor_name, b
 export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: string }) => {
 	return (
 		<div className='relative flex flex-shrink-0 items-center gap-2 overflow-hidden'>
-			<div className='flex min-w-0 flex-col items-start'>
+			<div className='flex min-w-0 flex-col items-start gap-1'>
 				<div className='flex w-full items-start gap-2 overflow-hidden'>
 					<User className='size-4 flex-shrink-0' />
 					<span className='line-clamp-1 flex-1 capitalize' title={user_name}>

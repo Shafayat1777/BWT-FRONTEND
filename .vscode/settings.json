@@ -1,4 +1,44 @@
 {
- 
-	"cSpell.words": ["tseslint"]
+	"cSpell.words": ["tseslint"],
+	"prettier.configPath": "./prettier.config.cjs",
+	"eslint.useFlatConfig": true,
+	"explorer.compactFolders": true,
+	"files.readonlyInclude": {
+		"**/routeTree.gen.ts": true,
+		"**/.tanstack/**/*": true,
+		"pnpm-lock.yaml": true,
+		"bun.lock": true
+	},
+	"files.watcherExclude": {
+		"**/routeTree.gen.ts": true,
+		"**/.tanstack/**/*": true,
+		"pnpm-lock.yaml": true,
+		"bun.lock": true
+	},
+	"search.exclude": {
+		"**/routeTree.gen.ts": true,
+		"**/.tanstack/**/*": true,
+		"pnpm-lock.yaml": true,
+		"bun.lock": true
+	},
+
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		".env": ".env*",
+		"vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*, tsconfig.*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig, .gitattributes, .gitignore, .gitkeep, .gitmodules, .dockerignore, .dockerfile*, dockerfile*, docker-compose*, components.json, next-env.d.ts,declarative-routing.config.json, postcss.config.js, renovate.json, turbo.json, tailwind.config.js, tailwind.config.ts, web.config",
+		"package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, bun.lock",
+		"README.md": "README.*, LICENSE*",
+		"drizzle.config.*": "sqlite.db, drizzle.config.*"
+	},
+
+	// always choose typescript from node_modules
+	"typescript.tsdk": "./node_modules/typescript/lib",
+
+	// use LF line endings
+	"files.eol": "\n",
+
+	// set prettier as default formatter for json, ts, tsx, js, jsx, html, css
+	"[json][jsonc][typescript][typescriptreact][javascript][javascriptreact][html][css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }

@@ -14,7 +14,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({ value = 0, buttonProps }) =
 	if (valueIsBoolean) {
 		return (
 			<Button
-				className='size-6 rounded-full'
+				className='size-5 rounded-full'
 				size={'icon'}
 				variant={value === true ? 'accent' : 'destructive'}
 				{...buttonProps}
@@ -26,7 +26,7 @@ const StatusButton: React.FC<StatusButtonProps> = ({ value = 0, buttonProps }) =
 
 	return (
 		<Button
-			className='size-6 rounded-full'
+			className='size-5 rounded-full'
 			size={'icon'}
 			variant={value === 0 ? 'destructive' : 'accent'}
 			{...buttonProps}

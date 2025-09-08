@@ -1,21 +1,31 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { over } from 'lodash';
-
-
+import { format } from 'date-fns';
+import { Check, X } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import { WhatsApp } from '@/components/others/what-app-button';
+import { Badge } from '@/components/ui/badge';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-
-
-import { Address, Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
+import { Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, OrderID, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderProducts, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderProducts,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
+const formateDate = (date: string) => format(date, 'dd MMM, yy');
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -31,16 +41,35 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 	},
 ];
 //* Info Columns
+
 export const infoColumns = (
 	handleStatus?: (row: Row<IInfoTableData>) => void,
-	permissionStatus?: boolean,
 	overriddenPermissionStatus?: boolean,
 	handleWhatsApp?: (row: Row<IInfoTableData>) => void
 ): ColumnDef<IInfoTableData>[] => [
 	{
+		accessorKey: 'order_type',
+		header: 'Type',
+		size: 60,
+		enableColumnFilter: false,
+		cell: (info) => {
+			const variable: { [key: string]: string } = {
+				priority: 'outline-success',
+				due: 'outline-destructive',
+				normal: 'outline',
+			};
+			return (
+				<Badge className='text-[0.6rem] uppercase' variant={variable[info.getValue() as string]}>
+					{info.getValue() as string}
+				</Badge>
+			);
+		},
+	},
+	{
 		accessorKey: 'info_id',
 		header: 'Info ID',
 		enableColumnFilter: false,
+		size: 130,
 		cell: (info) => {
 			const { uuid } = info.row.original;
 			return (
@@ -51,141 +80,92 @@ export const infoColumns = (
 	{
 		accessorFn: (row) => row.user_name + ' - ' + row.user_phone,
 		header: 'Customer',
-		size: 200,
 		enableColumnFilter: false,
+		size: 100,
 		cell: (info) => {
 			const { user_name, user_phone } = info.row.original;
 
-			return (
-				<div className='flex items-center gap-2'>
-					<UserNamePhone user_name={user_name} phone={user_phone} />
-				</div>
-			);
+			return <UserNamePhone user_name={user_name} phone={user_phone} />;
 		},
 	},
-	// {
-	// 	accessorFn: (row) => row.zone_name + ' : ' + row.location,
-	// 	header: 'Address',
-	// 	enableColumnFilter: false,
-	// 	cell: (info) => {
-	// 		const { location, zone_name } = info.row.original;
-
-	// 		return (
-	// 			<div className='flex items-center gap-2'>
-	// 				<Address location={location} zone_name={zone_name} />
-	// 			</div>
-	// 		);
-	// 	},
-	// 	size: 200,
-	// },
 	{
 		accessorKey: 'branch_name',
 		header: 'Branch',
 		enableColumnFilter: false,
 	},
 	{
-		accessorFn(row) {
-			return row.products
-				.map((product: IOrderProducts) => product.brand_name + ': ' + product.model_name)
-				.join(', ');
-		},
+		accessorFn: (row) =>
+			row.products.map((product: IOrderProducts) => product.brand_name + ': ' + product.model_name).join(', '),
 		header: 'Products',
 		enableColumnFilter: false,
-		size: 220,
-		cell: (info) => {
-			return info.row.original.products
-				.map((product: IOrderProducts) => product.brand_name + ': ' + product.model_name)
-				.join(', ');
-		},
+		size: 200,
 	},
-	{
-		accessorKey: 'order_type',
-		header: 'Order Type',
-		enableColumnFilter: false,
-	},
+
 	{
 		accessorKey: 'is_product_received',
-		size: 32,
+		size: 135,
 		header: 'Product \nReceived',
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
-				<div>
-					<StatusButton value={info.getValue() as boolean} />
-					<DateTime date={info.row.original.received_date} isTime={false} />
-					<span className='text-xs font-semibold'>{info.row.original.received_by_name}</span>
-				</div>
+				<Badge className='space-x-1' variant={info.getValue() === true ? 'accent' : 'destructive'}>
+					<span>{info.getValue() === true ? <Check className='size-4' /> : <X className='size-4' />}</span>
+					<span>{formateDate(info.row.original.received_date)}</span>
+				</Badge>
 			);
 		},
 	},
-	{
-		accessorKey: 'reference_user_name',
-		header: 'Reference',
-		enableColumnFilter: false,
-		cell: (info) => {
-			if (info.getValue() === null) return '-';
-			return (
-				<div className='flex flex-col gap-2'>
-					<span>{info.getValue() as string}</span>
-					<span>
-						CO: {info.row.original.commission_amount}
-						{info.row.original.is_commission_amount ? 'BDT' : '%'}
-					</span>
-				</div>
-			);
-		},
-	},
+	// {
+	// 	accessorKey: 'reference_user_name',
+	// 	header: 'Reference',
+	// 	enableColumnFilter: false,
+	// 	cell: (info) => {
+	// 		if (info.getValue() === null) return '-';
+	// 		return (
+	// 			<div className='flex flex-col gap-2'>
+	// 				<span>{info.getValue() as string}</span>
+	// 				<span>
+	// 					CO: {info.row.original.commission_amount}
+	// 					{info.row.original.is_commission_amount ? 'BDT' : '%'}
+	// 				</span>
+	// 			</div>
+	// 		);
+	// 	},
+	// },
 	{
 		accessorKey: 'is_whatsapp',
-		header: 'WhatsApp',
-		cell: (info) => {
-			return <WhatsApp onClick={() => handleWhatsApp?.(info.row)} />;
-		},
+		header: 'Send',
+		enableColumnFilter: false,
+		size: 40,
+		cell: (info) => <WhatsApp onClick={() => handleWhatsApp?.(info.row)} />,
 	},
 
 	{
 		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
-		header: 'Delivered',
+		header: 'Del.',
 		enableColumnFilter: false,
+		size: 30,
 	},
-	// {
-	// 	accessorKey: 'user_phone',
-	// 	header: 'Phone Number',
-	// 	enableColumnFilter: false,
-	// },
 
 	{
 		accessorKey: 'submitted_by',
-		header: 'Submitted By',
+		header: 'Submitted',
 		enableColumnFilter: false,
+		size: 80,
 		cell: (info) => <span className='capitalize'>{info.getValue() as string}</span>,
 	},
 	{
 		accessorKey: 'is_contact_with_customer',
-		header: 'Contact with \nCustomer',
-		size: 40,
+		header: 'Contact \nCustomer',
+		size: 80,
 		enableColumnFilter: false,
 		cell: (info) => {
-			const status = info.row.original.order_info_status;
-			const bgColorClass =
-				{
-					accepted: 'bg-success',
-					rejected: 'bg-red-500',
-					cancel: 'bg-gray-500',
-					pending: 'bg-warning',
-				}[status?.toLowerCase()] || '';
 			return (
-				<div className='flex flex-col items-center gap-2'>
-					<Switch
-						checked={info.getValue() as boolean}
-						onCheckedChange={() => handleStatus?.(info.row)}
-						disabled={!overriddenPermissionStatus && (info.getValue() as boolean)}
-					/>
-
-					<span className={`flex-1 rounded px-2 py-1 text-xs capitalize text-white ${bgColorClass}`}>
-						{status?.split('_').join(' ')}
-					</span>
-				</div>
+				<Switch
+					checked={info.getValue() as boolean}
+					onCheckedChange={() => handleStatus?.(info.row)}
+					disabled={!overriddenPermissionStatus && (info.getValue() as boolean)}
+				/>
 			);
 		},
 		meta: {
@@ -196,6 +176,25 @@ export const infoColumns = (
 		accessorKey: 'customer_feedback',
 		header: 'Feedback',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const status = info.row.original.order_info_status;
+			const variable: { [key: string]: string } = {
+				accepted: 'outline-success',
+				rejected: 'outline-destructive',
+				cancel: 'outline',
+				pending: 'outline-warning',
+			};
+			return (
+				<div className='flex flex-col gap-1'>
+					<Badge className='w-fit text-[0.6rem] uppercase' variant={variable[status]}>
+						{status}
+					</Badge>
+					{info.getValue() && (
+						<span className='text-xs italic text-secondary'>{info.getValue() as string}</span>
+					)}
+				</div>
+			);
+		},
 	},
 ];
 //* Order Columns

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
 import { IFormSelectOption } from '@/components/core/form/types';
 import { BarcodeScanner } from '@/components/others/barcode-scanner';
 import ReactSelect from '@/components/ui/react-select';
+
 import { useOtherOrder } from '@/lib/common-queries/other';
+
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkOrderByDetails } from '../_config/query';
 import Information from '../order/details/information';
@@ -84,7 +87,7 @@ const Scanner: React.FC = () => {
 						placeholder='Select order manually...'
 						isClearable
 						isSearchable
-						className='max-w-md flex-1'
+						className='flex-1'
 						menuPortalTarget={document.body}
 						styles={{
 							menuPortal: (base) => ({ ...base, zIndex: 9999 }),
