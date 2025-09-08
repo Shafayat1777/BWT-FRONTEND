@@ -8,7 +8,7 @@ import Information from './information';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
-	const { data, isLoading } = useStoreProductsByUUID<IProductEntryTableData>(uuid as string);
+	const { data, isLoading, updateData } = useStoreProductsByUUID<IProductEntryTableData>(uuid as string);
 
 	useEffect(() => {
 		document.title = 'Purchase Details';
@@ -18,7 +18,7 @@ const DetailsPage = () => {
 
 	return (
 		<div className='space-y-8'>
-			<Information data={(data || []) as IProductEntryTableData} />
+			<Information data={(data || []) as IProductEntryTableData} updateData={updateData} />
 			<EntryTable data={(data || []) as IProductEntryTableData} />
 		</div>
 	);

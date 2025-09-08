@@ -8,7 +8,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { purchaseColumns } from '../_config/columns';
 import { IPurchaseTableData } from '../_config/columns/columns.type';
-import { type1FacetedFilters } from '../_config/columns/facetedFilters'; 
+import { type1FacetedFilters } from '../_config/columns/facetedFilters';
 import { useStorePurchases } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -45,7 +45,6 @@ const Purchase = () => {
 
 	// Delete All Row Handlers
 	const handleDeleteAll = (rows: Row<IPurchaseTableData>[]) => {
-		
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -73,6 +72,7 @@ const Purchase = () => {
 				handleDeleteAll={handleDeleteAll}
 				// TODO: Update facetedFilters (OPTIONAL)
 				facetedFilters={type1FacetedFilters}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<DeleteModal

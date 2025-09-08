@@ -3,7 +3,7 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { productEntryColumns } from '../_config/columns';
@@ -16,7 +16,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Purchase = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, refetch } = useStoreProducts<IProductEntryTableData[]>();
+	const { data, isLoading, url, deleteData, refetch, updateData } = useStoreProducts<IProductEntryTableData[]>();
 
 	const pageInfo = useMemo(
 		() => new PageInfo('Store/Product Entry', '/store/product-entry', 'store__product_entry'),
@@ -58,9 +58,17 @@ const Purchase = () => {
 			}))
 		);
 	};
+	const handlePublished = async (row: Row<IProductEntryTableData>) => {
+		const updated_at = getDateTime();
+		const is_published = !row?.original?.is_published;
 
+		await updateData.mutateAsync({
+			url: `/store/product/${row?.original?.uuid}`,
+			updatedData: { is_published, updated_at },
+		});
+	};
 	// Table Columns
-	const columns = productEntryColumns();
+	const columns = productEntryColumns(handlePublished);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -76,6 +84,7 @@ const Purchase = () => {
 				handleDeleteAll={handleDeleteAll}
 				// TODO: Update facetedFilters (OPTIONAL)
 				facetedFilters={type1FacetedFilters}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<DeleteModal

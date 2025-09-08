@@ -24,7 +24,7 @@ const Log = lazy(() => import('@/pages/store/log'));
 const ProductTransferOrderAgainst = lazy(() => import('@/pages/store/product/trx-against-order'));
 const ProductInternalTransfer = lazy(() => import('@/pages/store/product/trx'));
 const Attributes = lazy(() => import('@/pages/store/attributes'));
-const ProductEntry = lazy(() => import('@/pages/store/product-entry'));
+// const ProductEntry = lazy(() => import('@/pages/store/product-entry'));
 const ProductEntryAddOrUpdate = lazy(() => import('@/pages/store/product-entry/add-or-update'));
 const ProductEntryDetails = lazy(() => import('@/pages/store/product-entry/details'));
 const ProductEntryV2 = lazy(() => import('@/pages/store/product-entry-v2'));
@@ -38,17 +38,48 @@ const StoreRoutes: IRoute[] = [
 	{
 		name: 'Store',
 		children: [
+			// {
+			// 	name: 'Product Entry',
+			// 	path: '/store/product-entry',
+			// 	element: <ProductEntry />,
+			// 	page_name: 'store__product_entry',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
+			// {
+			// 	name: 'Product Entry Add',
+			// 	path: '/store/product-entry/add',
+			// 	element: <ProductEntryAddOrUpdate />,
+			// 	hidden: true,
+			// 	page_name: 'store__product_entry_add',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
+			// {
+			// 	name: 'Product Entry Update',
+			// 	path: '/store/product-entry/:uuid/update',
+			// 	element: <ProductEntryAddOrUpdate />,
+			// 	hidden: true,
+			// 	page_name: 'store__product_entry_update',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
+			// {
+			// 	name: 'Product Entry Details',
+			// 	path: '/store/product-entry/:uuid/details',
+			// 	element: <ProductEntryDetails />,
+			// 	hidden: true,
+			// 	page_name: 'store__product_entry_details',
+			// 	actions: ['read'],
+			// },
 			{
 				name: 'Product Entry',
 				path: '/store/product-entry',
-				element: <ProductEntry />,
+				element: <ProductEntryV2 />,
 				page_name: 'store__product_entry',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
 				name: 'Product Entry Add',
 				path: '/store/product-entry/add',
-				element: <ProductEntryAddOrUpdate />,
+				element: <ProductEntryAddOrUpdateV2 />,
 				hidden: true,
 				page_name: 'store__product_entry_add',
 				actions: ['create', 'read', 'update', 'delete'],
@@ -56,7 +87,7 @@ const StoreRoutes: IRoute[] = [
 			{
 				name: 'Product Entry Update',
 				path: '/store/product-entry/:uuid/update',
-				element: <ProductEntryAddOrUpdate />,
+				element: <ProductEntryAddOrUpdateV2 />,
 				hidden: true,
 				page_name: 'store__product_entry_update',
 				actions: ['create', 'read', 'update', 'delete'],
@@ -64,40 +95,9 @@ const StoreRoutes: IRoute[] = [
 			{
 				name: 'Product Entry Details',
 				path: '/store/product-entry/:uuid/details',
-				element: <ProductEntryDetails />,
-				hidden: true,
-				page_name: 'store__product_entry_details',
-				actions: ['read'],
-			},
-			{
-				name: 'Product Entry V2',
-				path: '/store/product-entry/v2',
-				element: <ProductEntryV2 />,
-				page_name: 'store__product_entry_V2',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Product Entry Add V2',
-				path: '/store/product-entry/add/v2',
-				element: <ProductEntryAddOrUpdateV2 />,
-				hidden: true,
-				page_name: 'store__product_entry_add_v2',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Product Entry Update V2',
-				path: '/store/product-entry/:uuid/update/v2',
-				element: <ProductEntryAddOrUpdateV2 />,
-				hidden: true,
-				page_name: 'store__product_entry_update_v2',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Product Entry Details V2',
-				path: '/store/product-entry/:uuid/details/v2',
 				element: <ProductEntryDetailsV2 />,
 				hidden: true,
-				page_name: 'store__product_entry_details_v2',
+				page_name: 'store__product_entry_details',
 				actions: ['read'],
 			},
 			{

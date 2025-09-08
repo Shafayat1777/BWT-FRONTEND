@@ -12,7 +12,12 @@ const EntryTable: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 
 	return (
 		<div>
-			<DataTableEntry title='Challan Entry' columns={columns} data={data?.challan_entries || []} />
+			<DataTableEntry
+				title='Challan Entry'
+				columns={columns}
+				data={data?.challan_entries || []}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
+			/>
 			<tr>
 				<td className='border-t text-right font-semibold' colSpan={4}>
 					Grand Total Bill:

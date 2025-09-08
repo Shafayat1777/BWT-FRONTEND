@@ -47,8 +47,6 @@ const Vehicle = () => {
 		});
 	};
 
-	
-
 	// Table Columns
 	const columns = courierColumns();
 
@@ -63,6 +61,7 @@ const Vehicle = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -85,7 +84,6 @@ const Vehicle = () => {
 							deleteData,
 						}}
 					/>,
-					
 				])}
 			</TableProvider>
 		</PageProvider>
