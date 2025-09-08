@@ -44,6 +44,7 @@ const FormInput: React.FC<FormInputProps> = ({
 					<Input
 						className={cn(className, 'min-w-28')}
 						placeholder={placeholder}
+						disabled={disabled}
 						icon={icon}
 						{...field}
 						value={field.value === null ? '' : field.value}

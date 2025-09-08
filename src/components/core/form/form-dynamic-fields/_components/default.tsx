@@ -83,7 +83,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																<CoreForm.JoinInputUnit
 																	unit={fieldDef.unit(fieldIndex + startIndex)}
 																	disableLabel
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	type={fieldDef.inputType}
 																	{...props}
 																/>
@@ -99,7 +105,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																<CoreForm.Input
 																	type={'text'}
 																	disableLabel
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	placeholder={fieldDef.placeholder}
 																	{...props}
 																/>
@@ -113,7 +125,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															render={(props) => (
 																<CoreForm.Checkbox
 																	disableLabel
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	{...props}
 																/>
 															)}
@@ -127,7 +145,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															render={(props) => (
 																<CoreForm.DatePicker
 																	disableLabel
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	{...props}
 																/>
 															)}
@@ -142,7 +166,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																<CoreForm.Input
 																	type='number'
 																	disableLabel
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	placeholder={fieldDef.placeholder}
 																	{...props}
 																/>
@@ -157,7 +187,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																<CoreForm.Textarea
 																	disableLabel
 																	placeholder={fieldDef.placeholder}
-																	disabled={fieldDef.disabled}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	{...props}
 																/>
 															)}
@@ -176,7 +212,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	disableLabel
 																	unique={fieldDef.unique}
 																	excludeOptions={fieldDef.excludeOptions}
-																	isDisabled={fieldDef.disabled}
+																	isDisabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	onChange={fieldDef.onChange}
 																	{...props}
 																/>
@@ -192,6 +234,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	onChange={fieldDef.onChange}
 																	{...props}
 																/>
@@ -206,6 +255,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															render={(props) => (
 																<CoreForm.FileUpload
 																	disableLabel={true}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	isUpdate={fieldDef.isUpdate}
 																	{...props}
 																/>
@@ -225,6 +281,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	options={{
 																		maxSize: 10000000,
 																	}}
+																	disabled={
+																		typeof fieldDef.disabled === 'boolean'
+																			? fieldDef.disabled
+																			: fieldDef.disabled?.(
+																					fieldIndex + startIndex
+																				)
+																	}
 																	small={true}
 																	isUpdate={fieldDef.isUpdate}
 																	{...props}

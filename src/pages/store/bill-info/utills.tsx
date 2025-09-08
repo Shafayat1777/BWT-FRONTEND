@@ -22,8 +22,8 @@ export function flattenOrderData(orderData: IBillInfo | null | undefined | [] | 
 	flattened.order_details.forEach((detail: IOrdered) => {
 		if (Array.isArray(detail.product_variant_values_entry)) {
 			detail.product_variant_values_entry.forEach((entry: IProductVariantValuesEntryTableData) => {
-				detail[entry.attribute_name] = entry.value;
-				columnNames.add(entry.attribute_name);
+				detail[entry?.attribute_name as string] = entry.value;
+				columnNames.add(entry?.attribute_name as string);
 			});
 			delete detail.product_variant_values_entry;
 		}

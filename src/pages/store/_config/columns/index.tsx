@@ -292,7 +292,15 @@ export const productColumns = ({
 };
 //? NEW PRODUCT ENTRY ?//
 //* Product Entry
-export const productEntryColumns = (): ColumnDef<IProductEntryTableData>[] => [
+export const productEntryColumns = (handlePublished: (row: Row<any>) => void): ColumnDef<IProductEntryTableData>[] => [
+	{
+		accessorKey: 'is_published',
+		header: 'Published',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handlePublished(info.row)} />
+		),
+	},
 	{
 		accessorKey: 'title',
 		header: 'Title',
@@ -380,57 +388,34 @@ export const productVariantDetailsColumns = (
 	},
 ];
 export const productVariantDetailsColumnsV2 = (
-    handleAttribute?: (index: number) => void,
-    dynamicColumns: string[] = [] // Add dynamic columns parameter
+	handleAttribute?: (index: number) => void,
+	dynamicColumns: string[] = []
 ): ColumnDef<IProductVariantTableData>[] => {
-    
-    // Base static columns
-    const staticColumns: ColumnDef<IProductVariantTableData>[] = [
-        {
-            accessorKey: 'selling_price',
-            header: 'Selling Price',
-            enableColumnFilter: false,
-        },
-        {
-            accessorKey: 'discount',
-            header: 'Discount',
-            enableColumnFilter: false,
-        },
-        {
-            accessorKey: 'warehouse_1',
-            header: 'Warehouse 1',
-            enableColumnFilter: false,
-        },
-        {
-            accessorKey: 'warehouse_2',
-            header: 'Warehouse 2',
-            enableColumnFilter: false,
-        },
-        {
-            accessorKey: 'warehouse_3',
-            header: 'Warehouse 3',
-            enableColumnFilter: false,
-        },
-        {
-            accessorKey: 'selling_warehouse',
-            header: 'Selling Warehouse',
-            enableColumnFilter: false,
-        },
-    ];
+	const staticColumns: ColumnDef<IProductVariantTableData>[] = [
+		{
+			accessorKey: 'selling_price',
+			header: 'Selling Price',
+			enableColumnFilter: false,
+		},
+		{
+			accessorKey: 'discount',
+			header: 'Discount',
+			enableColumnFilter: false,
+		},
+		{
+			accessorKey: 'selling_warehouse',
+			header: 'Selling Warehouse',
+			enableColumnFilter: false,
+		},
+	];
 
-    // Generate dynamic columns
-    const dynamicColumnDefs: ColumnDef<IProductVariantTableData>[] = dynamicColumns.map((columnName) => ({
-        accessorKey: columnName as keyof IProductVariantTableData,
-        header: columnName.charAt(0).toUpperCase() + columnName.slice(1).replace(/_/g, ' '), // Format header
-        enableColumnFilter: false,
-        // You can add custom cell rendering if needed
-        // cell: ({ getValue }) => getValue(),
-    }));
-
-    // Combine static and dynamic columns
-    return [...staticColumns, ...dynamicColumnDefs];
+	const dynamicColumnDefs: ColumnDef<IProductVariantTableData>[] = dynamicColumns.map((columnName) => ({
+		accessorKey: columnName as keyof IProductVariantTableData,
+		header: columnName.charAt(0).toUpperCase() + columnName.slice(1).replace(/_/g, ' '),
+		enableColumnFilter: false,
+	}));
+	return [...staticColumns, ...dynamicColumnDefs];
 };
-
 
 //* Product Specification Details
 export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecificationTableData>[] => [

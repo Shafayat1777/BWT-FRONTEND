@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import {
 	BOOLEAN_DEFAULT_VALUE,
+	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
 	NUMBER,
 	NUMBER_DOUBLE_REQUIRED,
@@ -363,6 +364,8 @@ export type IBox = z.infer<typeof BOX_SCHEMA>;
 //* Product Entry Schema
 export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 	uuid: STRING_OPTIONAL,
+	is_order_exist: BOOLEAN_OPTIONAL,
+	is_published: BOOLEAN_REQUIRED,
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,
 	specifications_description: STRING_OPTIONAL,
@@ -392,7 +395,7 @@ export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 				warehouse_10: NUMBER_OPTIONAL,
 				warehouse_11: NUMBER_OPTIONAL,
 				warehouse_12: NUMBER_OPTIONAL,
-				selling_warehouse: NUMBER_REQUIRED,
+				selling_warehouse: NUMBER_REQUIRED.min(0, 'Selling Warehouse is required'),
 				product_variant_values_entry: z
 					.array(
 						z
@@ -455,6 +458,7 @@ export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 export type IProductEntryV2 = z.infer<typeof PRODUCT_ENTRY_SCHEMA_V2>;
 export const PRODUCT_ENTRY_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
+	is_published: BOOLEAN_REQUIRED,
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,
 	specifications_description: STRING_OPTIONAL,

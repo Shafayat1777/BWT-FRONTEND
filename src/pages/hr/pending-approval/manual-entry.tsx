@@ -98,12 +98,12 @@ const Index = () => {
 			value: 'rejected',
 		},
 	];
-	
+
 	// Table Columns
 	const columns = manualEntryLogColumns({
 		handleApprove,
 		handleReject,
-		types
+		types,
 	});
 
 	return (
@@ -131,6 +131,7 @@ const Index = () => {
 					'advance-filter',
 					'other',
 				]}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{/* {renderSuspenseModals([
                     <AddOrUpdate

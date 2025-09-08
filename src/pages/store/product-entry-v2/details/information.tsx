@@ -3,14 +3,20 @@ import React from 'react';
 import ColumnImage from '@/components/core/data-table/_views/column-image';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
+import { Switch } from '@/components/ui/switch';
 
+import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IProductEntryTableData } from '../../_config/columns/columns.type'; // TODO: update data type
 
-const Information: React.FC<{ data: IProductEntryTableData }> = ({ data }) => {
+const Information: React.FC<{ data: IProductEntryTableData; updateData: any }> = ({ data, updateData }) => {
 	const renderItems = (): ITableListItems => {
 		return [
+			{
+				label: 'Published',
+				value: <Switch checked={data?.is_published as boolean} onCheckedChange={() => handlePublished()} />,
+			},
 			{
 				label: 'Title',
 				value: data.title,
@@ -49,6 +55,15 @@ const Information: React.FC<{ data: IProductEntryTableData }> = ({ data }) => {
 			{ label: 'Service Warranty', value: data.specifications_description },
 			{ label: 'C&M Desc.', value: data.care_maintenance_description },
 		];
+	};
+	const handlePublished = async () => {
+		const updated_at = getDateTime();
+		const is_published = !data.is_published;
+
+		await updateData.mutateAsync({
+			url: `/store/product/${data?.uuid}`,
+			updatedData: { is_published, updated_at },
+		});
 	};
 
 	return (

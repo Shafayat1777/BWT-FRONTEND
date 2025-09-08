@@ -11,6 +11,7 @@ const ColumnImage: React.FC<{
 	alt: string;
 	className?: string;
 }> = ({ src, alt, className }) => {
+	if (!src) return '-';
 	return (
 		<HoverCard>
 			<HoverCardTrigger asChild>

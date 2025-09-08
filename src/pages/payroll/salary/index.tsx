@@ -80,6 +80,7 @@ const ManualEntry = () => {
 					'refresh',
 					'view',
 				]}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 				otherToolBarComponents={
 					<>
 						<MonthPickerPopover date={date} setDate={setDate} />
