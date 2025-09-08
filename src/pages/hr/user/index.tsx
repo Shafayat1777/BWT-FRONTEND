@@ -194,6 +194,7 @@ const User = () => {
 						}}
 					/>
 				}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

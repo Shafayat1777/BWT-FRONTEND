@@ -69,6 +69,7 @@ const Purchase = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				facetedFilters={type1FacetedFilters}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<DeleteModal

@@ -67,7 +67,7 @@ const Vendor = () => {
 	const columns = vendorColumns();
 
 	return (
-		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName() }>
+		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 			<TableProvider
 				title={pageInfo.getTitle()}
 				columns={columns}
@@ -78,6 +78,7 @@ const Vendor = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				handleDeleteAll={handleDeleteAll}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

@@ -67,6 +67,7 @@ const Challan = () => {
 				handleRefetch={refetch}
 				// TODO: Update facetedFilters (OPTIONAL)
 				facetedFilters={type1FacetedFilters}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<DeleteModal
