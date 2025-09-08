@@ -117,9 +117,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					<div className='flex flex-col gap-1'>
 						<ProblemComponent
 							arr={data?.diagnosis?.diagnosis_problems_name as string[]}
-							statement={data.diagnosis?.problem_statement}
+							statement={data.diagnosis?.problem_statement as string}
 						/>
-						{formatDateTable(data.diagnosis?.status_update_date)}
+						{formatDateTable(data.diagnosis?.status_update_date as string)}
 					</div>
 				),
 			},
@@ -127,8 +127,8 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Customer Defined',
 				value: (
 					<ProblemComponent
-						arr={[data.diagnosis?.customer_problem_statement]}
-						statement={data.diagnosis?.customer_remarks}
+						arr={[data.diagnosis?.customer_problem_statement] as string[]}
+						statement={data.diagnosis?.customer_remarks as string}
 					/>
 				),
 			},

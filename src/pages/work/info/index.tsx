@@ -81,7 +81,7 @@ const Info = () => {
 	};
 
 	//* Table Columns
-	const columns = infoColumns(handleStatus, actionTrxAccess, actionTrxOverride, handleWhatsApp);
+	const columns = infoColumns(handleStatus, actionTrxOverride, handleWhatsApp);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

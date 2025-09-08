@@ -58,8 +58,11 @@ export const infoColumns = (
 				due: 'outline-destructive',
 				normal: 'outline',
 			};
+			let val =
+				(variable[info.getValue() as string] as 'outline-success' | 'outline-destructive' | 'outline') ??
+				'outline';
 			return (
-				<Badge className='text-[0.6rem] uppercase' variant={variable[info.getValue() as string]}>
+				<Badge className='text-[0.6rem] uppercase' variant={val}>
 					{info.getValue() as string}
 				</Badge>
 			);
@@ -184,12 +187,15 @@ export const infoColumns = (
 				cancel: 'outline',
 				pending: 'outline-warning',
 			};
+			const val =
+				(variable[status] as 'outline-success' | 'outline-destructive' | 'outline' | 'outline-warning') ??
+				'outline';
 			return (
 				<div className='flex flex-col gap-1'>
-					<Badge className='w-fit text-[0.6rem] uppercase' variant={variable[status]}>
+					<Badge className='w-fit text-[0.6rem] uppercase' variant={val}>
 						{status}
 					</Badge>
-					{info.getValue() && (
+					{(info.getValue() as string) && (
 						<span className='text-xs italic text-secondary'>{info.getValue() as string}</span>
 					)}
 				</div>
