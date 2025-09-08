@@ -169,6 +169,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/scanner',
 				element: <OrderScanner />,
 				page_name: 'work__order_scanner',
+				hidden: true,
 				actions: [
 					'create',
 					'read',

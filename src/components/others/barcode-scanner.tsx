@@ -180,28 +180,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 						</div>
 						{children}
 					</div>
-					<div className='mt-5 flex items-center gap-2'>
-						<div
-							className={`h-3 w-3 rounded-full ${
-								disabled
-									? 'bg-gray-400'
-									: isFocused && isEnabled
-										? 'animate-pulse bg-success'
-										: 'bg-warning'
-							}`}
-						/>
-						<span
-							className={`text-sm font-medium ${
-								disabled
-									? 'text-gray-500'
-									: isFocused && isEnabled
-										? 'text-green-700'
-										: 'text-orange-700'
-							}`}
-						>
-							{statusLabel}
-						</span>
-					</div>
+					
 				</div>
 
 				{error && (

@@ -54,8 +54,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: data?.user_phone,
 			},
 			{ label: 'Engineer', value: data.engineer_name },
-			{ label: 'Bill Amount', value: data.bill_amount },
-			{ label: 'Advance Pay', value: data.advance_pay },
 
 			{
 				label: 'Created At',
@@ -92,7 +90,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
-	
 
 	const renderProblemItems = (): ITableListItems => {
 		return [
@@ -274,12 +271,25 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		];
 	};
 
+	const renderBillItems = (): ITableListItems => {
+		return [
+			{
+				label: 'Proposed Cost',
+				value: data?.diagnosis?.proposed_cost,
+			},
+			{ label: 'Advance Pay', value: data.advance_pay },
+			{ label: 'Bill Amount', value: data.bill_amount },
+			{ label: 'Remaining', value: data.bill_amount-data.advance_pay },
+		];
+	};
+
 	const renderDiagnosisItemsLeft = (): ITableListItems => {
 		return [
 			{
 				label: 'Diagnosis ID',
 				value: data?.diagnosis?.diagnosis_id,
 			},
+
 			{
 				label: 'Problem',
 				value: (
@@ -309,10 +319,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Customer Remarks',
 				value: data.diagnosis?.customer_remarks,
 			},
-			{
-				label: 'Proposed Cost',
-				value: data.diagnosis?.proposed_cost,
-			},
+
 			{
 				label: 'Proceed to Repair',
 				value: <StatusButton value={data.diagnosis?.is_proceed_to_repair as boolean} />,
@@ -373,7 +380,10 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		<>
 			<SectionContainer title={'Order Details'}>
 				<div className='grid w-full grid-cols-4 gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='w-full' items={renderGeneralItems()} />
+					<div className='flex flex-col'>
+						<TableList title='General' className='w-full' items={renderGeneralItems()} />
+						<TableList title='Bill' className='w-full' items={renderBillItems()} />
+					</div>
 					<div className='flex flex-col'>
 						<TableList title='Product' className='w-full' items={renderProductItems()} />
 						<TableList title='Location' className='w-full' items={renderLocationItems()} />
