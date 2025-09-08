@@ -11,6 +11,7 @@ import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
+import { OrderImages } from '../../_config/utils/component';
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const pageAccess = useAccess('work__order_details') as string[];
@@ -91,11 +92,12 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+	
 
 	const renderProblemItems = (): ITableListItems => {
 		return [
 			{
-				label: 'Problems',
+				label: 'Order Problems',
 				value: (
 					<div className='flex flex-wrap gap-1'>
 						{(data.order_problems_name as string[])?.map((item, index) => (
@@ -106,7 +108,50 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					</div>
 				),
 			},
-			{ label: 'Statement', value: data.problem_statement },
+			{ label: 'Order Problem Statement', value: data.problem_statement },
+			{
+				label: 'Repair Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.repairing_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'Repair Problem Statement', value: data.repairing_problem_statement },
+			{
+				label: 'QC Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.qc_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'QC Problem Statement', value: data.qc_problem_statement },
+			{
+				label: 'Delivery Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.delivery_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'Delivery Problem Statement', value: data.delivery_problem_statement },
+			{
+				label: 'Images',
+				value: <OrderImages image_1={data?.image_1} image_2={data?.image_2} image_3={data?.image_3} />,
+			},
 		];
 	};
 
@@ -327,12 +372,14 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
-				<div className='flex w-full flex-row gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
-					<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
-					<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
-					<TableList title='Status' className='w-full md:w-1/2' items={renderStatusItems()} />
-					<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
+				<div className='grid w-full grid-cols-4 gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
+					<TableList title='General' className='w-full' items={renderGeneralItems()} />
+					<div className='flex flex-col'>
+						<TableList title='Product' className='w-full' items={renderProductItems()} />
+						<TableList title='Location' className='w-full' items={renderLocationItems()} />
+					</div>
+					<TableList title='Problem' className='w-full' items={renderProblemItems()} />
+					<TableList title='Status' className='w-full' items={renderStatusItems()} />
 				</div>
 			</SectionContainer>
 			{data?.is_diagnosis_need && (
