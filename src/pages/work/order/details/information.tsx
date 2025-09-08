@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import useAccess from '@/hooks/useAccess';
 
 import StatusButton from '@/components/buttons/status';
@@ -11,6 +11,7 @@ import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
+import { OrderImages } from '../../_config/utils/component';
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const pageAccess = useAccess('work__order_details') as string[];
@@ -18,6 +19,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
 	const haveProceedToRepairAccess = pageAccess?.includes('click_proceed_to_repair');
 	const haveDiagnosedNeedAccess = pageAccess?.includes('click_diagnosis_need');
+
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -52,9 +54,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: data?.user_phone,
 			},
 			{ label: 'Engineer', value: data.engineer_name },
-			{ label: 'Bill Amount', value: data.bill_amount },
-			{ label: 'Advance Pay', value: data.advance_pay },
-			
+
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),
@@ -66,6 +66,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{ label: 'Remarks', value: data.remarks },
 		];
 	};
+
 	const renderProductItems = (): ITableListItems => {
 		return [
 			{ label: 'Brand', value: data.brand_name },
@@ -89,10 +90,11 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const renderProblemItems = (): ITableListItems => {
 		return [
 			{
-				label: 'Problems',
+				label: 'Order Problems',
 				value: (
 					<div className='flex flex-wrap gap-1'>
 						{(data.order_problems_name as string[])?.map((item, index) => (
@@ -103,7 +105,50 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					</div>
 				),
 			},
-			{ label: 'Statement', value: data.problem_statement },
+			{ label: 'Order Problem Statement', value: data.problem_statement },
+			{
+				label: 'Repair Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.repairing_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'Repair Problem Statement', value: data.repairing_problem_statement },
+			{
+				label: 'QC Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.qc_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'QC Problem Statement', value: data.qc_problem_statement },
+			{
+				label: 'Delivery Problems',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.delivery_problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
+			{ label: 'Delivery Problem Statement', value: data.delivery_problem_statement },
+			{
+				label: 'Images',
+				value: <OrderImages image_1={data?.image_1} image_2={data?.image_2} image_3={data?.image_3} />,
+			},
 		];
 	};
 
@@ -149,7 +194,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_diagnosis_need}
-						onCheckedChange={() => handelDiagnosisStatusChange()}
+						onCheckedChange={() => {
+							handelDiagnosisStatusChange();
+						}}
 						disabled={!haveDiagnosedNeedAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -159,7 +206,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_proceed_to_repair}
-						onCheckedChange={() => handelProceedToRepair()}
+						onCheckedChange={() => {
+							handelProceedToRepair();
+						}}
 						disabled={!haveProceedToRepairAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -170,7 +219,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<SwitchStatus
 						checked={data?.is_transferred_for_qc}
-						onCheckedChange={() => handelQCStatusChange()}
+						onCheckedChange={() => {
+							handelQCStatusChange();
+						}}
 						disabled={!haveQCAccess || data?.is_delivery_complete}
 					/>
 				),
@@ -181,7 +232,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					<div>
 						<SwitchStatus
 							checked={data?.is_ready_for_delivery}
-							onCheckedChange={() => handelDeliveryStatusChange()}
+							onCheckedChange={() => {
+								handelDeliveryStatusChange();
+							}}
 							disabled={!haveDeliveryAccess || data?.is_delivery_complete}
 						/>
 						<span className='text-xs font-bold'>
@@ -217,12 +270,26 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
+	const renderBillItems = (): ITableListItems => {
+		return [
+			{
+				label: 'Proposed Cost',
+				value: data?.diagnosis?.proposed_cost,
+			},
+			{ label: 'Advance Pay', value: data.advance_pay },
+			{ label: 'Bill Amount', value: data.bill_amount },
+			{ label: 'Remaining', value: data.bill_amount-data.advance_pay },
+		];
+	};
+
 	const renderDiagnosisItemsLeft = (): ITableListItems => {
 		return [
 			{
 				label: 'Diagnosis ID',
 				value: data?.diagnosis?.diagnosis_id,
 			},
+
 			{
 				label: 'Problem',
 				value: (
@@ -245,16 +312,14 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const renderDiagnosisItemsRight = (): ITableListItems => {
 		return [
 			{
 				label: 'Customer Remarks',
 				value: data.diagnosis?.customer_remarks,
 			},
-			{
-				label: 'Proposed Cost',
-				value: data.diagnosis?.proposed_cost,
-			},
+
 			{
 				label: 'Proceed to Repair',
 				value: <StatusButton value={data.diagnosis?.is_proceed_to_repair as boolean} />,
@@ -265,6 +330,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+
 	const handelDiagnosisStatusChange = async () => {
 		const form = {
 			is_diagnosis_need: !data?.is_diagnosis_need,
@@ -275,6 +341,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const handelProceedToRepair = async () => {
 		const form = {
 			is_proceed_to_repair: !data?.is_proceed_to_repair,
@@ -285,6 +352,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const handelQCStatusChange = async () => {
 		const form = {
 			is_transferred_for_qc: !data?.is_transferred_for_qc,
@@ -307,15 +375,21 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
-				<div className='flex w-full flex-row gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
-					<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
-					<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
-					<TableList title='Status' className='w-full md:w-1/2' items={renderStatusItems()} />
-					<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
+				<div className='grid w-full grid-cols-4 gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
+					<div className='flex flex-col'>
+						<TableList title='General' className='w-full' items={renderGeneralItems()} />
+						<TableList title='Bill' className='w-full' items={renderBillItems()} />
+					</div>
+					<div className='flex flex-col'>
+						<TableList title='Product' className='w-full' items={renderProductItems()} />
+						<TableList title='Location' className='w-full' items={renderLocationItems()} />
+					</div>
+					<TableList title='Problem' className='w-full' items={renderProblemItems()} />
+					<TableList title='Status' className='w-full' items={renderStatusItems()} />
 				</div>
 			</SectionContainer>
 			{data?.is_diagnosis_need && (
