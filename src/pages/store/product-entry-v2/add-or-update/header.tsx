@@ -12,6 +12,7 @@ import { useOtherAttributes, useOtherCategory, useOtherModel } from '@/lib/commo
 
 import { IProductEntryV2 } from '../../_config/schema';
 import useGenerateImage from './useGenerateImage';
+import { NotebookPen } from 'lucide-react';
 
 const Header = ({
 	setDeleteItem,
@@ -76,6 +77,12 @@ const Header = ({
 			className='flex flex-col'
 			extraHeader={
 				<div className='flex items-center gap-3 text-white'>
+					{form.watch('is_order_exist') && (
+						<span className='rounded-sm bg-red-200 p-2 text-xs text-red-700 flex gap-1'>
+							<NotebookPen size={16} />
+							Note: This product already have order. so you can't change some filed here
+						</span>
+					)}
 					<FormField
 						control={form.control}
 						name='is_published'
@@ -85,7 +92,11 @@ const Header = ({
 			}
 		>
 			<div className='grid grid-cols-3 gap-4'>
-				<FormField control={form.control} name='title' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField
+					control={form.control}
+					name='title'
+					render={(props) => <CoreForm.Input disabled={form.watch('is_order_exist')} {...props} />}
+				/>
 				<FormField
 					control={form.control}
 					name='category_uuid'
@@ -94,6 +105,7 @@ const Header = ({
 							menuPortalTarget={document.body}
 							label='Category'
 							placeholder='Select Category'
+							isDisabled={form.watch('is_order_exist')}
 							options={categoryOptions!}
 							{...props}
 						/>
@@ -107,6 +119,7 @@ const Header = ({
 							label='Model'
 							placeholder='Select Model'
 							menuPortalTarget={document.body}
+							isDisabled={form.watch('is_order_exist')}
 							options={modelOptions!}
 							{...props}
 						/>
@@ -130,6 +143,7 @@ const Header = ({
 							placeholder='Select Attributes'
 							menuPortalTarget={document.body}
 							options={AttributeOptions!}
+							isDisabled={form.watch('is_order_exist')}
 							isMulti
 							{...props}
 						/>

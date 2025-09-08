@@ -14,28 +14,26 @@ interface IGenerateFieldDefsProps {
 	dynamicColumns?: string[];
 }
 
-const useGenerateVariant = ({
-	copy,
-	remove,
-	watch,
-	form,
-	dynamicColumns,
-}: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateVariant = ({ copy, remove, watch, form, dynamicColumns }: IGenerateFieldDefsProps): FieldDef[] => {
+	form.watch('is_order_exist');
 	const baseFields: FieldDef[] = [
 		{
 			header: 'Selling Price',
 			accessorKey: 'selling_price',
 			type: 'number',
+			disabled: (index): boolean => form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`),
 		},
 		{
 			header: 'Discount',
 			accessorKey: 'discount',
 			type: 'number',
+			disabled: (index): boolean => form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`),
 		},
 		{
 			header: 'Selling Warehouse',
 			accessorKey: 'selling_warehouse',
 			type: 'number',
+			disabled: (index): boolean => form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`),
 		},
 	];
 
@@ -44,7 +42,7 @@ const useGenerateVariant = ({
 		header: columnName,
 		accessorKey: columnName,
 		type: 'text',
-		
+		disabled: (index): boolean => form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`),
 	}));
 
 	const endFields: FieldDef[] = [
@@ -53,6 +51,9 @@ const useGenerateVariant = ({
 			accessorKey: 'actions',
 			type: 'custom',
 			component: (index: number) => {
+				if (form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`)) {
+					return '';
+				}
 				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
 			},
 		},

@@ -307,7 +307,7 @@ export const productEntryColumns = (handlePublished: (row: Row<any>) => void): C
 		enableColumnFilter: false,
 		cell: (info) => (
 			<CustomLink
-				url={`/store/product-entry/${info.row.original.uuid}/details/v2`}
+				url={`/store/product-entry/${info.row.original.uuid}/details`}
 				label={info.getValue() as string}
 				openInNewTab={true}
 			/>

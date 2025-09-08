@@ -19,13 +19,13 @@ const Purchase = () => {
 	const { data, isLoading, url, deleteData, refetch, updateData } = useStoreProducts<IProductEntryTableData[]>();
 
 	const pageInfo = useMemo(
-		() => new PageInfo('Store/Product Entry', '/store/product-entry', 'store__product_entry_V2'),
+		() => new PageInfo('Store/Product Entry', '/store/product-entry', 'store__product_entry'),
 		[]
 	);
 
-	const handleCreate = () => navigate('/store/product-entry/add/v2');
+	const handleCreate = () => navigate('/store/product-entry/add');
 	const handleUpdate = (row: Row<IProductEntryTableData>) => {
-		navigate(`/store/product-entry/${row.original.uuid}/update/v2`);
+		navigate(`/store/product-entry/${row.original.uuid}/update`);
 	};
 
 	// Delete Modal state

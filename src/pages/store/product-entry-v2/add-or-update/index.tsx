@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { NotebookPen } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -480,6 +481,14 @@ const Index = () => {
 			<Header setDeleteItem={setDeleteItem} />
 			<CoreForm.DynamicFields
 				title='Product Variants'
+				extraHeader={
+					form.watch('is_order_exist') && (
+						<span className='flex gap-1 rounded-sm bg-red-200 p-2 text-xs text-red-700'>
+							<NotebookPen size={16} />
+							Note: This product already have order. so you can't update exist variant
+						</span>
+					)
+				}
 				form={form}
 				fieldName='product_variant'
 				fieldDefs={useGenerateFieldDefs({

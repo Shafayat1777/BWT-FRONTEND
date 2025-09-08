@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import {
 	BOOLEAN_DEFAULT_VALUE,
+	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
 	NUMBER,
 	NUMBER_DOUBLE_REQUIRED,
@@ -363,6 +364,7 @@ export type IBox = z.infer<typeof BOX_SCHEMA>;
 //* Product Entry Schema
 export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 	uuid: STRING_OPTIONAL,
+	is_order_exist: BOOLEAN_OPTIONAL,
 	is_published: BOOLEAN_REQUIRED,
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,
