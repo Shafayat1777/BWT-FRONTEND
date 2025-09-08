@@ -12,10 +12,10 @@ import WorkRoutes from './work';
 const privateRoutes: IRoute[] = [
 	...ProfileRoutes,
 	...HrRoutes,
+	...PayrollRoutes,
 	...StoreRoutes,
 	...WorkRoutes,
 	...DeliveryRoutes,
-	...PayrollRoutes,
 	...CustomerRoutes,
 ];
 

@@ -95,7 +95,6 @@ const Scanner: React.FC = () => {
 					</p>
 				</div>
 			</BarcodeScanner>
-
 			{data && <Information data={data} updateData={updateData} />}
 			{data?.is_proceed_to_repair && (
 				<>
