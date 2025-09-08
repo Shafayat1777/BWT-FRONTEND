@@ -279,7 +279,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 			{ label: 'Advance Pay', value: data.advance_pay },
 			{ label: 'Bill Amount', value: data.bill_amount },
-			{ label: 'Remaining', value: data.bill_amount-data.advance_pay },
+			{ label: 'Remaining', value: data.bill_amount - data.advance_pay },
 		];
 	};
 
@@ -379,7 +379,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
-				<div className='grid w-full grid-cols-4 gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
+				<div className='grid w-full grid-cols-4 gap-y-2 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
 					<div className='flex flex-col'>
 						<TableList title='General' className='w-full' items={renderGeneralItems()} />
 						<TableList title='Bill' className='w-full' items={renderBillItems()} />
@@ -388,8 +388,12 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 						<TableList title='Product' className='w-full' items={renderProductItems()} />
 						<TableList title='Location' className='w-full' items={renderLocationItems()} />
 					</div>
-					<TableList title='Problem' className='w-full' items={renderProblemItems()} />
-					<TableList title='Status' className='w-full' items={renderStatusItems()} />
+					<div className='flex flex-col'>
+						<TableList title='Problem' className='w-full' items={renderProblemItems()} />
+					</div>
+					<div className='flex flex-col'>
+						<TableList title='Status' className='w-full' items={renderStatusItems()} />
+					</div>
 				</div>
 			</SectionContainer>
 			{data?.is_diagnosis_need && (

@@ -44,7 +44,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 		[onError]
 	);
 
-	// Scanner hook is only active when effectively enabled
+
 	const { containerRef } = useBarcodeScanner({
 		onScan: handleScan,
 		onError: handleScanError,
@@ -93,7 +93,6 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 		if (!effectiveEnabled) blurScanner();
 	}, [effectiveEnabled, blurScanner]);
 
-	// Light background re-focus when active (doesn't fight inputs)
 	useEffect(() => {
 		if (!effectiveEnabled) return;
 		const onDocClick = (e: MouseEvent) => {
@@ -132,7 +131,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 	const isActive = !isFocused || !isEnabled ? false : true;
 
 	return (
-		<div className={cn('')}>
+		<div>
 			<div className='flex items-center justify-between gap-2 rounded-t-md bg-primary px-4 py-3'>
 				<div className='flex items-center gap-2'>
 					<h3 className='text-2xl font-semibold capitalize leading-tight text-primary-foreground md:text-3xl'>
@@ -142,7 +141,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 			</div>
 			<div
 				ref={containerRef}
-				className='rounded-lg border-b-2 bg-white p-2 shadow-sm outline-none'
+				className='rounded-b-lg border-b-2 bg-accent-foreground border p-2 shadow-sm outline-none'
 				tabIndex={0}
 				onClick={() => {
 					if (effectiveEnabled) focusScanner();
@@ -151,7 +150,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 				<div className='flex items-center justify-between'>
 					<div className='flex gap-4'>
 						<div>
-							{!isActive && (
+							{isActive && (
 								<div>
 									<button
 										onClick={handleToggle}
@@ -161,10 +160,10 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 									>
 										Active
 									</button>
-									<p className='ml-1 mt-1 text-xs text-gray-500'>Tap/Click to Activate</p>
+									<p className='ml-1 mt-1 text-xs text-gray-500'>Tap/Click to Deactivate</p>
 								</div>
 							)}
-							{isActive && (
+							{!isActive && (
 								<div>
 									<button
 										onClick={handleToggle}
@@ -174,7 +173,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 									>
 										Deactivate
 									</button>
-									<p className='mt-2 text-xs text-gray-500'>Tap/Click to Deactivate</p>
+									<p className='mt-2 text-xs text-gray-500'>Tap/Click to Activate</p>
 								</div>
 							)}
 						</div>

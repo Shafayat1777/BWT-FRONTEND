@@ -43,7 +43,21 @@ const classNames = (extraControlClassName?: string): ClassNamesConfig => ({
 });
 
 export type Ref = any;
+const sortOptionsWithSelectedFirst = (options: any[], selectedValues: any) => {
+	if (!selectedValues) return options;
 
+	const selectedArray = Array.isArray(selectedValues) ? selectedValues : [selectedValues];
+	const selectedValueSet = new Set(selectedArray.map((item) => item.value));
+
+	return options?.sort((a, b) => {
+		const aSelected = selectedValueSet.has(a.value);
+		const bSelected = selectedValueSet.has(b.value);
+
+		if (aSelected && !bSelected) return -1;
+		if (!aSelected && bSelected) return 1;
+		return 0;
+	});
+};
 const ReactSelect = forwardRef<Ref, Props & { extraControlClassName?: string }>(
 	(
 		{
@@ -54,6 +68,7 @@ const ReactSelect = forwardRef<Ref, Props & { extraControlClassName?: string }>(
 			isSearchable = true,
 			isDisabled = false,
 			extraControlClassName,
+			value,
 			...props
 		},
 		ref
@@ -93,7 +108,8 @@ const ReactSelect = forwardRef<Ref, Props & { extraControlClassName?: string }>(
 				isDisabled={isDisabled}
 				isClearable={isClearable}
 				isSearchable={isSearchable}
-				options={options}
+				options={sortOptionsWithSelectedFirst(options as any, value)}
+				value={value}
 				placeholder={placeholder}
 				{...props}
 			/>
