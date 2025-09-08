@@ -47,7 +47,7 @@ const sortOptionsWithSelectedFirst = (options: any[], selectedValues: any) => {
 	if (!selectedValues) return options;
 
 	const selectedArray = Array.isArray(selectedValues) ? selectedValues : [selectedValues];
-	const selectedValueSet = new Set(selectedArray.map((item) => item.value));
+	const selectedValueSet = new Set(selectedArray?.map((item) => item?.value));
 
 	return options?.sort((a, b) => {
 		const aSelected = selectedValueSet.has(a.value);

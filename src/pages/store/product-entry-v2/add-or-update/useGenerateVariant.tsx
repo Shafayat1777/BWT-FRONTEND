@@ -33,21 +33,6 @@ const useGenerateVariant = ({
 			type: 'number',
 		},
 		{
-			header: 'Warehouse 1',
-			accessorKey: 'warehouse_1',
-			type: 'number',
-		},
-		{
-			header: 'Warehouse 2',
-			accessorKey: 'warehouse_2',
-			type: 'number',
-		},
-		{
-			header: 'Warehouse 3',
-			accessorKey: 'warehouse_3',
-			type: 'number',
-		},
-		{
 			header: 'Selling Warehouse',
 			accessorKey: 'selling_warehouse',
 			type: 'number',

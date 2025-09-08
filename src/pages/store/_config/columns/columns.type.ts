@@ -1,3 +1,6 @@
+import { IProduct } from '../schema';
+
+
 //* Group
 export type IGroupTableData = {
 	uuid: string;
@@ -109,10 +112,10 @@ export type IProductTableData = {
 // * Product Entry
 
 export type IProductVariantValuesEntryTableData = {
-	uuid: string;
+	uuid: string|undefined;
 	product_variant_uuid: string;
 	attribute_uuid: string;
-	attribute_name: string;
+	attribute_name?: string;
 	value: string;
 };
 
@@ -125,6 +128,7 @@ export type IProductVariantTableData = {
 	warehouse_2: number;
 	warehouse_3: number;
 	selling_warehouse: number;
+	[key: string]: any;
 	product_variant_values_entry: IProductVariantValuesEntryTableData[];
 };
 
@@ -137,6 +141,7 @@ export type IProductSpecificationTableData = {
 };
 
 export type IProductEntryTableData = {
+	is_published: boolean;
 	uuid: string;
 	title: string;
 	category_uuid: string;

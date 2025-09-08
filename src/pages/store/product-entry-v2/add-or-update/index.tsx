@@ -67,7 +67,6 @@ const Index = () => {
 		if (isUpdate && data) {
 			form.reset(flattenOrderData(data).flattened);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
 
 	async function onSubmit(values: IProductEntryV2) {
@@ -75,18 +74,16 @@ const Index = () => {
 			.flattened as IProductEntryV2;
 		const { product_variant, product_specification, product_image, ...rest } = value;
 
-		// FIXED: Handle validation error properly - don't add to promises array
 		if (values.product_variant.length === 0) {
 			ShowLocalToast({
 				type: 'error',
 				message: 'Please add at least one entry',
 			});
-			return; // Early return - don't continue processing
+			return;
 		}
 
 		if (isUpdate) {
 			try {
-				// Update main product data first
 				const update_product_data = updateData.mutateAsync({
 					url: `/store/product/${uuid}`,
 					updatedData: {
@@ -96,10 +93,8 @@ const Index = () => {
 					isOnCloseNeeded: false,
 				});
 
-				// FIXED: Only collect actual Promise<any> values
 				const parallel_promises: Promise<any>[] = [];
 
-				// Handle specifications - these return promises
 				if (product_specification?.length > 0) {
 					const spec_promises = product_specification.map((item) => {
 						if (item.uuid) {
@@ -125,7 +120,7 @@ const Index = () => {
 							});
 						}
 					});
-					// FIXED: Only push actual promises
+
 					parallel_promises.push(...spec_promises);
 				}
 
@@ -158,11 +153,10 @@ const Index = () => {
 							});
 						}
 					});
-					// FIXED: Only push actual promises
+
 					parallel_promises.push(...image_promises);
 				}
 
-				// FIXED: Sequential variant processing with proper typing
 				const processVariantsSequentially = async (): Promise<any[]> => {
 					const variant_results: any[] = []; // Store results, not promises
 
@@ -189,7 +183,6 @@ const Index = () => {
 									}),
 						};
 
-						// Step 1: Create/Update variant and wait for completion
 						const variant_result = await (variant.uuid
 							? updateData.mutateAsync({
 									url: `/store/product-variant/${variant.uuid}`,
@@ -202,7 +195,6 @@ const Index = () => {
 
 						variant_results.push(variant_result);
 
-						// Step 2: Create entries after variant exists
 						if (variant.product_variant_values_entry && variant.product_variant_values_entry.length > 0) {
 							const entry_promises = variant.product_variant_values_entry
 								.filter((item) => item != null)
@@ -238,20 +230,14 @@ const Index = () => {
 					return variant_results;
 				};
 
-				// Execute all operations
-				await Promise.all([
-					update_product_data,
-					...parallel_promises, // These are all Promise<any>
-					processVariantsSequentially(), // This returns Promise<any[]>
-				]);
+				await Promise.all([update_product_data, ...parallel_promises, processVariantsSequentially()]);
 
-				// FIXED: Handle success without type issues
 				form.reset(PRODUCT_ENTRY_NULL_V2);
 				invalidateProductByUUID();
 				navigate(`/store/product-entry/${rest.uuid}/details/v2`);
 			} catch (err) {
 				console.error(`Error with Promise operations: ${err}`);
-				// FIXED: Handle error feedback properly
+
 				ShowLocalToast({
 					type: 'error',
 					message: 'Failed to update product. Please try again.',
@@ -278,7 +264,6 @@ const Index = () => {
 				isOnCloseNeeded: false,
 			});
 
-			// FIXED: Collect only Promise<any> values
 			const independent_promises: Promise<any>[] = [];
 
 			// Specifications
@@ -319,7 +304,6 @@ const Index = () => {
 				independent_promises.push(...image_promises);
 			}
 
-			// FIXED: Sequential variant processing for CREATE
 			const processVariantsSequentiallyCreate = async (): Promise<any[]> => {
 				const all_results: any[] = [];
 
@@ -334,7 +318,6 @@ const Index = () => {
 						index: index + 1,
 					};
 
-					// Step 1: Create variant first
 					const variant_result = await postData.mutateAsync({
 						url: '/store/product-variant',
 						newData: variant_data,
@@ -342,7 +325,6 @@ const Index = () => {
 
 					all_results.push(variant_result);
 
-					// Step 2: Create entries after variant exists
 					if (variant.product_variant_values_entry && variant.product_variant_values_entry.length > 0) {
 						const entry_promises = variant.product_variant_values_entry
 							.filter((item) => item != null)
@@ -488,9 +470,6 @@ const Index = () => {
 			index: field.index,
 		});
 	};
-
-	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
-	const [updatedData, setUpdatedData] = useState<IProductEntryV2['product_variant'][number] | null>(null);
 
 	return (
 		<CoreForm.AddEditWrapper

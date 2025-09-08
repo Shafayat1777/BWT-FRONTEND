@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { divide } from 'lodash';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import { FormField } from '@/components/ui/form';
+import { Switch } from '@/components/ui/switch';
 import CoreForm from '@core/form';
 import { IFormSelectOption } from '@core/form/types';
 
@@ -69,7 +71,19 @@ const Header = ({
 	};
 
 	return (
-		<CoreForm.Section title={`Product Info`} className='flex flex-col'>
+		<CoreForm.Section
+			title={`Product Info`}
+			className='flex flex-col'
+			extraHeader={
+				<div className='flex items-center gap-3 text-white'>
+					<FormField
+						control={form.control}
+						name='is_published'
+						render={(props) => <CoreForm.Switch label='Published' {...props} />}
+					/>
+				</div>
+			}
+		>
 			<div className='grid grid-cols-3 gap-4'>
 				<FormField control={form.control} name='title' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField
@@ -113,8 +127,7 @@ const Header = ({
 					name='attribute_list'
 					render={(props) => (
 						<CoreForm.ReactSelect
-							isDisabled={isUpdate}
-							placeholder='Select Model'
+							placeholder='Select Attributes'
 							menuPortalTarget={document.body}
 							options={AttributeOptions!}
 							isMulti
