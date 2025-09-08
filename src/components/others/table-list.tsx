@@ -21,7 +21,7 @@ const TableList = ({ items, title, className, isSmallTitle = false }: ITableList
 			{title && (
 				<div>
 					{!isSmallTitle && (
-						<h4 className='border-b bg-base-200 px-6 py-2 text-lg font-medium capitalize leading-tight text-primary'>
+						<h4 className='border-b bg-base-300 px-6 py-2 text-lg font-medium capitalize leading-tight text-primary'>
 							{title}
 						</h4>
 					)}
@@ -34,8 +34,8 @@ const TableList = ({ items, title, className, isSmallTitle = false }: ITableList
 						{items.map((item) =>
 							item.hidden ? null : (
 								<TableRow key={item.label} className='h-10 cursor-pointer border-b last:border-b-0'>
-									<TableCell className='w-1/2 font-semibold'>{item.label}</TableCell>
-									<TableCell className='w-1/2'>{item.value || '--'}</TableCell>
+									<TableCell className='w-1/3 font-semibold'>{item.label}</TableCell>
+									<TableCell className='w-2/3'>{item.value || '--'}</TableCell>
 								</TableRow>
 							)
 						)}

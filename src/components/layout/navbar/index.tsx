@@ -46,8 +46,7 @@ const Navbar = () => {
 					{!homePage && <GlobalBreadcrumbs />}
 
 					<button
-						className='ml-auto mr-2 flex gap-2 rounded-sm p-1 px-2 text-xs text-green-700 outline outline-1'
-						
+						className='ml-auto mr-2 flex gap-2 rounded-sm p-1 px-2 text-xs text-accent outline outline-1'
 						onClick={() => navigation('/work/scanner')}
 					>
 						Scan

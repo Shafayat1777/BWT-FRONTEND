@@ -6,12 +6,26 @@ import SwitchStatus from '@/components/buttons/switch-or-satus';
 import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
+import { Badge } from '@/components/ui/badge';
 
 import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
 import { OrderImages } from '../../_config/utils/component';
+
+const ProblemComponent = ({ arr, statement }: { arr: string[]; statement: string }) => {
+	return (
+		<div className='flex flex-wrap items-start gap-1'>
+			{arr?.map((item, index) => (
+				<Badge className='uppercase' variant='outline' key={index}>
+					{item?.replace(/_/g, ' ')}
+				</Badge>
+			)) ?? '--'}
+			<span className='text-sm italic'>{statement}</span>
+		</div>
+	);
+};
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const pageAccess = useAccess('work__order_details') as string[];
@@ -47,20 +61,18 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					/>
 				),
 			},
-			{ label: 'User Name', value: data.user_name },
 			{ label: 'User ID', value: data.user_id },
+			{ label: 'User', value: data.user_name },
 			{
 				label: 'Phone No',
 				value: data?.user_phone,
 			},
-			{ label: 'Engineer', value: data.engineer_name },
-
 			{
-				label: 'Created At',
+				label: 'Created',
 				value: formatDateTable(data.created_at),
 			},
 			{
-				label: 'Updated At',
+				label: 'Updated',
 				value: formatDateTable(data.updated_at),
 			},
 			{ label: 'Remarks', value: data.remarks },
@@ -94,57 +106,56 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const renderProblemItems = (): ITableListItems => {
 		return [
 			{
-				label: 'Order Problems',
+				label: 'Order',
 				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data.order_problems_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
-					</div>
+					<ProblemComponent arr={data.order_problems_name as string[]} statement={data.problem_statement} />
 				),
 			},
-			{ label: 'Order Problem Statement', value: data.problem_statement },
 			{
-				label: 'Repair Problems',
+				label: 'Diagnosis',
 				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data.repairing_problems_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
+					<div className='flex flex-col gap-1'>
+						<ProblemComponent
+							arr={data?.diagnosis?.diagnosis_problems_name as string[]}
+							statement={data.diagnosis?.problem_statement}
+						/>
+						{formatDateTable(data.diagnosis?.status_update_date)}
 					</div>
 				),
 			},
-			{ label: 'Repair Problem Statement', value: data.repairing_problem_statement },
 			{
-				label: 'QC Problems',
+				label: 'Customer Defined',
 				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data.qc_problems_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
-					</div>
+					<ProblemComponent
+						arr={[data.diagnosis?.customer_problem_statement]}
+						statement={data.diagnosis?.customer_remarks}
+					/>
 				),
 			},
-			{ label: 'QC Problem Statement', value: data.qc_problem_statement },
 			{
-				label: 'Delivery Problems',
+				label: 'Repair',
 				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data.delivery_problems_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
-					</div>
+					<ProblemComponent
+						arr={data.repairing_problems_name as string[]}
+						statement={data.repairing_problem_statement}
+					/>
 				),
 			},
-			{ label: 'Delivery Problem Statement', value: data.delivery_problem_statement },
+			{
+				label: 'QC',
+				value: (
+					<ProblemComponent arr={data.qc_problems_name as string[]} statement={data.qc_problem_statement} />
+				),
+			},
+			{
+				label: 'Delivery',
+				value: (
+					<ProblemComponent
+						arr={data.delivery_problems_name as string[]}
+						statement={data.delivery_problem_statement}
+					/>
+				),
+			},
 			{
 				label: 'Images',
 				value: <OrderImages image_1={data?.image_1} image_2={data?.image_2} image_3={data?.image_3} />,
@@ -180,7 +191,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{
 				label: 'Received',
 				value: (
-					<div className='flex flex-col gap-2'>
+					<div className='flex gap-2'>
 						<StatusButton value={data.is_product_received as boolean} />
 						<span className='text-xs font-bold'>
 							{data?.is_product_received ? formatDateTable(data?.received_date) : '-'}
@@ -192,15 +203,20 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{
 				label: 'Diagnosing Needed',
 				value: (
-					<SwitchStatus
-						checked={data?.is_diagnosis_need}
-						onCheckedChange={() => {
-							handelDiagnosisStatusChange();
-						}}
-						disabled={!haveDiagnosedNeedAccess || data?.is_delivery_complete}
-					/>
+					<div className='flex gap-1'>
+						<SwitchStatus
+							checked={data?.is_diagnosis_need}
+							onCheckedChange={() => {
+								handelDiagnosisStatusChange();
+							}}
+							disabled={
+								!haveDiagnosedNeedAccess || data?.is_delivery_complete || data?.is_ready_for_delivery
+							}
+						/>
+					</div>
 				),
 			},
+			{ label: 'Engineer', value: data.engineer_name },
 			{
 				label: 'Proceed to Repair',
 				value: (
@@ -209,7 +225,12 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 						onCheckedChange={() => {
 							handelProceedToRepair();
 						}}
-						disabled={!haveProceedToRepairAccess || data?.is_delivery_complete}
+						disabled={
+							!haveProceedToRepairAccess ||
+							data?.is_delivery_complete ||
+							data?.is_transferred_for_qc ||
+							data?.is_ready_for_delivery
+						}
 					/>
 				),
 			},
@@ -222,14 +243,14 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 						onCheckedChange={() => {
 							handelQCStatusChange();
 						}}
-						disabled={!haveQCAccess || data?.is_delivery_complete}
+						disabled={!haveQCAccess || data?.is_delivery_complete || data?.is_ready_for_delivery}
 					/>
 				),
 			},
 			{
 				label: 'Ready For Delivery',
 				value: (
-					<div>
+					<div className='flex gap-2'>
 						<SwitchStatus
 							checked={data?.is_ready_for_delivery}
 							onCheckedChange={() => {
@@ -280,54 +301,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{ label: 'Advance Pay', value: data.advance_pay },
 			{ label: 'Bill Amount', value: data.bill_amount },
 			{ label: 'Remaining', value: data.bill_amount - data.advance_pay },
-		];
-	};
-
-	const renderDiagnosisItemsLeft = (): ITableListItems => {
-		return [
-			{
-				label: 'Diagnosis ID',
-				value: data?.diagnosis?.diagnosis_id,
-			},
-
-			{
-				label: 'Problem',
-				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data?.diagnosis?.diagnosis_problems_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
-					</div>
-				),
-			},
-			{
-				label: 'Problem Statement',
-				value: data.diagnosis?.problem_statement,
-			},
-			{
-				label: 'Customer Problem Statement',
-				value: data.diagnosis?.customer_problem_statement,
-			},
-		];
-	};
-
-	const renderDiagnosisItemsRight = (): ITableListItems => {
-		return [
-			{
-				label: 'Customer Remarks',
-				value: data.diagnosis?.customer_remarks,
-			},
-
-			{
-				label: 'Proceed to Repair',
-				value: <StatusButton value={data.diagnosis?.is_proceed_to_repair as boolean} />,
-			},
-			{
-				label: 'Status Update Date',
-				value: data.diagnosis?.status_update_date && formatDateTable(data.diagnosis?.status_update_date),
-			},
 		];
 	};
 
@@ -382,28 +355,20 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				<div className='grid w-full grid-cols-4 gap-y-2 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
 					<div className='flex flex-col'>
 						<TableList title='General' className='w-full' items={renderGeneralItems()} />
-						<TableList title='Bill' className='w-full' items={renderBillItems()} />
 					</div>
 					<div className='flex flex-col'>
 						<TableList title='Product' className='w-full' items={renderProductItems()} />
 						<TableList title='Location' className='w-full' items={renderLocationItems()} />
 					</div>
-					<div className='flex flex-col'>
+					<div className='flex flex-col gap-2'>
 						<TableList title='Problem' className='w-full' items={renderProblemItems()} />
+						<TableList title='Bill' className='w-full' items={renderBillItems()} />
 					</div>
 					<div className='flex flex-col'>
 						<TableList title='Status' className='w-full' items={renderStatusItems()} />
 					</div>
 				</div>
 			</SectionContainer>
-			{data?.is_diagnosis_need && (
-				<SectionContainer title={'Diagnosis'}>
-					<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-						<TableList className='over w-full md:w-1/2' items={renderDiagnosisItemsLeft()} />
-						<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
-					</div>
-				</SectionContainer>
-			)}
 		</>
 	);
 };
