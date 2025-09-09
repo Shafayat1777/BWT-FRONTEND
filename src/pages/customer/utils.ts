@@ -39,3 +39,22 @@ export const platformTypeOptions = [
 		value: 'none',
 	},
 ];
+
+export const repairOptions = [
+	{
+		label: 'Monitor',
+		value: 'monitor',
+	},
+	{
+		label: 'Display',
+		value: 'display',
+	},
+	{
+		label: 'All in one',
+		value: 'all_in_one',
+	},
+	{
+		label: 'Accessories',
+		value: 'accessories',
+	},
+];

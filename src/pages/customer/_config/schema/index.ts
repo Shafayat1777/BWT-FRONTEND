@@ -5,6 +5,7 @@ import {
 	BOOLEAN_REQUIRED,
 	NUMBER_DOUBLE_REQUIRED,
 	PHONE_NUMBER_REQUIRED,
+	STRING,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
 	STRING_NULLABLE,
@@ -78,18 +79,36 @@ export type IOrder = z.infer<typeof ORDER_SCHEMA>;
 
 //* Info Schema
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
+	model_uuid: STRING_OPTIONAL,
+	brand_uuid: STRING_OPTIONAL,
 	is_transferred_for_qc: true,
 	is_ready_for_delivery: true,
 });
-export const INFO_SCHEMA = z.object({
-	uuid: STRING_OPTIONAL,
-	name: STRING_REQUIRED,
-	phone: PHONE_NUMBER_REQUIRED,
-	where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
-	location: STRING_REQUIRED,
-	remarks: STRING_NULLABLE,
-	order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
-});
+export const INFO_SCHEMA = z
+	.object({
+		uuid: STRING_OPTIONAL,
+		name: STRING_REQUIRED,
+		phone: PHONE_NUMBER_REQUIRED,
+		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
+		location: STRING_REQUIRED,
+		remarks: STRING_NULLABLE,
+		service_type: z.enum(['monitor', 'display', 'all_in_one', 'accessories']).optional(),
+		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
+	})
+	.superRefine((data, ctx) => {
+		data?.order_entry.forEach((order, index) => {
+			const serviceType = order?.data?.service_type;
+			const hasModelUuid = !!order?.model_uuid;
+			const hasBrandUuid = !!order?.brand_uuid;
+			if (serviceType && serviceType !== 'accessories' && !hasModelUuid) {
+				ctx.addIssue(customIssue('Required', `order_entry.${index}.model_uuid`));
+			}
+			if (serviceType && serviceType !== 'accessories' && !hasBrandUuid) {
+				ctx.addIssue(customIssue('Required', `order_entry.${index}.brand_uuid`));
+			}
+		});
+	});
+
 export const INFO_NULL: Partial<IInfo> = {
 	uuid: '',
 	where_they_find_us: 'none',

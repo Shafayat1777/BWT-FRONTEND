@@ -56,6 +56,7 @@ const useGenerateFieldDefs = ({ copy, remove, form, isUpdate }: IGenerateFieldDe
 					/>
 				);
 			},
+			hidden: form.watch('service_type') == 'accessories',
 		},
 		{
 			header: 'Model',
@@ -66,6 +67,12 @@ const useGenerateFieldDefs = ({ copy, remove, form, isUpdate }: IGenerateFieldDe
 					<ModelFilter brand_uuid={form.watch(`order_entry.${index}.brand_uuid`)} form={form} index={index} />
 				);
 			},
+			hidden: form.watch('service_type') == 'accessories',
+		},
+		{
+			header: 'Quantity',
+			accessorKey: 'quantity',
+			type: 'number',
 		},
 		{
 			header: 'Problem Statement',

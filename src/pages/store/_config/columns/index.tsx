@@ -44,6 +44,7 @@ import {
 	IWarehouseTableData,
 } from './columns.type';
 import { getWarehouseAndBranch } from './utils';
+import { discountUnits } from '../../product-entry-v2/add-or-update/utils';
 
 //* Group Columns
 export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
@@ -401,6 +402,12 @@ export const productVariantDetailsColumnsV2 = (
 			accessorKey: 'discount',
 			header: 'Discount',
 			enableColumnFilter: false,
+			cell: (info) => (
+				<span className='flex gap-2'>
+					<span>{info.row.original.discount}</span>
+					<span>{discountUnits.find((unit) => unit.value === info.row.original.discount_unit)?.label || info.row.original.discount_unit}</span>
+				</span>
+			),
 		},
 		{
 			accessorKey: 'selling_warehouse',
@@ -416,7 +423,6 @@ export const productVariantDetailsColumnsV2 = (
 	}));
 	return [...staticColumns, ...dynamicColumnDefs];
 };
-
 //* Product Specification Details
 export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecificationTableData>[] => [
 	{
@@ -430,7 +436,6 @@ export const productSpecificationDetailsColumns = (): ColumnDef<IProductSpecific
 		enableColumnFilter: false,
 	},
 ];
-
 //* Product Variant Values Entry Details
 export const productVariantValuesEntryDetailsColumns = (): ColumnDef<IProductVariantValuesEntryTableData>[] => [
 	{

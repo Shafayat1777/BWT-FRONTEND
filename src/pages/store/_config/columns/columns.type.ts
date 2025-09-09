@@ -124,6 +124,7 @@ export type IProductVariantTableData = {
 	product_uuid: string;
 	selling_price: number;
 	discount: number;
+	discount_unit: string;
 	warehouse_1: number;
 	warehouse_2: number;
 	warehouse_3: number;
