@@ -5,6 +5,7 @@ import Transfer from '@/components/buttons/transfer';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 
 import { IProductEntryV2 } from '../../_config/schema';
+import Discount from './discount'
 
 interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
@@ -26,8 +27,10 @@ const useGenerateVariant = ({ copy, remove, watch, form, dynamicColumns }: IGene
 		{
 			header: 'Discount',
 			accessorKey: 'discount',
-			type: 'number',
-			disabled: (index): boolean => form.watch('is_order_exist') && form.watch(`product_variant.${index}.uuid`),
+			type: 'custom',
+			component: (index: number) => {
+				return <Discount form={form} index={index} />;
+			},
 		},
 		{
 			header: 'Selling Warehouse',

@@ -4,7 +4,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
 import { IInfo } from './_config/schema';
-import { platformTypeOptions } from './utils';
+import { platformTypeOptions, repairOptions } from './utils';
 
 const Header = () => {
 	const form = useFormContext<IInfo>();
@@ -31,6 +31,19 @@ const Header = () => {
 						label='Where They Find Us'
 						options={platformTypeOptions || []}
 						placeholder='Select Platform'
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='service_type'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
+						label='Service Type'
+						options={repairOptions || []}
+						placeholder='Select Service'
 						{...props}
 					/>
 				)}

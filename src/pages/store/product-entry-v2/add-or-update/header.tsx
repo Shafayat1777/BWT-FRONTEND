@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { divide } from 'lodash';
+import { NotebookPen } from 'lucide-react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
@@ -12,7 +13,6 @@ import { useOtherAttributes, useOtherCategory, useOtherModel } from '@/lib/commo
 
 import { IProductEntryV2 } from '../../_config/schema';
 import useGenerateImage from './useGenerateImage';
-import { NotebookPen } from 'lucide-react';
 
 const Header = ({
 	setDeleteItem,
@@ -78,7 +78,7 @@ const Header = ({
 			extraHeader={
 				<div className='flex items-center gap-3 text-white'>
 					{form.watch('is_order_exist') && (
-						<span className='rounded-sm bg-red-200 p-2 text-xs text-red-700 flex gap-1'>
+						<span className='flex gap-1 rounded-sm bg-red-200 p-2 text-xs text-red-700'>
 							<NotebookPen size={16} />
 							Note: This product already have order. so you can't change some filed here
 						</span>
@@ -160,6 +160,11 @@ const Header = ({
 					control={form.control}
 					name='care_maintenance_description'
 					render={(props) => <CoreForm.Textarea label='Care Maintenance Description' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='extra_information'
+					render={(props) => <CoreForm.Textarea label='Extra Information' {...props} />}
 				/>
 			</div>
 

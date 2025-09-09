@@ -10,6 +10,7 @@ import {
 	NUMBER_OPTIONAL,
 	NUMBER_REQUIRED,
 	PHONE_NUMBER_REQUIRED,
+	STRING,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,
@@ -374,6 +375,7 @@ export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 	warranty_days: NUMBER(),
 	service_warranty_days: NUMBER(),
 	attribute_list: z.array(STRING_REQUIRED).refine((list) => list.length > 0, 'Please select at least one attribute'),
+	extra_information: STRING_NULLABLE.optional(),
 
 	product_variant: z.array(
 		z
@@ -467,6 +469,7 @@ export const PRODUCT_ENTRY_SCHEMA = z.object({
 	warranty_days: NUMBER(),
 	service_warranty_days: NUMBER(),
 	attribute_list: z.array(STRING_REQUIRED).refine((list) => list.length > 0, 'Please select at least one attribute'),
+	extra_information: STRING_NULLABLE.optional(),
 
 	product_variant: z.array(
 		z.object({

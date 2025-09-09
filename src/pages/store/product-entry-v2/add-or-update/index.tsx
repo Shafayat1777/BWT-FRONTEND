@@ -235,7 +235,7 @@ const Index = () => {
 
 				form.reset(PRODUCT_ENTRY_NULL_V2);
 				invalidateProductByUUID();
-				navigate(`/store/product-entry/${rest.uuid}/details/v2`);
+				navigate(`/store/product-entry/${rest.uuid}/details`);
 			} catch (err) {
 				console.error(`Error with Promise operations: ${err}`);
 
@@ -356,7 +356,7 @@ const Index = () => {
 			// Handle success
 			form.reset(PRODUCT_ENTRY_NULL_V2);
 			invalidateProductByUUID();
-			navigate(`/store/product-entry/${new_product_uuid}/details/v2`);
+			navigate(`/store/product-entry/${new_product_uuid}/details`);
 		} catch (err) {
 			console.error(`Error with Promise operations: ${err}`);
 			// FIXED: Proper error handling

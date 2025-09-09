@@ -113,7 +113,7 @@ export const infoColumns = (
 			return (
 				<Badge className='space-x-1' variant={info.getValue() === true ? 'accent' : 'destructive'}>
 					<span>{info.getValue() === true ? <Check className='size-4' /> : <X className='size-4' />}</span>
-					<span>{formateDate(info.row.original.received_date)}</span>
+					<span>{info.row.original.received_date && formateDate(info.row.original.received_date)}</span>
 				</Badge>
 			);
 		},
