@@ -70,6 +70,11 @@ const useGenerateFieldDefs = ({ copy, remove, form, isUpdate }: IGenerateFieldDe
 			hidden: form.watch('service_type') == 'accessories',
 		},
 		{
+			header: 'Quantity',
+			accessorKey: 'quantity',
+			type: 'number',
+		},
+		{
 			header: 'Problem Statement',
 			accessorKey: 'problem_statement',
 			type: 'textarea',

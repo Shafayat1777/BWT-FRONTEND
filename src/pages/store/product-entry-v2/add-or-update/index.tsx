@@ -371,10 +371,12 @@ const Index = () => {
 		const baseVariant = {
 			selling_price: 0,
 			discount: 0,
+			discount_unit:'bdt',
 			warehouse_1: 0,
 			warehouse_2: 0,
 			warehouse_3: 0,
 			selling_warehouse: 0,
+
 			product_variant_values_entry: [],
 		};
 
