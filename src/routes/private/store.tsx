@@ -33,6 +33,9 @@ const ProductEntryDetailsV2 = lazy(() => import('@/pages/store/product-entry-v2/
 const Bill = lazy(() => import('@/pages/store/bill-info'));
 const BillEntry = lazy(() => import('@/pages/store/bill-info/add-or-update'));
 const BillDetails = lazy(() => import('@/pages/store/bill-info/details'));
+const Accessories = lazy(() => import('@/pages/store/accessories-order'));
+const ContactUs = lazy(() => import('@/pages/store/contact-us'));
+const Review = lazy(() => import('@/pages/store/review'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -192,6 +195,14 @@ const StoreRoutes: IRoute[] = [
 				page_name: 'store__product_order',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
+			{
+				name: 'Accessories Order',
+				path: '/store/accessories-order',
+				element: <Accessories />,
+				page_name: 'store__accessories_order',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+
 			// {
 			// 	name: 'Bill Entry',
 			// 	path: '/store/product-order/add',
@@ -214,6 +225,20 @@ const StoreRoutes: IRoute[] = [
 				element: <BillDetails />,
 				page_name: 'store__purchase_details',
 				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Contact Us',
+				path: '/store/contact-us',
+				element: <ContactUs />,
+				page_name: 'store__contact_us',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Review',
+				path: '/store/review',
+				element: <Review />,
+				page_name: 'store__review',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{

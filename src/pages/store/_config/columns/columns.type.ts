@@ -1,6 +1,5 @@
 import { IProduct } from '../schema';
 
-
 //* Group
 export type IGroupTableData = {
 	uuid: string;
@@ -9,6 +8,26 @@ export type IGroupTableData = {
 	created_at: string;
 	updated_at: string;
 	remarks: string;
+};
+//* Contact Us
+export type IContactUsTableData = {
+	uuid: string;
+	subject: string;
+	name: string;
+	email: string;
+	phone: string;
+	message: string;
+};
+//* Review
+export type IReviewTableData = {
+	product_title: string;
+	uuid: string;
+	name: string;
+	email: string;
+	comment: string;
+	rating: 1 | 2 | 3 | 4 | 5;
+	info_id: string;
+	accessories_id: string;
 };
 //* Category
 export type ICategoryTableData = {
@@ -112,7 +131,7 @@ export type IProductTableData = {
 // * Product Entry
 
 export type IProductVariantValuesEntryTableData = {
-	uuid: string|undefined;
+	uuid: string | undefined;
 	product_variant_uuid: string;
 	attribute_uuid: string;
 	attribute_name?: string;
@@ -438,6 +457,24 @@ export type IBillInfo = {
 	bill_status: 'pending' | 'completed' | 'canceled';
 
 	payment_method: 'bkash' | 'cod';
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+	ship_address: IShippingAddress | null;
+	order_details: IOrdered[];
+};
+export type IAccessories = {
+	uuid: string;
+	user_uuid: string;
+	name: string;
+	phone: string;
+	email: string;
+	location: string;
+	accessories_id: string;
+	image_1: string;
+	image_2: string;
+	image_3: string;
+	status: 'pending' | 'accepted' | 'rejected';
 	created_at: string;
 	updated_at: string;
 	remarks: string;

@@ -1,4 +1,4 @@
-import { Location, StoreProduct, UserNamePhone } from '@/pages/work/_config/utils/component';
+import { Location, OrderImages, StoreProduct, UserNamePhone } from '@/pages/work/_config/utils/component';
 import { LocationName } from '@/pages/work/_config/utils/function';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
@@ -11,14 +11,18 @@ import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
+import { status } from '../../accessories-order/utills';
 import { order_status } from '../../bill-info/utills';
+import { discountUnits } from '../../product-entry-v2/add-or-update/utils';
 import {
+	IAccessories,
 	IAttributesTableData,
 	IBillInfo,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
 	ICategoryTableData,
+	IContactUsTableData,
 	IFloorTableData,
 	IGroupTableData,
 	IInternalTransferTableData,
@@ -34,6 +38,7 @@ import {
 	IPurchaseReturnTableData,
 	IPurchaseTableData,
 	IRackTableData,
+	IReviewTableData,
 	IRoomTableData,
 	ISizeTableData,
 	IStockTableData,
@@ -44,13 +49,73 @@ import {
 	IWarehouseTableData,
 } from './columns.type';
 import { getWarehouseAndBranch } from './utils';
-import { discountUnits } from '../../product-entry-v2/add-or-update/utils';
 
 //* Group Columns
 export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
+		enableColumnFilter: false,
+	},
+];
+export const contactUsColumns = (): ColumnDef<IContactUsTableData>[] => [
+	{
+		accessorFn: (row) => {
+			return row.name + ' - ' + row.phone + ' - ' + row.email;
+		},
+		header: 'Contact Person',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { name, phone, email } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<UserNamePhone user_name={name} phone={phone} email={email} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'subject',
+		header: 'Subject',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'message',
+		header: 'Message',
+		enableColumnFilter: false,
+	},
+];
+export const reviewColumns = (): ColumnDef<IReviewTableData>[] => [
+	{
+		accessorKey: 'product_title',
+		header: 'Product',
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => {
+			return row.name + ' - ' + row.email;
+		},
+		header: 'Reviewer',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { name, email } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<UserNamePhone user_name={name} email={email} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'rating',
+		header: 'Rating',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'comment',
+		header: 'Comment',
 		enableColumnFilter: false,
 	},
 ];
@@ -405,7 +470,10 @@ export const productVariantDetailsColumnsV2 = (
 			cell: (info) => (
 				<span className='flex gap-2'>
 					<span>{info.row.original.discount}</span>
-					<span>{discountUnits.find((unit) => unit.value === info.row.original.discount_unit)?.label || info.row.original.discount_unit}</span>
+					<span>
+						{discountUnits.find((unit) => unit.value === info.row.original.discount_unit)?.label ||
+							info.row.original.discount_unit}
+					</span>
 				</span>
 			),
 		},
@@ -947,6 +1015,84 @@ export const billColumns = (
 	{
 		accessorKey: 'payment_method',
 		header: 'Payment Method',
+		enableColumnFilter: false,
+	},
+];
+export const accessoriesColumns = (handleStatus: (row: Row<any>, value: number) => void): ColumnDef<IAccessories>[] => [
+	{
+		accessorKey: 'accessories_id',
+		header: 'ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'status',
+		header: 'Status',
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<ReactSelect
+					value={status?.find((item) => item.value === info.getValue())}
+					options={status}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
+					isClearable={false}
+					onChange={(value: any) => handleStatus(info.row, value.value as number)}
+				/>
+			);
+		},
+	},
+
+	{
+		accessorFn: (row) => row.name + ' - ' + row.phone,
+		header: 'Customer',
+		size: 200,
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { name, phone } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<UserNamePhone user_name={name} phone={phone} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'email',
+		header: 'Email',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'location',
+		header: 'Address',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'images',
+		header: 'Images',
+		enableColumnFilter: false,
+		enableSorting: false,
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
+		},
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'description',
+		header: 'Description',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'where_they_find_us',
+		header: 'Where They Find Us',
 		enableColumnFilter: false,
 	},
 ];
