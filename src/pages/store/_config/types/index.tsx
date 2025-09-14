@@ -1,13 +1,15 @@
-import { IDefaultAddOrUpdateProps, IDefaultAttributeAddOrUpdateProps, IToast } from '@/types';
+import { IDefaultAddOrUpdateProps, IDefaultAttributeAddOrUpdateProps, IFileAddOrUpdateProps, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import {
+	IAccessories,
 	IAttributesTableData,
 	IBoxTableData,
 	IBranchTableData,
 	IBrandTableData,
 	ICategoryTableData,
+	IContactUsTableData,
 	IFloorTableData,
 	IGroupTableData,
 	IInternalTransferTableData,
@@ -16,17 +18,26 @@ import {
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
 	IRackTableData,
+	IReviewTableData,
 	IRoomTableData,
 	ISizeTableData,
 	IStockTableData,
 	IVendorTableData,
 	IWarehouseTableData,
 } from '../columns/columns.type';
-import { IProductEntry } from '../schema';
+import { IProductEntry, IReview } from '../schema';
 
 //* Group
 export interface IGroupAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IGroupTableData | null;
+}
+//* Contact Us
+export interface IContactUsAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IContactUsTableData | null;
+}
+//* Review
+export interface IReviewAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IReviewTableData | null;
 }
 // }
 
@@ -86,6 +97,10 @@ export interface IRackAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 //* Box
 export interface IBoxAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IBoxTableData | null;
+}
+//* Accessories
+export interface IAccessoriesAddOrUpdateProps extends IFileAddOrUpdateProps {
+	updatedData?: IAccessories | null;
 }
 //*Room
 export interface IRoomAddOrUpdateProps extends IDefaultAddOrUpdateProps {

@@ -97,11 +97,18 @@ export const storeQK = {
 	internalTransferByUUID: (uuid: string) => [...storeQK.internalTransfer(), uuid],
 
 	//* Order Transfer
-	orderTransfer: (query?: string) => [...storeQK.all(), 'orderTransfer',query],
+	orderTransfer: (query?: string) => [...storeQK.all(), 'orderTransfer', query],
 	orderTransferByUUID: (uuid: string) => [...storeQK.orderTransfer(), uuid],
 
 	//*BIll Info
 	billInfo: () => [...storeQK.all(), 'billInfo'],
 	billInfoByUUID: (uuid: string) => [...storeQK.billInfo(), uuid],
 
+	//* Accessories
+	accessories: () => [...storeQK.all(), 'accessories'],
+	accessoriesByUUID: (uuid: string) => [...storeQK.accessories(), uuid],
+
+	//*Review
+	review: () => [...storeQK.all(), 'review'],
+	reviewByUUID: (uuid: string) => [...storeQK.review(), uuid],
 };

@@ -3,6 +3,7 @@ import {
 	Component,
 	FileDigit,
 	House,
+	Mail,
 	MapPin,
 	MessageSquareMore,
 	Phone,
@@ -138,7 +139,7 @@ export const Location = ({ branch_name, warehouse_name, rack_name, floor_name, b
 		</div>
 	);
 };
-export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: string }) => {
+export const UserNamePhone = ({ user_name, phone, email }: { user_name: string; phone?: string; email?: string }) => {
 	return (
 		<div className='relative flex flex-shrink-0 items-center gap-2 overflow-hidden'>
 			<div className='flex min-w-0 flex-col items-start gap-1'>
@@ -148,12 +149,22 @@ export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: 
 						{user_name}
 					</span>
 				</div>
-				<div className='flex items-start gap-2'>
-					<Phone className='size-4 flex-shrink-0' />
-					<span className='truncate text-[.8rem] capitalize' title={phone}>
-						{phone}
-					</span>
-				</div>
+				{phone && (
+					<div className='flex items-start gap-2'>
+						<Phone className='size-4 flex-shrink-0' />
+						<span className='truncate text-[.8rem] capitalize' title={phone}>
+							{phone}
+						</span>
+					</div>
+				)}
+				{email && (
+					<div className='flex items-start gap-2'>
+						<Mail className='size-4 flex-shrink-0' />
+						<span className='truncate text-[.8rem]' title={phone}>
+							{email}
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);

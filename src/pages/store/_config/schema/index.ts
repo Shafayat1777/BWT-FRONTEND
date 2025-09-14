@@ -42,6 +42,42 @@ export const GROUP_NULL: Partial<IGroup> = {
 
 export type IGroup = z.infer<typeof GROUP_SCHEMA>;
 
+//* Contact Us
+export const CONTACT_US_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	subject: STRING_REQUIRED,
+	phone: STRING_REQUIRED,
+	message: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const CONTACT_US_NULL: Partial<IContactUs> = {
+	name: '',
+	subject: '',
+	phone: '',
+	remarks: null,
+};
+
+export type IContactUs = z.infer<typeof CONTACT_US_SCHEMA>;
+
+export const REVIEW_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	rating: NUMBER_REQUIRED,
+	comment: STRING_REQUIRED,
+	product_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const REVIEW_NULL: Partial<IReview> = {
+	name: '',
+	rating: 0,
+	comment: '',
+	product_uuid: '',
+	remarks: null,
+};
+
+export type IReview = z.infer<typeof REVIEW_SCHEMA>;
+
 //* Category Schema
 export const CATEGORY_SCHEMA = z.object({
 	name: STRING_REQUIRED,
@@ -359,14 +395,35 @@ export const BOX_NULL: Partial<IBox> = {
 	floor_uuid: '',
 	remarks: null,
 };
-
 export type IBox = z.infer<typeof BOX_SCHEMA>;
+//* Accessories Schema
+export const ACCESSORIES_SCHEMA = z.object({
+	user_uuid: STRING_REQUIRED,
+	location: STRING_REQUIRED,
+	where_they_find_us: STRING_REQUIRED,
+	quantity: NUMBER_REQUIRED,
+	description: STRING_NULLABLE,
+	remarks: STRING_NULLABLE,
+	image_1: z.instanceof(File).or(STRING_NULLABLE).optional(),
+	image_2: z.instanceof(File).or(STRING_NULLABLE).optional(),
+	image_3: z.instanceof(File).or(STRING_NULLABLE).optional(),
+});
+
+export const ACCESSORIES_NULL: Partial<IAccessories> = {
+	user_uuid: '',
+	location: '',
+	where_they_find_us: '',
+	quantity: 0,
+	description: null,
+	remarks: null,
+};
+export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
 
 //* Product Entry Schema
 export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 	uuid: STRING_OPTIONAL,
 	is_order_exist: BOOLEAN_OPTIONAL,
-	is_published: BOOLEAN_REQUIRED,
+	is_published: BOOLEAN_REQUIRED.default(false),
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,
 	specifications_description: STRING_OPTIONAL,
@@ -445,6 +502,7 @@ export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 	uuid: '',
 	title: '',
+	is_published: false,
 	category_uuid: '',
 	specifications_description: '',
 	care_maintenance_description: '',

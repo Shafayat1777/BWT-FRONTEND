@@ -16,6 +16,34 @@ export const useStoreGroupsByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
+//*Contact Us
+export const useStoreContactUs = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.group(),
+		url: '/work/contact-us',
+	});
+
+export const useStoreContactUsByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.groupByUUID(uuid),
+		url: `/work/contact-us/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Review
+export const useStoreReviews = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.review(),
+		url: '/store/review',
+	});
+
+export const useStoreReviewsByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.reviewByUUID(uuid),
+		url: `/store/review/${uuid}`,
+		enabled: !!uuid,
+	});
+
 //* Category
 export const useStoreCategories = <T>() =>
 	useTQuery<T>({
@@ -349,5 +377,32 @@ export const useStoreBillInfoByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.billInfoByUUID(uuid),
 		url: `/store/bill-info-with-order-details?bill_info_uuid=${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Accessories
+export const useAccessories = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.accessories(),
+		url: `/store/accessories`,
+	});
+//* Accessories By UUID
+export const useAccessoriesByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.accessoriesByUUID(uuid),
+		url: `/store/accessories/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Review
+export const useReview = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.review(),
+		url: '/store/review',
+	});
+export const useReviewByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.reviewByUUID(uuid),
+		url: `/store/review/${uuid}`,
 		enabled: !!uuid,
 	});
