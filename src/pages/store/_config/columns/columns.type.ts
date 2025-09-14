@@ -21,6 +21,7 @@ export type IContactUsTableData = {
 //* Review
 export type IReviewTableData = {
 	product_title: string;
+	product_uuid: string;
 	uuid: string;
 	name: string;
 	email: string;
