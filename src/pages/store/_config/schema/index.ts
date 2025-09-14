@@ -46,6 +46,7 @@ export type IGroup = z.infer<typeof GROUP_SCHEMA>;
 export const CONTACT_US_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	subject: STRING_REQUIRED,
+	email: STRING_REQUIRED,
 	phone: STRING_REQUIRED,
 	message: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -423,6 +424,7 @@ export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
 export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 	uuid: STRING_OPTIONAL,
 	is_order_exist: BOOLEAN_OPTIONAL,
+	refurbished: z.enum(['yes', 'no']),
 	is_published: BOOLEAN_REQUIRED.default(false),
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,
@@ -501,6 +503,7 @@ export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 
 export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 	uuid: '',
+	refurbished: 'no',
 	title: '',
 	is_published: false,
 	category_uuid: '',
@@ -518,6 +521,7 @@ export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 export type IProductEntryV2 = z.infer<typeof PRODUCT_ENTRY_SCHEMA_V2>;
 export const PRODUCT_ENTRY_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
+	refurbished: z.enum(['yes', 'no']),
 	is_published: BOOLEAN_REQUIRED,
 	title: STRING_REQUIRED,
 	category_uuid: STRING_REQUIRED,

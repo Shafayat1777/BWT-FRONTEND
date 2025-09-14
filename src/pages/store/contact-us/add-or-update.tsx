@@ -31,7 +31,7 @@ const AddOrUpdate: React.FC<IContactUsAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreContactUsByUUID<IContactUsTableData>(updatedData?.uuid as string);
+	const { data } = useStoreContactUsByUUID<IContactUsTableData>(updatedData?.id as number);
 	const { invalidateQuery: invalidateGroup } = useOtherGroup<IFormSelectOption[]>();
 
 	const form = useRHF(CONTACT_US_SCHEMA, CONTACT_US_NULL);
@@ -56,7 +56,7 @@ const AddOrUpdate: React.FC<IContactUsAddOrUpdateProps> = ({
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
-				url: `${url}/${updatedData?.uuid}`,
+				url: `${url}/${updatedData?.id}`,
 				updatedData: {
 					...values,
 					updated_at: getDateTime(),
@@ -89,7 +89,7 @@ const AddOrUpdate: React.FC<IContactUsAddOrUpdateProps> = ({
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField control={form.control} name='phone' render={(props) => <CoreForm.Phone {...props} />} />
 			<FormField control={form.control} name='subject' render={(props) => <CoreForm.Input {...props} />} />
-			<FormField control={form.control} name='message' render={(props) => <CoreForm.Phone {...props} />} />
+			<FormField control={form.control} name='message' render={(props) => <CoreForm.Textarea {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

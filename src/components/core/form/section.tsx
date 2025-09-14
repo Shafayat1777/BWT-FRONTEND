@@ -7,9 +7,9 @@ import { IFormSectionProps } from './types';
 const FormSection: React.FC<IFormSectionProps> = ({ children, className, title, extraHeader }) => {
 	if (title) {
 		return (
-			<div className='overflow-hidden rounded-md shadow-sm'>
-				<div className='flex flex-col justify-between gap-1 bg-primary py-2 pl-4 pr-2 sm:flex-row sm:items-center'>
-					<h3 className='text-lg font-medium text-primary-foreground'>{title}</h3>
+			<div className='overflow-hidden rounded-md shadow-sm '>
+				<div className='flex flex-col justify-between gap-4 bg-primary py-2 pl-4 pr-2 sm:flex-row sm:items-center'>
+					<h3 className='text-lg font-medium text-primary-foreground w-auto'>{title}</h3>
 					{extraHeader}
 				</div>
 				<div

@@ -13,6 +13,7 @@ import { useOtherAttributes, useOtherCategory, useOtherModel } from '@/lib/commo
 
 import { IProductEntryV2 } from '../../_config/schema';
 import useGenerateImage from './useGenerateImage';
+import { refurbishedOptions } from './utils';
 
 const Header = ({
 	setDeleteItem,
@@ -73,7 +74,29 @@ const Header = ({
 
 	return (
 		<CoreForm.Section
-			title={`Product Info`}
+			title={
+				<div className='flex items-center gap-2'>
+					<div className='flex-1'>Product Information</div>
+					<div>
+						<FormField
+							control={form.control}
+							name='refurbished'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									menuPortalTarget={document.body}
+									disableLabel
+									label='Refurbished'
+									placeholder='Select Yes/No'
+									isDisabled={form.watch('is_order_exist')}
+									options={refurbishedOptions!}
+									{...props}
+								/>
+							)}
+						/>
+					</div>
+					<div className='text-sm'>Refurbished</div>
+				</div>
+			}
 			className='flex flex-col'
 			extraHeader={
 				<div className='flex items-center gap-3 text-white'>
@@ -164,7 +187,13 @@ const Header = ({
 				<FormField
 					control={form.control}
 					name='extra_information'
-					render={(props) => <CoreForm.Textarea label='Extra Information' {...props} />}
+					render={(props) => (
+						<CoreForm.Textarea
+							label='Extra Information'
+							subLabel='Note: You need to separate each information with semicolon (;)'
+							{...props}
+						/>
+					)}
 				/>
 			</div>
 
