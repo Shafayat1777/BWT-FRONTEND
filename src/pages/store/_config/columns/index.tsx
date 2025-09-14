@@ -91,6 +91,13 @@ export const reviewColumns = (): ColumnDef<IReviewTableData>[] => [
 		accessorKey: 'product_title',
 		header: 'Product',
 		enableColumnFilter: false,
+		cell: (info) => (
+			<CustomLink
+				url={`/store/product-entry/${info.row.original.product_uuid}/details`}
+				label={info.getValue() as string}
+				openInNewTab={true}
+			/>
+		),
 	},
 	{
 		accessorFn: (row) => {
