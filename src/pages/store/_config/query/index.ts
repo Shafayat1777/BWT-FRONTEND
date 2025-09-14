@@ -19,13 +19,13 @@ export const useStoreGroupsByUUID = <T>(uuid: string) =>
 //*Contact Us
 export const useStoreContactUs = <T>() =>
 	useTQuery<T>({
-		queryKey: storeQK.group(),
+		queryKey: storeQK.contactUs(),
 		url: '/work/contact-us',
 	});
 
-export const useStoreContactUsByUUID = <T>(uuid: string) =>
+export const useStoreContactUsByUUID = <T>(uuid: number) =>
 	useTQuery<T>({
-		queryKey: storeQK.groupByUUID(uuid),
+		queryKey: storeQK.contactUsByUUID(uuid),
 		url: `/work/contact-us/${uuid}`,
 		enabled: !!uuid,
 	});

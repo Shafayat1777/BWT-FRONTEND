@@ -39,7 +39,7 @@ const Group = () => {
 	// Single Delete Handler
 	const handleDelete = (row: Row<IContactUsTableData>) => {
 		setDeleteItem({
-			id: row?.original?.uuid,
+			id: String(row?.original?.id),
 			name: row?.original?.name,
 		});
 	};

@@ -107,6 +107,9 @@ export const storeQK = {
 	//* Accessories
 	accessories: () => [...storeQK.all(), 'accessories'],
 	accessoriesByUUID: (uuid: string) => [...storeQK.accessories(), uuid],
+	//* Contact Us
+	contactUs: () => [...storeQK.all(), 'contactUs'],
+	contactUsByUUID: (uuid: number) => [...storeQK.contactUs(), uuid],
 
 	//*Review
 	review: () => [...storeQK.all(), 'review'],

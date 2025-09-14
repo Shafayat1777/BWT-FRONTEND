@@ -18,6 +18,10 @@ const Information: React.FC<{ data: IProductEntryTableData; updateData: any }> =
 				value: <Switch checked={data?.is_published as boolean} onCheckedChange={() => handlePublished()} />,
 			},
 			{
+				label: 'Refurbished',
+				value: data.refurbished,
+			},
+			{
 				label: 'Title',
 				value: data.title,
 			},

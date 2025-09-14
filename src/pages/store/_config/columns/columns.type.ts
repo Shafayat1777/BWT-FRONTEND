@@ -1,5 +1,6 @@
 import { IProduct } from '../schema';
 
+
 //* Group
 export type IGroupTableData = {
 	uuid: string;
@@ -11,6 +12,7 @@ export type IGroupTableData = {
 };
 //* Contact Us
 export type IContactUsTableData = {
+	id:number;
 	uuid: string;
 	subject: string;
 	name: string;
@@ -163,6 +165,7 @@ export type IProductSpecificationTableData = {
 
 export type IProductEntryTableData = {
 	is_published: boolean;
+	refurbished: string;
 	uuid: string;
 	title: string;
 	category_uuid: string;

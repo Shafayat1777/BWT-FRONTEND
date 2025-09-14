@@ -375,6 +375,11 @@ export const productEntryColumns = (handlePublished: (row: Row<any>) => void): C
 		),
 	},
 	{
+		accessorKey: 'refurbished',
+		header: 'Refurbished',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'title',
 		header: 'Title',
 		enableColumnFilter: false,
