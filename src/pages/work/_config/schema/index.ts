@@ -1,20 +1,12 @@
 import { z } from 'zod';
 
-import {
-	BOOLEAN_OPTIONAL,
-	BOOLEAN_REQUIRED,
-	NUMBER,
-	NUMBER_DOUBLE_OPTIONAL,
-	NUMBER_DOUBLE_REQUIRED,
-	NUMBER_OPTIONAL,
-	NUMBER_REQUIRED,
-	PHONE_NUMBER_OPTIONAL,
-	STRING_ARRAY,
-	STRING_ARRAY_OPTIONAL,
-	STRING_NULLABLE,
-	STRING_OPTIONAL,
-	STRING_REQUIRED,
-} from '@/utils/validators';
+
+
+import { BOOLEAN_OPTIONAL, BOOLEAN_REQUIRED, NUMBER, NUMBER_DOUBLE_OPTIONAL, NUMBER_DOUBLE_REQUIRED, NUMBER_OPTIONAL, NUMBER_REQUIRED, PHONE_NUMBER_OPTIONAL, STRING_ARRAY, STRING_ARRAY_OPTIONAL, STRING_NULLABLE, STRING_OPTIONAL, STRING_REQUIRED } from '@/utils/validators';
+
+
+
+
 
 const customIssue = (message: string, path: string) => ({
 	code: z.ZodIssueCode.custom,
@@ -60,7 +52,7 @@ export const ORDER_SCHEMA = z
 		image_3: z.instanceof(File).or(STRING_NULLABLE).optional(),
 	})
 	.superRefine((data, ctx) => {
-		if (data?.problems_uuid.length === 0) {
+		if (data?.problems_uuid.length === 0 && !data?.is_proceed_to_repair) {
 			ctx.addIssue(customIssue('Required', 'problems_uuid'));
 		}
 		if (data?.is_home_repair && !(data?.bill_amount > 0)) {
