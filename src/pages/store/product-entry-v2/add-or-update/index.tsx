@@ -71,9 +71,11 @@ const Index = () => {
 	}, [data, isUpdate]);
 
 	async function onSubmit(values: IProductEntryV2) {
+		const { product_image } = values;
 		const value = normalizeOrderData(values, attributeList as { label: string; value: string }[])
 			.flattened as IProductEntryV2;
-		const { product_variant, product_specification, product_image, ...rest } = value;
+
+		const { product_variant, product_specification, ...rest } = value;
 
 		if (values.product_variant.length === 0) {
 			ShowLocalToast({
@@ -371,7 +373,7 @@ const Index = () => {
 		const baseVariant = {
 			selling_price: 0,
 			discount: 0,
-			discount_unit:'bdt',
+			discount_unit: 'bdt',
 			warehouse_1: 0,
 			warehouse_2: 0,
 			warehouse_3: 0,
