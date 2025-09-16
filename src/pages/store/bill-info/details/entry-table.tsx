@@ -2,12 +2,16 @@ import React from 'react';
 
 import DataTableEntry from '@core/data-table/entry';
 
-import { OrderDetailsColumns, purchaseEntryColumns } from '../../_config/columns';
-import { IBillInfo, IPurchaseDetails } from '../../_config/columns/columns.type';
+import { OrderDetailsColumns } from '../../_config/columns';
+import { IBillInfo } from '../../_config/columns/columns.type';
 import { flattenOrderData } from '../utills';
 
-const EntryTable: React.FC<{ data: IBillInfo }> = ({ data }) => {
-	const columns = OrderDetailsColumns({ dynamicColumns: flattenOrderData(data).columnNames, is_paid: data?.is_paid });
+const EntryTable: React.FC<{ data: IBillInfo; invalidateQuery: any }> = ({ data, invalidateQuery }) => {
+	const columns = OrderDetailsColumns({
+		dynamicColumns: flattenOrderData(data).columnNames,
+		is_paid: data?.is_paid,
+		invalidateQuery
+	});
 
 	return (
 		<DataTableEntry

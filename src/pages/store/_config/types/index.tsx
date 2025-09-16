@@ -174,3 +174,8 @@ export interface IAttributeAddOrUpdateProps extends IDefaultAttributeAddOrUpdate
 export interface IAttributesAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData: IAttributesTableData | null;
 }
+
+export interface IPopSerial {
+	order_id: string;
+	product_serial: string;
+}

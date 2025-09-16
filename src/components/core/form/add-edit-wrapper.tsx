@@ -7,7 +7,14 @@ import { DevTool } from '@/lib/react-hook-devtool';
 
 import { IFormAddEditWrapperProps } from './types';
 
-const FormAddEditWrapper: React.FC<IFormAddEditWrapperProps> = ({ children, form, onSubmit, title,isSubmitDisable=false }) => {
+const FormAddEditWrapper: React.FC<IFormAddEditWrapperProps> = ({
+	children,
+	form,
+	onSubmit,
+	title,
+	isSubmitDisable = false,
+	disableDevTool,
+}) => {
 	useEffect(() => {
 		if (title) {
 			document.title = title;
@@ -18,8 +25,8 @@ const FormAddEditWrapper: React.FC<IFormAddEditWrapperProps> = ({ children, form
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
 				{children}
-				<CoreForm.Submit className='w-full' title='Save' isSubmitDisable={isSubmitDisable}/>
-				<DevTool control={form.control} placement='top-left' />
+				<CoreForm.Submit className='w-full' title='Save' isSubmitDisable={isSubmitDisable} />
+				{!disableDevTool && <DevTool control={form.control} placement='top-left' />}
 			</form>
 		</Form>
 	);
