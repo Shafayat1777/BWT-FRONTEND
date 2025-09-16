@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { IProductEntryTableData } from '../../_config/columns/columns.type';
 import { useStoreProductsByUUID } from '../../_config/query'; // TODO: replace with details query
+
 import EntryTable from './entry-table';
 import Information from './information';
 
@@ -11,13 +12,14 @@ const DetailsPage = () => {
 	const { data, isLoading, updateData } = useStoreProductsByUUID<IProductEntryTableData>(uuid as string);
 
 	useEffect(() => {
-		document.title = 'Purchase Details';
+		document.title = 'Product Details';
 	}, []);
 
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
 		<div className='space-y-8'>
+			
 			<Information data={(data || []) as IProductEntryTableData} updateData={updateData} />
 			<EntryTable data={(data || []) as IProductEntryTableData} />
 		</div>

@@ -473,7 +473,7 @@ export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
 				updated_at: STRING_OPTIONAL.nullable(),
 				updated_by: STRING_OPTIONAL.nullable(),
 			})
-			.catchall(z.string())
+			.catchall(STRING_REQUIRED)
 	),
 
 	product_specification: z.array(

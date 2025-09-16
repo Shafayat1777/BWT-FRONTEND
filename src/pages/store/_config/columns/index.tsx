@@ -1110,9 +1110,13 @@ export const accessoriesColumns = (handleStatus: (row: Row<any>, value: number) 
 ];
 interface IOrderDetailsColumnsProps {
 	dynamicColumns?: string[];
+	is_paid?: boolean;
 }
 
-export const OrderDetailsColumns = ({ dynamicColumns = [] }: IOrderDetailsColumnsProps = {}): ColumnDef<IOrdered>[] => {
+export const OrderDetailsColumns = ({
+	dynamicColumns = [],
+	is_paid,
+}: IOrderDetailsColumnsProps = {}): ColumnDef<IOrdered>[] => {
 	const baseColumns: ColumnDef<IOrdered>[] = [
 		{
 			accessorKey: 'product_title',
@@ -1145,12 +1149,27 @@ export const OrderDetailsColumns = ({ dynamicColumns = [] }: IOrderDetailsColumn
 			},
 		},
 		{
-			accessorKey: 'selling_price',
-			header: 'Selling Price',
+			accessorKey: 'quantity',
+			header: 'Quantity',
 			enableColumnFilter: false,
 			cell: (info) => {
 				const value = info.getValue() as number;
-				return <span>{value.toLocaleString()}</span>;
+				return <span className='font-medium'>{value}</span>;
+			},
+		},
+		{
+			accessorKey: 'selling_warehouse',
+			header: 'Warehouse',
+			enableColumnFilter: false,
+			cell: (info) => {
+				const value = info.getValue() as number;
+				return (
+					<div>
+						<span>{is_paid ? value + info.row.original.quantity : value}</span>
+						<span className='text-red-500'> - {info.row.original.quantity}</span>
+						<span> = {is_paid ? value : value - info.row.original.quantity}</span>
+					</div>
+				);
 			},
 		},
 		{

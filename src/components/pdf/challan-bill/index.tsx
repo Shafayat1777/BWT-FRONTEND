@@ -1,4 +1,5 @@
 import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
+import { formatDate } from 'date-fns';
 import QRCode from 'qrcode';
 
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
@@ -10,7 +11,7 @@ import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default async function Index(data: IChallanTableData, user: any, baseURl: string) {
-	const headerHeight = 150;
+	const headerHeight = 100;
 	const footerHeight = 20;
 	let grand_total = 0;
 	data?.challan_entries?.forEach((item) => {
@@ -37,34 +38,33 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 			title: `Delivery Challan Pdf of ${data?.customer_name}-${data?.customer_phone}-RCV_Date: ${getDateTime()}`,
 			author: 'Bismillash World Technology',
 		},
-		// * Page Header
-		header: {
-			table: getPageHeader(data, user, GenerateQRCode) as any,
-			layout: 'noBorders',
-			margin: [xMargin, 30, xMargin, 0],
-		},
+		// * Page Header - Simplified structure
+		header: getPageHeader(data, user, GenerateQRCode),
+
 		// * Page Footer
-		footer: (currentPage: number, pageCount: number) => ({
-			table: getPageFooter({ currentPage, pageCount, data, user }) as any,
-			margin: [xMargin, 2],
-			fontSize: DEFAULT_FONT_SIZE,
-		}),
+		footer: (currentPage: number, pageCount: number) => getPageFooter({ currentPage, pageCount, data, user }),
 
 		// * Main Table
 		content: [
 			{
+				text: 'BILL INVOICE',
+				fontSize: DEFAULT_FONT_SIZE + 4,
+				bold: true,
+				alignment: 'center',
+				margin: [0, 0, 0, 10],
+				decoration: 'underline',
+			},
+			{
+				text: `Challan No:${data?.challan_no}`,
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE + 2,
+				alignment: 'center',
+			},
+			{ text: '\n' },
+			{
 				table: {
-					widths: ['*'],
+					widths: ['*', '*'],
 					body: [
-						[
-							{
-								text: `Customer & Delivery Information`,
-								bold: true,
-								fontSize: DEFAULT_FONT_SIZE + 2,
-								fillColor: '#dedede',
-								alignment: 'center',
-							},
-						],
 						[
 							{
 								table: {
@@ -118,9 +118,73 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 								},
 								layout: 'noBorders',
 							},
+							{
+								table: {
+									widths: [80, '*'],
+									body: [
+										[
+											{
+												text: 'Date:',
+												bold: true,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+											{
+												text: formatDate(data?.created_at, 'dd-MMM-yyyy'),
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+										],
+										[
+											{
+												text: 'Status:',
+												bold: true,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+											{
+												text: '',
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+										],
+										[
+											{
+												text: 'Challan Branch:',
+												bold: true,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+											{
+												text: data?.branch_name,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+										],
+										[
+											{
+												text: 'Approved By:',
+												bold: true,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+											{
+												text: user?.name,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+										],
+										[
+											{
+												text: 'Sales Mode:',
+												bold: true,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+											{
+												text: data?.payment_method,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+											},
+										],
+									],
+								},
+								layout: 'noBorders',
+							},
 						],
 					],
 				},
+				layout: 'noBorders',
 			},
 			{ text: '\n' },
 			{
@@ -172,21 +236,70 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 				},
 			},
 			{ text: '\n' },
+
+			{
+				text: [{ text: 'Remarks: ', bold: true }, { text: data?.remarks || '' }],
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
 			{ text: '\n' },
+			{ text: 'Terms and Conditions', bold: true, fontSize: DEFAULT_FONT_SIZE - 2 },
+			{
+				ul: [
+					'We are not liable for any data loss/corruption or software recovery issues during The repair process.',
+					'We are not responsible for damage or death of any parts while repairing and adding spare parts or cleaning dust',
+					'Service and Spare parts warranty will not cover any kind of physical or external damage.',
+					'The customer will have to take al responsibility during the product delivery, and no complaints are accepted after the delivery is made.',
+					'Customer will be notified if any inconsistency is found during product diagnosis, and the customer must accept it',
+					'After servicing, If the repaired product is not collected within 30 ays by the customer, then We will not be liable for any kinds of issues related to that product.',
+					'Service product is only released in presence of the Original Customer Receipt.',
+					'If the customer wants to refuse the service after the product s received, the diagnosis charge will be applicable.',
+					'STEL management reserves the right to modify or discontinue any Service (or any part or content thereof) at any time without prior notice.',
+				],
+				fontSize: DEFAULT_FONT_SIZE - 2,
+				alignment: 'justify',
+			},
 			{
 				table: {
-					widths: ['*', '*'],
+					widths: ['*', 10, '*'],
 					body: [
 						[
-							{ text: `\n\n\n\n`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
-							{ text: `\n\n\n\n`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
 						],
 						[
-							{ text: `Received By`, fontSize: DEFAULT_FONT_SIZE - 2, alignment: 'center' },
 							{
-								text: 'For Bismillah World Technology',
+								text: `Customer Signature`,
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: 'center',
+								border: [false, true, false, false],
+							},
+							{
+								text: ``,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: 'Sales/Receiver Person Signature',
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								alignment: 'center',
+								border: [false, true, false, false],
 							},
 						],
 					],

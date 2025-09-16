@@ -30,7 +30,7 @@ export const storeQK = {
 	vendorByUUID: (uuid: string) => [...storeQK.vendor(), uuid],
 
 	//* product
-	product: () => [...storeQK.all(), 'product'],
+	product: (query?: string) => [...storeQK.all(), 'product', query],
 	productByUUID: (uuid: string) => [...storeQK.product(), uuid],
 
 	//* stock

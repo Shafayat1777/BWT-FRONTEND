@@ -50,10 +50,11 @@ const Purchase = () => {
 	const handlePaid = async (row: Row<IBillInfo>) => {
 		const updated_at = getDateTime();
 		const is_paid = !row?.original?.is_paid;
+		const uuid = row?.original?.uuid;
 
 		await updateData.mutateAsync({
 			url: `/store/bill-info/${row?.original?.uuid}`,
-			updatedData: { is_paid, updated_at },
+			updatedData: { is_paid, updated_at, uuid },
 		});
 	};
 	// Table Columns
