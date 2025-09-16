@@ -19,3 +19,13 @@ export const refurbishedOptions = [
 		value: 'no',
 	},
 ];
+export const queryRefurbishedOptions = [
+	{
+		label: 'Refurbished',
+		value: 'yes',
+	},
+	{
+		label: 'Product',
+		value: 'no',
+	},
+];

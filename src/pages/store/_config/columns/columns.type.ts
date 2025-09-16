@@ -12,7 +12,7 @@ export type IGroupTableData = {
 };
 //* Contact Us
 export type IContactUsTableData = {
-	id:number;
+	id: number;
 	uuid: string;
 	subject: string;
 	name: string;
@@ -176,6 +176,7 @@ export type IProductEntryTableData = {
 	model_name: string;
 	warranty_days: number;
 	service_warranty_days: number;
+	extra_information: string;
 
 	product_image: {
 		uuid: string;
@@ -431,9 +432,12 @@ export type IShippingAddress = {
 
 //* Ordered
 export type IOrdered = {
+	product_title: string;
 	uuid: string;
 	order_id: string;
 	product_variants: string;
+	discount: number;
+	discount_unit: string;
 	quantity: number;
 	selling_price: number;
 	is_paid: boolean;

@@ -85,12 +85,13 @@ const Information: React.FC<{ data: IBillInfo; updateData: any }> = ({ data, upd
 		});
 	};
 	const handlePaid = async (data: IBillInfo) => {
+		const uuid = data?.uuid;
 		const updated_at = getDateTime();
 		const is_paid = !data?.is_paid;
 
 		await updateData.mutateAsync({
 			url: `/store/bill-info/${data?.uuid}`,
-			updatedData: { is_paid, updated_at },
+			updatedData: {uuid, is_paid, updated_at },
 		});
 	};
 

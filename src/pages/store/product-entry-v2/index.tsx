@@ -3,6 +3,8 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 
+import ReactSelect from '@/components/ui/react-select';
+
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -10,13 +12,17 @@ import { productEntryColumns } from '../_config/columns';
 import { IProductEntryTableData } from '../_config/columns/columns.type';
 import { type1FacetedFilters } from '../_config/columns/facetedFilters';
 import { useStoreProducts } from '../_config/query';
+import { queryRefurbishedOptions, refurbishedOptions } from './add-or-update/utils';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Purchase = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, refetch, updateData } = useStoreProducts<IProductEntryTableData[]>();
+	const [type, setType] = useState<string>('no');
+	const { data, isLoading, url, deleteData, refetch, updateData } = useStoreProducts<IProductEntryTableData[]>(
+		`?refurbished=${type}`
+	);
 
 	const pageInfo = useMemo(
 		() => new PageInfo('Store/Product Entry', '/store/product-entry', 'store__product_entry'),
@@ -86,13 +92,29 @@ const Purchase = () => {
 				// TODO: Update facetedFilters (OPTIONAL)
 				facetedFilters={type1FacetedFilters}
 				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
+				otherToolBarComponents={
+					<div className='flex items-center gap-2'>
+						<ReactSelect
+							options={queryRefurbishedOptions!}
+							value={queryRefurbishedOptions?.find((option) => option.value === type)}
+							menuPortalTarget={document.body}
+							styles={{
+								menuPortal: (base) => ({ ...base, zIndex: 999 }),
+								control: (base) => ({ ...base, minWidth: 120 }),
+							}}
+							onChange={(e: any) => {
+								setType(e?.value);
+							}}
+						/>
+					</div>
+				}
 			>
 				{renderSuspenseModals([
 					<DeleteModal
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
+							url: '/store/product',
 							deleteData,
 						}}
 					/>,
@@ -100,7 +122,7 @@ const Purchase = () => {
 						{...{
 							deleteItems,
 							setDeleteItems,
-							url,
+							url: '/store/product',
 							deleteData,
 						}}
 					/>,

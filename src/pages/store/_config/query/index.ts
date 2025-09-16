@@ -135,10 +135,10 @@ export const useStoreVendorsByUUID = <T>(uuid: string) =>
 
 //* Product
 
-export const useStoreProducts = <T>() =>
+export const useStoreProducts = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: storeQK.product(),
-		url: '/store/product',
+		queryKey: storeQK.product(query?query:''),
+		url: query ? `/store/product${query}` : '/store/product',
 	});
 
 export const useStoreProductsByUUID = <T>(uuid: string) =>

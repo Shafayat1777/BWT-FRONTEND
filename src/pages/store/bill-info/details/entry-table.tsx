@@ -7,7 +7,7 @@ import { IBillInfo, IPurchaseDetails } from '../../_config/columns/columns.type'
 import { flattenOrderData } from '../utills';
 
 const EntryTable: React.FC<{ data: IBillInfo }> = ({ data }) => {
-	const columns = OrderDetailsColumns({ dynamicColumns: flattenOrderData(data).columnNames });
+	const columns = OrderDetailsColumns({ dynamicColumns: flattenOrderData(data).columnNames, is_paid: data?.is_paid });
 
 	return (
 		<DataTableEntry

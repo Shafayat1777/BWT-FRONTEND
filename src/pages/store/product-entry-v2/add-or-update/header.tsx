@@ -77,24 +77,6 @@ const Header = ({
 			title={
 				<div className='flex items-center gap-2'>
 					<div className='flex-1'>Product Information</div>
-					<div>
-						<FormField
-							control={form.control}
-							name='refurbished'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									menuPortalTarget={document.body}
-									disableLabel
-									label='Refurbished'
-									placeholder='Select Yes/No'
-									isDisabled={form.watch('is_order_exist')}
-									options={refurbishedOptions!}
-									{...props}
-								/>
-							)}
-						/>
-					</div>
-					<div className='text-sm'>Refurbished</div>
 				</div>
 			}
 			className='flex flex-col'
@@ -115,6 +97,22 @@ const Header = ({
 			}
 		>
 			<div className='grid grid-cols-3 gap-4'>
+				<div>
+					<FormField
+						control={form.control}
+						name='refurbished'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								menuPortalTarget={document.body}
+								label='Refurbished'
+								placeholder='Select Yes/No'
+								isDisabled={form.watch('is_order_exist')}
+								options={refurbishedOptions!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
 				<FormField
 					control={form.control}
 					name='title'
@@ -172,8 +170,6 @@ const Header = ({
 						/>
 					)}
 				/>
-			</div>
-			<div className='grid grid-cols-2 gap-4'>
 				<FormField
 					control={form.control}
 					name='specifications_description'
@@ -184,6 +180,8 @@ const Header = ({
 					name='care_maintenance_description'
 					render={(props) => <CoreForm.Textarea label='Care Maintenance Description' {...props} />}
 				/>
+			</div>
+			<div className='grid grid-cols-2 gap-4'>
 				<FormField
 					control={form.control}
 					name='extra_information'

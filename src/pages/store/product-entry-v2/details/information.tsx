@@ -29,6 +29,7 @@ const Information: React.FC<{ data: IProductEntryTableData; updateData: any }> =
 			{ label: 'Model', value: data.model_name },
 			{ label: 'Warranty', value: data.warranty_days },
 			{ label: 'Specifications Desc.', value: data.specifications_description },
+			{ label: 'Extra Information', value: data?.extra_information?.split(';').join(',') },
 			{
 				label: 'Product Images',
 				value: (
