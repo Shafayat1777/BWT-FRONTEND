@@ -104,6 +104,9 @@ export const storeQK = {
 	billInfo: () => [...storeQK.all(), 'billInfo'],
 	billInfoByUUID: (uuid: string) => [...storeQK.billInfo(), uuid],
 
+	//* Order Serial
+	ordersSerial: () => [...storeQK.all(), 'ordersSerial'],
+
 	//* Accessories
 	accessories: () => [...storeQK.all(), 'accessories'],
 	accessoriesByUUID: (uuid: string) => [...storeQK.accessories(), uuid],

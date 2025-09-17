@@ -164,6 +164,7 @@ export interface IFormAddEditWrapperProps {
 	onSubmit(values: any): void;
 	title?: string;
 	isSubmitDisable?: boolean;
+	disableDevTool?: boolean;
 }
 
 // * file upload

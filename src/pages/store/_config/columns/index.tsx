@@ -12,8 +12,10 @@ import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
 import { status } from '../../accessories-order/utills';
+import PopupSerial from '../../bill-info/details/popup-serial';
 import { order_status } from '../../bill-info/utills';
 import { discountUnits } from '../../product-entry-v2/add-or-update/utils';
+import { IPopSerial } from '../types';
 import {
 	IAccessories,
 	IAttributesTableData,
@@ -1108,14 +1110,17 @@ export const accessoriesColumns = (handleStatus: (row: Row<any>, value: number) 
 		enableColumnFilter: false,
 	},
 ];
+
 interface IOrderDetailsColumnsProps {
 	dynamicColumns?: string[];
 	is_paid?: boolean;
+	invalidateQuery?: any;
 }
 
 export const OrderDetailsColumns = ({
 	dynamicColumns = [],
 	is_paid,
+	invalidateQuery,
 }: IOrderDetailsColumnsProps = {}): ColumnDef<IOrdered>[] => {
 	const baseColumns: ColumnDef<IOrdered>[] = [
 		{
@@ -1186,6 +1191,15 @@ export const OrderDetailsColumns = ({
 			accessorKey: 'product_serial',
 			header: 'Serial',
 			enableColumnFilter: false,
+			cell: (info) => {
+				const { product_serial, uuid } = info.row.original;
+				return (
+					<div className='flex items-center gap-2'>
+						{product_serial}
+						<PopupSerial order_id={uuid} product_serial={product_serial} invalidateQuery={invalidateQuery} />
+					</div>
+				);
+			},
 		},
 	];
 

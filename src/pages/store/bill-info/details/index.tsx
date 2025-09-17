@@ -13,7 +13,7 @@ import Information from './information';
 const DetailsPage = () => {
 	const { uuid } = useParams();
 	const { user } = useAuth();
-	const { data, isLoading, updateData } = useStoreBillInfoByUUID<IBillInfo>(uuid as string);
+	const { data, isLoading, updateData , invalidateQuery } = useStoreBillInfoByUUID<IBillInfo>(uuid as string);
 	const fullURL = window.location.href;
 	const slice = fullURL.split('w');
 	const baseURl = slice[0];
@@ -45,7 +45,7 @@ const DetailsPage = () => {
 				<iframe src={data3} className='h-[40rem] w-full rounded-md border-none' />
 			</div>
 			<Information data={(data || []) as IBillInfo} updateData={updateData} />
-			<EntryTable data={(data || []) as IBillInfo} />
+			<EntryTable data={(data || []) as IBillInfo} invalidateQuery={invalidateQuery} />
 		</div>
 	);
 };

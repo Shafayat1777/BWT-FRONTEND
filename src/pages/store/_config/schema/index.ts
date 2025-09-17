@@ -856,3 +856,13 @@ export const BILL_INFO_NULL: Partial<IBillInfo> = {
 };
 
 export type IBillInfo = z.infer<typeof BILL_INFO_SCHEMA>;
+
+export const SERIAL_SCHEMA = z.object({
+	product_serial: STRING_REQUIRED,
+});
+
+export const SERIAL_NULL: Partial<ISerial> = {
+	product_serial: '',
+};
+
+export type ISerial = z.infer<typeof SERIAL_SCHEMA>;

@@ -137,7 +137,7 @@ export const useStoreVendorsByUUID = <T>(uuid: string) =>
 
 export const useStoreProducts = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: storeQK.product(query?query:''),
+		queryKey: storeQK.product(query ? query : ''),
 		url: query ? `/store/product${query}` : '/store/product',
 	});
 
@@ -373,11 +373,20 @@ export const useStoreBillInfo = <T>() =>
 		queryKey: storeQK.billInfo(),
 		url: '/store/bill-info',
 	});
+
 export const useStoreBillInfoByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.billInfoByUUID(uuid),
 		url: `/store/bill-info-with-order-details?bill_info_uuid=${uuid}`,
 		enabled: !!uuid,
+	});
+
+//* Store OrdersSerial
+export const useStoreOrdersSerial = <T>(enabled: boolean) =>
+	useTQuery<T>({
+		queryKey: storeQK.ordersSerial(),
+		url: '/store/ordered',
+		enabled,	
 	});
 
 //* Accessories
