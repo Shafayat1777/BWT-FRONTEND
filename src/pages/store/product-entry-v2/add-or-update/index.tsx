@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { NotebookPen } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,7 +15,7 @@ import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
 
 import { useStoreProducts, useStoreProductsByUUID } from '../../_config/query';
-import { IProductEntryV2, PRODUCT_ENTRY_NULL_V2, PRODUCT_ENTRY_SCHEMA_V2 } from '../../_config/schema';
+import { createProductEntrySchema, IProductEntryV2, PRODUCT_ENTRY_NULL_V2 } from '../../_config/schema';
 import { flattenOrderData, normalizeOrderData } from '../utills';
 import Header from './header';
 import useGenerateSpecification from './useGenerateSpecification';
@@ -39,8 +39,12 @@ const Index = () => {
 	} = useStoreProductsByUUID(uuid as string);
 	const { invalidateQuery: invalidateProduct } = useStoreProducts();
 	const { data: AttributeOptions } = useOtherAttributes<IFormSelectOption[]>();
+	const [attributeNames, setAttributeNames] = useState<string[]>([]);
 
-	const form = useRHF(PRODUCT_ENTRY_SCHEMA_V2, PRODUCT_ENTRY_NULL_V2);
+	// Create dynamic schema
+	const schema = useMemo(() => createProductEntrySchema(attributeNames), [attributeNames]);
+
+	const form = useRHF(schema, PRODUCT_ENTRY_NULL_V2);
 
 	const {
 		fields: variantFields,
@@ -63,6 +67,13 @@ const Index = () => {
 		form.watch('attribute_list').includes(item.value as string)
 	);
 	const columnNames = attributeList?.map((item) => item.label) || [];
+	const watchedList = form.watch('attribute_list');
+	useEffect(() => {
+		const selected = AttributeOptions?.filter((opt) => watchedList.includes(opt.value as string));
+		// Fixed: Ensure only strings are set
+		const names = selected ? selected.map((opt) => opt.label as string).filter(Boolean) : [];
+		setAttributeNames(names);
+	}, [watchedList, AttributeOptions]);
 
 	useEffect(() => {
 		if (isUpdate && data) {
@@ -394,7 +405,7 @@ const Index = () => {
 
 		const newVariant = Object.assign(baseVariant, dynamicProperties);
 
-		appendVariant(newVariant);
+		appendVariant(newVariant as any);
 	};
 
 	const handleAddSpecification = () => {
@@ -463,7 +474,7 @@ const Index = () => {
 		appendVariant({
 			...baseProperties,
 			...dynamicProperties,
-		});
+		} as any);
 	};
 
 	const handleCopySpecification = (index: number) => {

@@ -421,85 +421,93 @@ export const ACCESSORIES_NULL: Partial<IAccessories> = {
 export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
 
 //* Product Entry Schema
-export const PRODUCT_ENTRY_SCHEMA_V2 = z.object({
-	uuid: STRING_OPTIONAL,
-	is_order_exist: BOOLEAN_OPTIONAL,
-	refurbished: z.enum(['yes', 'no']),
-	is_published: BOOLEAN_REQUIRED.default(false),
-	title: STRING_REQUIRED,
-	category_uuid: STRING_REQUIRED,
-	specifications_description: STRING_OPTIONAL,
-	care_maintenance_description: STRING_OPTIONAL,
-	model_uuid: STRING_REQUIRED,
-	warranty_days: NUMBER(),
-	service_warranty_days: NUMBER(),
-	attribute_list: z.array(STRING_REQUIRED).refine((list) => list.length > 0, 'Please select at least one attribute'),
-	extra_information: STRING_NULLABLE.optional(),
+export function createProductVariantSchema(attributeNames: string[]) {
+	const baseSchema = {
+		index: NUMBER_OPTIONAL,
+		uuid: STRING_OPTIONAL,
+		product_uuid: STRING_OPTIONAL,
+		selling_price: NUMBER_DOUBLE_REQUIRED.min(1, 'Price must be greater than 0'),
+		discount: NUMBER_OPTIONAL,
+		warehouse_1: NUMBER_OPTIONAL,
+		warehouse_2: NUMBER_OPTIONAL,
+		warehouse_3: NUMBER_OPTIONAL,
+		warehouse_4: NUMBER_OPTIONAL,
+		warehouse_5: NUMBER_OPTIONAL,
+		warehouse_6: NUMBER_OPTIONAL,
+		warehouse_7: NUMBER_OPTIONAL,
+		warehouse_8: NUMBER_OPTIONAL,
+		warehouse_9: NUMBER_OPTIONAL,
+		warehouse_10: NUMBER_OPTIONAL,
+		warehouse_11: NUMBER_OPTIONAL,
+		warehouse_12: NUMBER_OPTIONAL,
+		selling_warehouse: NUMBER_REQUIRED.min(0, 'Selling Warehouse is required'),
+		product_variant_values_entry: z
+			.array(
+				z
+					.object({
+						uuid: STRING_OPTIONAL.nullable(),
+						product_variant_uuid: STRING_OPTIONAL.nullable(),
+						attribute_uuid: STRING_OPTIONAL.nullable(),
+						value: STRING_OPTIONAL.nullable(),
+					})
+					.optional()
+			)
+			.optional(),
+		remarks: STRING_NULLABLE,
+		updated_at: STRING_OPTIONAL.nullable(),
+		updated_by: STRING_OPTIONAL.nullable(),
+	};
 
-	product_variant: z.array(
-		z
-			.object({
-				index: NUMBER_OPTIONAL,
+	// Add each dynamic attribute as required string
+	const dynamicProps: Record<string, z.ZodTypeAny> = {};
+	attributeNames.forEach((attr) => {
+		dynamicProps[attr] = STRING_REQUIRED;
+	});
+
+	return z.object({ ...baseSchema, ...dynamicProps });
+}
+
+/**
+ * Generate full product entry schema based on attribute names
+ */
+export function createProductEntrySchema(attributeNames: string[]) {
+	return z.object({
+		uuid: STRING_OPTIONAL,
+		is_order_exist: BOOLEAN_OPTIONAL,
+		refurbished: z.enum(['yes', 'no']),
+		is_published: BOOLEAN_REQUIRED.default(false),
+		title: STRING_REQUIRED,
+		category_uuid: STRING_REQUIRED,
+		specifications_description: STRING_OPTIONAL,
+		care_maintenance_description: STRING_OPTIONAL,
+		model_uuid: STRING_REQUIRED,
+		warranty_days: NUMBER_OPTIONAL,
+		service_warranty_days: NUMBER_OPTIONAL,
+		attribute_list: z.array(STRING_REQUIRED).min(1, 'Please select at least one attribute'),
+		extra_information: STRING_NULLABLE,
+
+		product_variant: z.array(createProductVariantSchema(attributeNames)),
+
+		product_specification: z.array(
+			z.object({
 				uuid: STRING_OPTIONAL,
 				product_uuid: STRING_OPTIONAL,
-				selling_price: NUMBER_DOUBLE_REQUIRED.min(1, 'Price must be greater than 0'),
-				discount: NUMBER_OPTIONAL,
-				warehouse_1: NUMBER_OPTIONAL,
-				warehouse_2: NUMBER_OPTIONAL,
-				warehouse_3: NUMBER_OPTIONAL,
-				warehouse_4: NUMBER_OPTIONAL,
-				warehouse_5: NUMBER_OPTIONAL,
-				warehouse_6: NUMBER_OPTIONAL,
-				warehouse_7: NUMBER_OPTIONAL,
-				warehouse_8: NUMBER_OPTIONAL,
-				warehouse_9: NUMBER_OPTIONAL,
-				warehouse_10: NUMBER_OPTIONAL,
-				warehouse_11: NUMBER_OPTIONAL,
-				warehouse_12: NUMBER_OPTIONAL,
-				selling_warehouse: NUMBER_REQUIRED.min(0, 'Selling Warehouse is required'),
-				product_variant_values_entry: z
-					.array(
-						z
-							.object({
-								uuid: STRING_OPTIONAL.nullable(),
-								product_variant_uuid: STRING_OPTIONAL.nullable(),
-								attribute_uuid: STRING_OPTIONAL.nullable(),
-								value: STRING_OPTIONAL.nullable(),
-							})
-							.optional()
-					)
-					.optional(),
-				remarks: STRING_NULLABLE.optional(),
-				updated_at: STRING_OPTIONAL.nullable(),
-				updated_by: STRING_OPTIONAL.nullable(),
+				label: STRING_REQUIRED,
+				value: STRING_REQUIRED,
+				index: NUMBER_REQUIRED,
 			})
-			.catchall(STRING_REQUIRED)
-	),
+		),
 
-	product_specification: z.array(
-		z.object({
-			uuid: STRING_OPTIONAL,
-			product_uuid: STRING_OPTIONAL,
-			label: STRING_REQUIRED,
-			value: STRING_REQUIRED,
-			index: NUMBER_REQUIRED,
-		})
-	),
-
-	product_image: z.array(
-		z.object({
-			uuid: STRING_OPTIONAL,
-			// variant_uuid: STRING_OPTIONAL,
-			product_uuid: STRING_OPTIONAL,
-			image: z.instanceof(File).or(STRING_REQUIRED),
-			// z
-			// 	.instanceof(File)
-			// 	.refine((file) => file?.size !== 0, 'Please upload an file')
-			// 	.or(STRING_REQUIRED),
-			is_main: BOOLEAN_DEFAULT_VALUE(false),
-		})
-	),
-});
+		product_image: z.array(
+			z.object({
+				uuid: STRING_OPTIONAL,
+				product_uuid: STRING_OPTIONAL,
+				image: z.instanceof(File).or(STRING_REQUIRED),
+				is_main: BOOLEAN_DEFAULT_VALUE(false),
+			})
+		),
+	});
+}
 
 export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 	uuid: '',
@@ -518,7 +526,7 @@ export const PRODUCT_ENTRY_NULL_V2: Partial<IProductEntryV2> = {
 	product_image: [],
 };
 
-export type IProductEntryV2 = z.infer<typeof PRODUCT_ENTRY_SCHEMA_V2>;
+export type IProductEntryV2 = z.infer<ReturnType<typeof createProductEntrySchema>>;
 export const PRODUCT_ENTRY_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	refurbished: z.enum(['yes', 'no']),
