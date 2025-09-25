@@ -209,7 +209,7 @@ export default async function Index(data: IInfoTableData, user: any, baseUrl: st
 					'Service and Spare parts warranty will not cover any kind of physical or external damage.',
 					'The customer will have to take al responsibility during the product delivery, and no complaints are accepted after the delivery is made.',
 					'Customer will be notified if any inconsistency is found during product diagnosis, and the customer must accept it',
-					'After servicing, If the repaired product is not collected within 30 ays by the customer, then We will not be liable for any kinds of issues related to that product.',
+					'After servicing, If the repaired product is not collected within 30 days by the customer, then We will not be liable for any kinds of issues related to that product.',
 					'Service product is only released in presence of the Original Customer Receipt.',
 					'If the customer wants to refuse the service after the product s received, the diagnosis charge will be applicable.',
 					'STEL management reserves the right to modify or discontinue any Service (or any part or content thereof) at any time without prior notice.',
